@@ -47,9 +47,6 @@ class StoreReservationAPIRequest extends FormRequest
             'tax_fee'   =>  ['required','numeric'],
             'iva_fee'   =>  ['required','numeric'],
             'total_price'   =>  ['required','numeric'],
-            'flight'   =>  ['nullable',"boolean"],
-            'aeroline'   =>  ['nullable',"string"],
-            'flight_number'   =>  ['nullable',"string"],
             'franchise' => ['required', 'exists:App\Models\Franchise,id'],
             'user' => ['nullable', 'string'],
 

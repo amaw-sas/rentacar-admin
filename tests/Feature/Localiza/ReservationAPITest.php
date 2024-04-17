@@ -372,9 +372,6 @@ class ReservationAPITest extends TestCase
             'tax_fee'           => "93583",
             'iva_fee'           => "195588",
             'total_price'           => "935829",
-            'flight'           => "0",
-            'aeroline'           => '',
-            'flight_number'           => '',
             'franchise'           => 'alquilame',
         ];
 
