@@ -91,6 +91,7 @@
                 name="Precio seguro"
                 :form="form"
             />
+            <MoneyInputFormField field="iva_fee" name="IVA" :form="form" />
             <MoneyInputFormField
                 field="tax_fee"
                 name="Tasa administrativa"
