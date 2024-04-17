@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use App\Models\Reservation;
+use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,8 +19,7 @@ class ReservationCreateResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-            'id'        => $this->id,
+        $resource = [
             'fullname'  =>  $this->fullname,
             'identification_type'  =>  $this->identification_type,
             'identification'  =>  $this->identification,
@@ -28,10 +28,10 @@ class ReservationCreateResource extends JsonResource
             'category'  =>  $this->category,
             'pickup_location'  =>  $this->pickup_location,
             'return_location'  =>  $this->return_location,
-            'pickup_date'  =>  $this->pickup_date,
-            'pickup_hour'  =>  $this->pickup_hour,
-            'return_date'  =>  $this->return_date,
-            'return_hour'  =>  $this->return_hour,
+            'pickup_date'  =>  ($this->pickup_date) ? $this->pickup_date : Carbon::now()->format('Y-m-d'),
+            'pickup_hour'  =>  ($this->pickup_hour) ? $this->pickup_hour : Carbon::now()->setHour(8)->setMinute(00)->format('H:m'),
+            'return_date'  =>  ($this->return_date) ? $this->return_date : Carbon::now()->addDays(7)->format('Y-m-d'),
+            'return_hour'  =>  ($this->return_hour) ? $this->return_hour : Carbon::now()->setHour(8)->setMinute(00)->format('H:m'),
             'selected_days'  =>  $this->selected_days,
             'extra_hours'  =>  $this->extra_hours,
             'extra_hours_price'  =>  $this->extra_hours_price,
@@ -41,15 +41,18 @@ class ReservationCreateResource extends JsonResource
             'iva_fee'  =>  $this->iva_fee,
             'total_price'  =>  $this->total_price,
             'total_price_localiza'  =>  $this->total_price_localiza,
-            'flight'  =>  $this->flight,
+            'flight'  =>  ($this->flight) ? $this->flight : false,
             'aeroline'  =>  $this->aeroline,
             'flight_number'  =>  $this->flight_number,
             'user'  =>  $this->user,
             'reserve_code'  =>  $this->reserve_code,
             'status'  =>  $this->status,
             'franchise'  =>  $this->franchise,
-            'created_at'  =>  $this->created_at,
-            'updated_at'  =>  $this->updated_at,
         ];
+
+        if($this->id)
+            $resource['id'] = $this->id;
+
+        return $resource;
     }
 }
