@@ -117,7 +117,7 @@ class Reservation extends Model
         try {
             return Carbon::createFromFormat($format, $hour)->format("H:m a");
         } catch (\Throwable $th) {
-            return Carbon::createFromFormat($format, $hour)->format("H:m");
+            return Carbon::createFromFormat("H:m:s", $hour)->format("H:m a");
         }
     }
 
