@@ -18,7 +18,7 @@ class CategoryModelDataProviderResource extends JsonResource
     public function toArray($request)
     {
         $cloudStorageProviderURI = Str::of(config('filesystems.disks.gcs.storage_api_uri'));
-        $imageProdURI = $cloudStorageProviderURI->append(asset($this->image));
+        $imageProdURI = $cloudStorageProviderURI->append($this->image);
         $imageDevURI = asset("storage/carcategories/car.png");
 
         return [
