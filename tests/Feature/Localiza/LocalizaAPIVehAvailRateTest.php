@@ -8,17 +8,17 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class LocalizaAPIVehAvailRateTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-    * @group localiza
-    * @group localiza_veh_avail_rate
-    * @test
-    * */
+    #[Group("localiza_veh_avail_rate")]
+    #[Group("localiza")]
+    #[Test]
     public function get_data_of_category_FY_availability(): void {
 
 
@@ -67,11 +67,9 @@ class LocalizaAPIVehAvailRateTest extends TestCase
         ],$data);
     }
 
-    /**
-    * @group localiza
-    * @group localiza_veh_avail_rate
-    * @test
-    * */
+    #[Group("localiza_veh_avail_rate")]
+    #[Group("localiza")]
+    #[Test]
     public function get_data_of_category_FX_availability(): void {
 
         $xml = (View::make('localiza.tests.responses.vehavailrate.vehavailrate-xml'))->render();
@@ -116,11 +114,9 @@ class LocalizaAPIVehAvailRateTest extends TestCase
         ],$data);
     }
 
-    /**
-    * @group localiza
-    * @group localiza_veh_avail_rate
-    * @test
-    * */
+    #[Group("localiza_veh_avail_rate")]
+    #[Group("localiza")]
+    #[Test]
     public function when_total_charge_data_is_not_found_throw_exception(): void {
 
         $xml = (View::make('localiza.tests.responses.vehavailrate.vehavailrate-no-data-xml'))->render();
@@ -146,11 +142,9 @@ class LocalizaAPIVehAvailRateTest extends TestCase
         $data = $localiza->getData();
     }
 
-    /**
-    * @group localiza
-    * @group localiza_veh_avail_rate
-    * @test
-    * */
+    #[Group("localiza_veh_avail_rate")]
+    #[Group("localiza")]
+    #[Test]
     public function when_there_arent_prices_raise_exception(): void {
         $xml = (View::make('localiza.tests.responses.vehavailrate.vehavailrate-noprices-xml'))->render();
 
@@ -175,11 +169,9 @@ class LocalizaAPIVehAvailRateTest extends TestCase
         $data = $localiza->getData();
     }
 
-    /**
-    * @group localiza
-    * @group localiza_veh_avail_rate
-    * @test
-    * */
+    #[Group("localiza_veh_avail_rate")]
+    #[Group("localiza")]
+    #[Test]
     public function when_prices_are_zero_raise_exception(): void {
         $xml = (View::make('localiza.tests.responses.vehavailrate.vehavailrate-zeroprices-xml'))->render();
 

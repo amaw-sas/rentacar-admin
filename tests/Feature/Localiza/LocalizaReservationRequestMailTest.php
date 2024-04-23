@@ -4,6 +4,8 @@ namespace Tests\Feature\Localiza;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 use App\Mail\LocalizaReservationRequest;
@@ -16,11 +18,9 @@ class LocalizaReservationRequestMailTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-    * @group localiza
-    * @group localiza_reservation_request
-    * @test
-    * */
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
     public function send_a_email_to_localiza_reservation_desk(): void {
         $reservation = Reservation::factory()->create();
 
@@ -54,11 +54,9 @@ class LocalizaReservationRequestMailTest extends TestCase
 
     }
 
-    /**
-    * @group localiza
-    * @group localiza_reservation_request
-    * @test
-    * */
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
     public function render_email_from_alquilatucarro_and_check_data(): void {
         $reservation = Reservation::factory()->create();
 
@@ -91,11 +89,9 @@ class LocalizaReservationRequestMailTest extends TestCase
 
     }
 
-    /**
-    * @group localiza
-    * @group localiza_reservation_request
-    * @test
-    * */
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
     public function render_email_from_alquilame_and_check_data(): void {
         $reservation = Reservation::factory()->create();
 
@@ -128,11 +124,9 @@ class LocalizaReservationRequestMailTest extends TestCase
 
     }
 
-    /**
-    * @group localiza
-    * @group localiza_reservation_request
-    * @test
-    * */
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
     public function render_email_from_alquicarros_and_check_data(): void {
         $reservation = Reservation::factory()->create();
 

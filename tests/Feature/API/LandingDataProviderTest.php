@@ -6,6 +6,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
 use Illuminate\Database\Eloquent\Factories\Sequence;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -14,12 +16,7 @@ use App\Models\CityPage;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\CityFranchiseWhatsappLink;
-use App\Models\PriceMatrix;
-use App\Models\PriceLevelMatrix;
-use App\Models\PriceMatrixBranch;
-use App\Models\PriceMatrixPerCategory;
 use App\Models\CityCategoryVisibility;
-use App\Rentcar\CategoryBasePrice;
 
 class LandingDataProviderTest extends TestCase
 {
@@ -36,22 +33,18 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function send_without_url_parameter_and_return_a_not_found_exception() {
 
         $this->post(route('dataprovider.landing'))
             ->assertNotFound();
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function send_a_url_but_no_city_page_is_found() {
 
         $this->post(route('dataprovider.landing'), [
@@ -60,11 +53,9 @@ class LandingDataProviderTest extends TestCase
         ->assertNotFound();
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_json_with_categories_pageconfig_and_branches_when_theres_a_city_page() {
         $city_page = CityPage::factory()->create();
         $city = Str::slug($city_page->city->name);
@@ -84,11 +75,9 @@ class LandingDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_a_category_data() {
         $city_page = CityPage::factory()->create();
         $city = $city_page->city;
@@ -124,11 +113,9 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function when_theres_a_per_category_matrix_price_show_that_price_in_base_price_attribute() {
         $city_page = CityPage::factory()->create();
         $city = $city_page->city;
@@ -160,15 +147,9 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-
-
-
-
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_branch_data() {
         $city_page = CityPage::factory()->create();
         $branches = Branch::factory()->count(2)->create();
@@ -193,11 +174,9 @@ class LandingDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_page_config() {
         $city_page = CityPage::factory()->create();
         $branches = Branch::factory()->count(2)->create();
@@ -224,11 +203,9 @@ class LandingDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_car_models_in_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
@@ -263,11 +240,9 @@ class LandingDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group landing_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_car_month_prices_in_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
@@ -302,11 +277,9 @@ class LandingDataProviderTest extends TestCase
         );
     }
 
-    /**
-    * @group landing_data_provider
-    * @group data_provider
-    * @test
-    * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function get_whatspp_link_from_the_city(): void {
 
         $branch = Branch::factory()->create();
@@ -333,11 +306,9 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-    * @group landing_data_provider
-    * @group data_provider
-    * @test
-    * */
+    #[Group("landing_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function if_theres_no_city_whatsapp_link_associated_get_default_whatsapp_link_from_franchise(): void {
 
         $branch = Branch::factory()->create();
@@ -361,12 +332,10 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-    * @group landing_data_provider
-    * @group data_provider
-    * @group city_category_visibility
-    * @test
-    * */
+    #[Group("landing_data_provider")]
+    #[Group("city_category_visibility")]
+    #[Group("data_provider")]
+    #[Test]
     public function if_the_city_category_visibility_is_false_return_the_category_status_as_false() {
         $branch = Branch::factory()->create();
         $category = Category::factory()->create();
@@ -391,12 +360,10 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-    * @group landing_data_provider
-    * @group data_provider
-    * @group city_category_visibility
-    * @test
-    * */
+    #[Group("landing_data_provider")]
+    #[Group("city_category_visibility")]
+    #[Group("data_provider")]
+    #[Test]
     public function if_the_city_category_visibility_is_true_return_the_category_status_as_true() {
         $branch = Branch::factory()->create();
         $category = Category::factory()->create();
@@ -421,12 +388,10 @@ class LandingDataProviderTest extends TestCase
 
     }
 
-    /**
-    * @group landing_data_provider
-    * @group data_provider
-    * @group city_category_visibility
-    * @test
-    * */
+    #[Group("landing_data_provider")]
+    #[Group("city_category_visibility")]
+    #[Group("data_provider")]
+    #[Test]
     public function if_theres_no_city_category_visibility_return_the_category_status_as_true() {
         $branch = Branch::factory()->create();
         $category = Category::factory()->create();

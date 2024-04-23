@@ -5,6 +5,8 @@ namespace Tests\Feature\API;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Testing\Fluent\AssertableJson;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 use App\Models\Branch;
@@ -29,22 +31,18 @@ class ReservasDataProviderTest extends TestCase
 
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function send_without_franchise_parameter_and_return_a_not_found_exception() {
 
         $this->post(route('dataprovider.reservas'))
             ->assertNotFound();
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function send_a_franchise_but_no_city_page_is_found() {
 
         $this->post(route('dataprovider.reservas'), [
@@ -53,11 +51,9 @@ class ReservasDataProviderTest extends TestCase
         ->assertNotFound();
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_json_with_categories_pageconfig_and_branches_when_theres_a_city_page() {
         $city_page = CityPage::factory()->create();
         $branches = Branch::factory()->count(10)->create();
@@ -75,11 +71,9 @@ class ReservasDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
@@ -105,11 +99,9 @@ class ReservasDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_car_models_in_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
@@ -145,11 +137,9 @@ class ReservasDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_branch_data() {
         $city_page = CityPage::factory()->create();
         $branches = Branch::factory()->count(2)->create();
@@ -185,11 +175,9 @@ class ReservasDataProviderTest extends TestCase
         );
     }
 
-    /**
-     * @group reservas_data_provider
-     * @group data_provider
-     * @test
-     * */
+    #[Group("reservas_data_provider")]
+    #[Group("data_provider")]
+    #[Test]
     public function show_page_config() {
         $city_page = CityPage::factory()->create();
         $branches = Branch::factory()->count(2)->create();

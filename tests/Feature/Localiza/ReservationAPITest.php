@@ -8,6 +8,8 @@ use App\Mail\AlquilatucarroReservationRequest;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 use App\Models\Branch;
@@ -20,11 +22,9 @@ class ReservationAPITest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * @group reservation_api
-     * @group localiza
-     * @test
-     */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function store_a_default_reservation()
     {
         Mail::fake();
@@ -61,11 +61,9 @@ class ReservationAPITest extends TestCase
 
     }
 
-    /**
-    * @group reservation_api
-    * @group localiza
-    * @test
-    * */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function send_a_mail_to_localiza_car_provider_when_record_a_reservation(): void {
         Mail::fake();
 
@@ -104,11 +102,9 @@ class ReservationAPITest extends TestCase
         );
     }
 
-    /**
-    * @group reservation_api
-    * @group localiza
-    * @test
-    * */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function send_a_alquilatucarro_mail_to_localiza_car_provider_when_record_a_reservation(): void {
         Mail::fake();
 
@@ -146,11 +142,9 @@ class ReservationAPITest extends TestCase
         );
     }
 
-    /**
-    * @group reservation_api
-    * @group localiza
-    * @test
-    * */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function send_a_alquilame_mail_to_localiza_car_provider_when_record_a_reservation(): void {
         Mail::fake();
 
@@ -188,11 +182,9 @@ class ReservationAPITest extends TestCase
         );
     }
 
-    /**
-    * @group reservation_api
-    * @group localiza
-    * @test
-    * */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function send_a_alquicarros_mail_to_localiza_car_provider_when_record_a_reservation(): void {
         Mail::fake();
 
@@ -230,11 +222,9 @@ class ReservationAPITest extends TestCase
         );
     }
 
-    /**
-     * @group reservation_api
-     * @group localiza
-     * @test
-     */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function store_a_reservation_with_a_non_existent_pickup_location_and_fail()
     {
         Mail::fake();
@@ -263,11 +253,9 @@ class ReservationAPITest extends TestCase
         Mail::assertNotQueued(LocalizaReservationRequest::class);
     }
 
-    /**
-     * @group reservation_api
-     * @group localiza
-     * @test
-     */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function store_a_reservation_with_a_non_existent_return_location_and_fail()
     {
         Mail::fake();
@@ -296,11 +284,9 @@ class ReservationAPITest extends TestCase
         Mail::assertNotQueued(LocalizaReservationRequest::class);
     }
 
-    /**
-     * @group reservation_api
-     * @group localiza
-     * @test
-     */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function store_a_reservation_with_a_non_existent_franchise_and_fail()
     {
         Mail::fake();
@@ -329,11 +315,9 @@ class ReservationAPITest extends TestCase
         Mail::assertNotQueued(LocalizaReservationRequest::class);
     }
 
-    /**
-    * @group reservation_api
-    * @group localiza
-    * @test
-    * */
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function real_data_test(): void {
         Mail::fake();
 
