@@ -48,4 +48,40 @@ class StoreReservationRequest extends FormRequest
             'status' => ['required', 'string'],
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'fullname'  => 'Nombre completo',
+            'identification_type'  => 'Tipo de identificación',
+            'identification'  => 'Identificación',
+            'phone'  => 'Teléfono',
+            'email' => 'Correo eléctronico',
+            'category' => 'Categoría',
+            'pickup_location' => 'Lugar de recogida',
+            'return_location' => 'Lugar de retorno',
+            'pickup_date' => 'Día de recogida',
+            'return_date' => 'Día de retorno',
+            'pickup_hour' => 'Hora de recogida',
+            'return_hour' => 'Hora de retorno',
+            'selected_days' => 'Días reservados',
+            'extra_hours' => 'Horas extras',
+            'extra_hours_price' => 'Precio horas extras',
+            'coverage_days' => 'Días seguro',
+            'coverage_price' => 'Precio seguro',
+            'tax_fee' => 'Tasa administrativa',
+            'iva_fee' => 'Precio IVA',
+            'total_price' => 'Precio final',
+            'total_price_localiza' => 'Precio final Localiza',
+            'franchise' => 'Franquicia',
+            'reserve_code' => 'Código reserva',
+            'user' => 'Referido',
+            'status' => 'Estado',
+        ];
+    }
 }

@@ -72,27 +72,37 @@
                 :form="form"
             />
             <InputFormField
+                v-if="method == 'post'"
                 field="extra_hours"
                 name="Horas extras"
                 :form="form"
             />
             <MoneyInputFormField
+                v-if="method == 'post'"
                 field="extra_hours_price"
                 name="Precio horas extras"
                 :form="form"
             />
             <InputFormField
+                v-if="method == 'post'"
                 field="coverage_days"
                 name="Días seguro"
                 :form="form"
             />
             <MoneyInputFormField
+                v-if="method == 'post'"
                 field="coverage_price"
                 name="Precio seguro"
                 :form="form"
             />
-            <MoneyInputFormField field="iva_fee" name="IVA" :form="form" />
             <MoneyInputFormField
+                v-if="method == 'post'"
+                field="iva_fee"
+                name="IVA"
+                :form="form"
+            />
+            <MoneyInputFormField
+                v-if="method == 'post'"
                 field="tax_fee"
                 name="Tasa administrativa"
                 :form="form"
@@ -121,7 +131,7 @@
                 :form="form"
             />
 
-            <InputFormField field="user" name="Usuario" :form="form" />
+            <InputFormField field="user" name="Referido" :form="form" />
 
             <SelectFormField
                 field="status"

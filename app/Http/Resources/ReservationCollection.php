@@ -17,6 +17,11 @@ class ReservationCollection extends ResourceCollection
         return [
             'headers'   => [
                 [
+                    "text"      =>  "CREADO",
+                    "value"     =>  "created_at",
+                    "fixed"     =>  true,
+                ],
+                [
                     "text"      =>  "NOMBRE",
                     "value"     =>  "fullname",
                     "fixed"     =>  true,
@@ -44,6 +49,10 @@ class ReservationCollection extends ResourceCollection
                 [
                     "text"      =>  "CÓDIGO RESERVA",
                     "value"     =>  "reserve_code",
+                ],
+                [
+                    "text"      =>  "ESTADO",
+                    "value"     =>  "status",
                 ],
                 [
                     "text"  =>  "OPERACIONES",

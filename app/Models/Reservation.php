@@ -113,16 +113,33 @@ class Reservation extends Model
         }
     }
 
-    private function hourFormat($hour, $format = "H:m"){
+    private function hourFormat($hour, $format = "H:i"){
         try {
-            return Carbon::createFromFormat($format, $hour)->format("H:m a");
+            return Carbon::createFromFormat($format, $hour)->format("H:i a");
         } catch (\Throwable $th) {
-            return Carbon::createFromFormat("H:m:s", $hour)->format("H:m a");
+            return Carbon::createFromFormat("H:i:s", $hour)->format("H:i a");
         }
     }
 
     private function formattedBranch(Branch $branch){
         return "{$branch->name} - {$branch->code}";
     }
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'selected_days' => 0,
+        'extra_hours' => 0,
+        'extra_hours_price' => 0,
+        'coverage_days' => 0,
+        'coverage_price' => 0,
+        'tax_fee' => 0,
+        'iva_fee' => 0,
+        'total_price' => 0,
+        'total_price_localiza' => 0,
+    ];
 
 }

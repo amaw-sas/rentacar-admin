@@ -125,8 +125,6 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             '*' =>  Http::response($xml, 200)
         ]);
 
-        $this->expectException(HttpResponseException::class);
-
         $pickupLocation = "AABOT";
         $returnLocation = "AABOT";
         $pickupDateTime = "2024-01-15T23:00:00";
@@ -139,7 +137,7 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             $returnDateTime,
         );
 
-        $data = $localiza->getData();
+        $this->assertThrows(fn() => $localiza->getData(), HttpResponseException::class);
     }
 
     #[Group("localiza_veh_avail_rate")]
@@ -152,8 +150,6 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             '*' =>  Http::response($xml, 200)
         ]);
 
-        $this->expectException(HttpResponseException::class);
-
         $pickupLocation = "AABOT";
         $returnLocation = "AABOT";
         $pickupDateTime = "2024-01-15T23:00:00";
@@ -166,20 +162,19 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             $returnDateTime,
         );
 
-        $data = $localiza->getData();
+        $this->assertThrows(fn() => $localiza->getData(), HttpResponseException::class);
     }
 
     #[Group("localiza_veh_avail_rate")]
     #[Group("localiza")]
     #[Test]
     public function when_prices_are_zero_raise_exception(): void {
+
         $xml = (View::make('localiza.tests.responses.vehavailrate.vehavailrate-zeroprices-xml'))->render();
 
         Http::fake([
             '*' =>  Http::response($xml, 200)
         ]);
-
-        $this->expectException(HttpResponseException::class);
 
         $pickupLocation = "AABOT";
         $returnLocation = "AABOT";
@@ -193,7 +188,7 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             $returnDateTime,
         );
 
-        $data = $localiza->getData();
+        $this->assertThrows(fn() => $localiza->getData(), HttpResponseException::class);
     }
 
 

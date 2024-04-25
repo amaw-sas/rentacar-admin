@@ -46,7 +46,7 @@ class ReservationFactory extends Factory
             'franchise'             =>  Franchise::factory(),
             'user'                  =>  $this->faker->word,
             'reserve_code'          =>  (string) $this->faker->randomNumber(6, true),
-            'status'                =>  (ReservationStatus::Pending)->value,
+            'status'                =>  (ReservationStatus::Nueva)->value,
         ];
     }
 }

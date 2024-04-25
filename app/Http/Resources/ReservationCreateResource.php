@@ -3,7 +3,6 @@
 namespace App\Http\Resources;
 
 use App\Models\Reservation;
-use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,10 +27,10 @@ class ReservationCreateResource extends JsonResource
             'category'  =>  $this->category,
             'pickup_location'  =>  $this->pickup_location,
             'return_location'  =>  $this->return_location,
-            'pickup_date'  =>  ($this->pickup_date) ? $this->pickup_date : Carbon::now()->format('Y-m-d'),
-            'pickup_hour'  =>  ($this->pickup_hour) ? $this->pickup_hour : Carbon::now()->setHour(8)->setMinute(00)->format('H:m'),
-            'return_date'  =>  ($this->return_date) ? $this->return_date : Carbon::now()->addDays(7)->format('Y-m-d'),
-            'return_hour'  =>  ($this->return_hour) ? $this->return_hour : Carbon::now()->setHour(8)->setMinute(00)->format('H:m'),
+            'pickup_date'  =>  ($this->pickup_date) ? $this->pickup_date : now()->format('Y-m-d'),
+            'pickup_hour'  =>  ($this->pickup_hour) ? $this->pickup_hour : now()->setHour(8)->setMinute(0)->format('H:i'),
+            'return_date'  =>  ($this->return_date) ? $this->return_date : now()->addDays(7)->format('Y-m-d'),
+            'return_hour'  =>  ($this->return_hour) ? $this->return_hour : now()->setHour(8)->setMinute(0)->format('H:i'),
             'selected_days'  =>  $this->selected_days,
             'extra_hours'  =>  $this->extra_hours,
             'extra_hours_price'  =>  $this->extra_hours_price,

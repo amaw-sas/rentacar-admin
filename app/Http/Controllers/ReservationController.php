@@ -21,7 +21,7 @@ class ReservationController extends Controller
             (new ReservationCollection(
                 Reservation::with(
                     ['categoryObject','pickupLocation','returnLocation','franchiseObject']
-                    )->orderBy('id','desc')
+                    )->orderBy('created_at','desc')
                     ->get()
                     ->all()))->resolve()
         );

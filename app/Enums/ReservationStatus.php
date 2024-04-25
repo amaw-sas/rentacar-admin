@@ -3,8 +3,10 @@
 namespace App\Enums;
 
 enum ReservationStatus: string {
-    case Pending = "Pendiente";
-    case Cancelled = "Cancelado";
-    case Done = "Terminado";
+    case SinConfirmar = "Sin confirmar";
+    case SinDisponibilidad = "Sin disponibilidad";
+    case ConCodigo = "Con código";
+    case Nueva = "Nueva";
+    case NoRecogido = "No recogido";
 }
 

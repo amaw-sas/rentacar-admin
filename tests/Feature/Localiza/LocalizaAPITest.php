@@ -20,11 +20,8 @@ class LocalizaAPITest extends TestCase
             '*' =>  Http::response('error', 400)
         ]);
 
-        $this->expectException(HttpException::class);
-        // $this->expectErrorMessage(__('localiza.client_error'));
-
         $localiza = new LocalizaAPI();
-        $localiza->callAPI("test","test");
+        $this->assertThrows(fn() => $localiza->callAPI("test","test"), HttpException::class);
     }
 
     #[Group("localiza")]
@@ -34,10 +31,8 @@ class LocalizaAPITest extends TestCase
             '*' =>  Http::response('error', 500)
         ]);
 
-        $this->expectException(HttpException::class);
-        // $this->expectErrorMessage(__('localiza.server_error'));
-
         $localiza = new LocalizaAPI();
-        $localiza->callAPI("test","test");
+
+        $this->assertThrows(fn() => $localiza->callAPI("test","test"), HttpException::class);
     }
 }

@@ -45,7 +45,7 @@ class CategoryFactory extends Factory
         return [
             'identification'    =>  $slug,
             'name'              =>  $name,
-            'category'          =>  $this->faker->sentence(),
+            'category'          =>  $this->faker->word(),
             'description'       =>  $this->faker->paragraph(),
             'image'             =>  'carcategories/car.png',
             'ad'           =>  $this->faker->paragraph()
