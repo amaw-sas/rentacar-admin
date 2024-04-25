@@ -125,4 +125,21 @@ class Reservation extends Model
         return "{$branch->name} - {$branch->code}";
     }
 
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'selected_days' => 0,
+        'extra_hours' => 0,
+        'extra_hours_price' => 0,
+        'coverage_days' => 0,
+        'coverage_price' => 0,
+        'tax_fee' => 0,
+        'iva_fee' => 0,
+        'total_price' => 0,
+        'total_price_localiza' => 0,
+    ];
+
 }
