@@ -258,6 +258,35 @@ class VehAvail implements Arrayable {
         return $result;
     }
 
+    private function getTotalPriceWithTotalCoverage(): array {
+        [
+            'estimatedTotalAmount'  => $estimatedTotalAmount
+        ] = $this->getTotalCharge();
+
+        [
+            'coverageUnitCharge' => $coverageUnitCharge,
+            'coverageQuantity' => $coverageQuantity,
+        ] = $this->getCoverage();
+
+        $totalCoveragePriceLowGamma = config('localiza.totalCoveragePriceLowGamma');
+        $totalCoveragePriceHighGamma = config('localiza.totalCoveragePriceHighGamma');
+
+        $result = [
+            'totalPriceWithTotalCoverage' => 0
+        ];
+
+        if(
+            $estimatedTotalAmount && $coverageQuantity && $coverageUnitCharge
+        ){
+            $coveragePrice = ($coverageUnitCharge <= 35000) ? $totalCoveragePriceLowGamma : $totalCoveragePriceHighGamma;
+            $totalCoveragePrice = (int) $coveragePrice * $coverageQuantity;
+            $result['totalPriceWithTotalCoverage'] = (int) $estimatedTotalAmount + $totalCoveragePrice;
+        }
+        else abort(new NoDataFoundException);
+
+        return $result;
+    }
+
     /**
      * get round price
      *
@@ -282,6 +311,7 @@ class VehAvail implements Arrayable {
             $this->getReference(),
             $this->getCoverage(),
             $this->getExtraHours(),
+            $this->getTotalPriceWithTotalCoverage(),
         );
     }
 }
