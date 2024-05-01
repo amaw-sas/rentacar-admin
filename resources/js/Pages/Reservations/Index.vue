@@ -54,8 +54,8 @@
 
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
-import CreateButton from "@/Components/Rentacar/CreateButton.vue";
-import EditItemButton from "@/Components/Rentacar/EditItemButton.vue";
+import CreateButton from "@/Rentacar/Components/CreateButton.vue";
+import EditItemButton from "@/Rentacar/Components/EditItemButton.vue";
 import Expand from "@/Pages/Reservations/Expand.vue";
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";

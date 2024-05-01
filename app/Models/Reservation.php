@@ -16,6 +16,7 @@ class Reservation extends Model
     use HasFactory, Searchable, ReservationFormatTrait;
 
     protected $guarded = [];
+    protected $with = ['categoryObject','pickupLocation','returnLocation','franchiseObject'];
 
     /**
      * get the pickup location branch of this instance
@@ -59,15 +60,15 @@ class Reservation extends Model
      * @var array
      */
     protected $attributes = [
-        'selected_days' => 0,
-        'extra_hours' => 0,
-        'extra_hours_price' => 0,
-        'coverage_days' => 0,
-        'coverage_price' => 0,
-        'tax_fee' => 0,
-        'iva_fee' => 0,
-        'total_price' => 0,
-        'total_price_localiza' => 0,
+        'selected_days' => "0",
+        'extra_hours' => "0",
+        'extra_hours_price' => "0",
+        'coverage_days' => "0",
+        'coverage_price' => "0",
+        'tax_fee' => "0",
+        'iva_fee' => "0",
+        'total_price' => "0",
+        'total_price_localiza' => "0",
     ];
 
     /**

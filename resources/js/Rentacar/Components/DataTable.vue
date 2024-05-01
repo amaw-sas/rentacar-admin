@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref } from "vue";
-import EditItemButton from "@/Components/Rentacar/EditItemButton.vue";
+import EditItemButton from "@/Rentacar/Components/EditItemButton.vue";
 import Vue3EasyDataTable from "vue3-easy-data-table";
 import "vue3-easy-data-table/dist/style.css";
 

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationCreateResource;
 use App\Models\Reservation;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -15,13 +16,23 @@ class ReservationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = new Reservation;
+
+        if($request->filled('search'))
+            $query = $query->search($request->input('search'));
+
+
+        if($request->filled(['orderBy','orderByOrientation']))
+            $query = $query->orderBy(
+                $request->input('orderBy'),
+                $request->input('orderByOrientation')
+            );
+
         return inertia('Reservations/Index',
             (new ReservationCollection(
-                Reservation::with(
-                    ['categoryObject','pickupLocation','returnLocation','franchiseObject']
-                    )->orderBy('created_at','desc')
+                $query
                     ->get()
                     ->all()))->resolve()
         );
