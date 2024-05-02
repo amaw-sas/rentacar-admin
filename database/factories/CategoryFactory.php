@@ -46,9 +46,9 @@ class CategoryFactory extends Factory
             'identification'    =>  $slug,
             'name'              =>  $name,
             'category'          =>  $this->faker->word(),
-            'description'       =>  $this->faker->paragraph(),
+            'description'       =>  $this->faker->sentence(),
             'image'             =>  'carcategories/car.png',
-            'ad'           =>  $this->faker->paragraph()
+            'ad'           =>  $this->faker->sentence()
         ];
     }
 }

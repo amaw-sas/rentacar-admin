@@ -39,16 +39,16 @@ class ReservationCollection extends ResourceCollection
                     "value"     =>  "email",
                 ],
                 [
+                    "text"      =>  "CÓDIGO RESERVA",
+                    "value"     =>  "reserve_code",
+                ],
+                [
                     "text"      =>  "CATEGORÍA",
                     "value"     =>  "category",
                 ],
                 [
                     "text"      =>  "FRANQUICIA",
                     "value"     =>  "franchise",
-                ],
-                [
-                    "text"      =>  "CÓDIGO RESERVA",
-                    "value"     =>  "reserve_code",
                 ],
                 [
                     "text"      =>  "ESTADO",

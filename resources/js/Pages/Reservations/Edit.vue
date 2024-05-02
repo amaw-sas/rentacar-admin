@@ -17,7 +17,7 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Form from "@/Pages/Reservations/Form.vue";
-import ReturnLink from "@/Components/Rentacar/ReturnLink.vue";
+import ReturnLink from "@/Rentacar/Components/ReturnLink.vue";
 import { useForm } from "@inertiajs/vue3";
 
 const props = defineProps({

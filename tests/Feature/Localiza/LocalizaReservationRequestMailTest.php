@@ -30,7 +30,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->category);
+        $mail->assertSeeInHtml($reservation->formattedCategory());
         $mail->assertSeeInHtml($reservation->formattedPickupPlace());
         $mail->assertSeeInHtml($reservation->formattedReturnPlace());
         $mail->assertSeeInHtml($reservation->formattedPickupDate());
@@ -44,7 +44,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->category);
+        $mail->assertSeeInText($reservation->formattedCategory());
         $mail->assertSeeInText($reservation->formattedPickupPlace());
         $mail->assertSeeInText($reservation->formattedReturnPlace());
         $mail->assertSeeInText($reservation->formattedPickupDate());
@@ -66,7 +66,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->category);
+        $mail->assertSeeInHtml($reservation->formattedCategory());
         $mail->assertSeeInHtml($reservation->formattedPickupPlace());
         $mail->assertSeeInHtml($reservation->formattedReturnPlace());
         $mail->assertSeeInHtml($reservation->formattedPickupDate());
@@ -79,7 +79,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->category);
+        $mail->assertSeeInText($reservation->formattedCategory());
         $mail->assertSeeInText($reservation->formattedPickupPlace());
         $mail->assertSeeInText($reservation->formattedReturnPlace());
         $mail->assertSeeInText($reservation->formattedPickupDate());
@@ -101,7 +101,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->category);
+        $mail->assertSeeInHtml($reservation->formattedCategory());
         $mail->assertSeeInHtml($reservation->formattedPickupPlace());
         $mail->assertSeeInHtml($reservation->formattedReturnPlace());
         $mail->assertSeeInHtml($reservation->formattedPickupDate());
@@ -114,7 +114,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->category);
+        $mail->assertSeeInText($reservation->formattedCategory());
         $mail->assertSeeInText($reservation->formattedPickupPlace());
         $mail->assertSeeInText($reservation->formattedReturnPlace());
         $mail->assertSeeInText($reservation->formattedPickupDate());
@@ -136,7 +136,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->category);
+        $mail->assertSeeInHtml($reservation->formattedCategory());
         $mail->assertSeeInHtml($reservation->formattedPickupPlace());
         $mail->assertSeeInHtml($reservation->formattedReturnPlace());
         $mail->assertSeeInHtml($reservation->formattedPickupDate());
@@ -149,7 +149,7 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->category);
+        $mail->assertSeeInText($reservation->formattedCategory());
         $mail->assertSeeInText($reservation->formattedPickupPlace());
         $mail->assertSeeInText($reservation->formattedReturnPlace());
         $mail->assertSeeInText($reservation->formattedPickupDate());
