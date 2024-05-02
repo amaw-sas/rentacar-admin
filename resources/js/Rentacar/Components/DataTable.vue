@@ -3,10 +3,16 @@
         v-model:items-selected="itemsSelected"
         :headers="headers"
         :items="items"
+        hide-footer
     >
+        <template v-for="(_, name) in $slots" #[name]="slotData">
+            <slot :name="name" v-bind="slotData || {}" />
+        </template>
+
         <template #expand="item">
             <slot name="expand" v-bind="item"></slot>
         </template>
+
         <template #item-operation="item">
             <div class="operation-wrapper">
                 <div style="padding: 15px">

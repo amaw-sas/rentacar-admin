@@ -8,45 +8,71 @@
 
         <div class="py-12">
             <div class="mx-auto sm:px-6 lg:px-8">
-                <div class="mb-2">
-                    <CreateButton
-                        :action="route('reservations.create')"
-                    ></CreateButton>
-                </div>
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                    <Vue3EasyDataTable
-                        v-model:items-selected="itemsSelected"
-                        :headers="headers"
-                        :items="items"
+                <RentacarList>
+                    <template #actions>
+                        <CreateButton :action="route('reservations.create')" />
+                    </template>
+                    <template #filters>
+                        <RentacarFilterToolbar
+                            :clean-url="route('reservations.index')"
+                            @filterData="
+                                (data) =>
+                                    filterData(
+                                        route('reservations.index'),
+                                        data
+                                    )
+                            "
+                        >
+                            <template #custom-filters>
+                                <!-- <AmawFilterDateRange /> -->
+                            </template>
+                        </RentacarFilterToolbar>
+                    </template>
+                    <template #pagination>
+                        <RentacarSimplePaginator
+                            v-if="paginator.meta.total > 0"
+                            :links="paginator.links"
+                            :meta="paginator.meta"
+                        />
+                    </template>
+
+                    <div class="mb-2"></div>
+                    <div
+                        class="bg-white overflow-hidden shadow-xl sm:rounded-lg"
                     >
-                        <template #expand="item">
-                            <Expand :item="item" />
-                        </template>
-                        <template #item-phone="{ phone, whatsapp_link }">
-                            <a
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                class="text-blue-500 hover:text-blue-800 cursor-pointer"
-                                :href="whatsapp_link"
-                                v-text="phone"
-                            ></a>
-                        </template>
-                        <template #item-email="{ email }">
-                            <a
-                                class="text-blue-500 hover:text-blue-800 cursor-pointer"
-                                :href="'mailto:' + email"
-                                v-text="email"
-                            ></a>
-                        </template>
-                        <template #item-operation="{ edit_url }">
-                            <div class="operation-wrapper">
-                                <div style="padding: 15px">
-                                    <EditItemButton :action="edit_url" />
+                        <DataTable
+                            :headers="paginator.data.headers"
+                            :items="paginator.data.items"
+                        >
+                            <template #expand="item">
+                                <Expand :item="item" />
+                            </template>
+                            <template #item-phone="{ phone, whatsapp_link }">
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                                    :href="whatsapp_link"
+                                    v-text="phone"
+                                ></a>
+                            </template>
+                            <template #item-email="{ email }">
+                                <a
+                                    class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                                    :href="'mailto:' + email"
+                                    v-text="email"
+                                ></a>
+                            </template>
+                            <template #item-operation="{ edit_url }">
+                                <div class="operation-wrapper">
+                                    <div style="padding: 15px">
+                                        <EditItemButton :action="edit_url" />
+                                    </div>
                                 </div>
-                            </div>
-                        </template>
-                    </Vue3EasyDataTable>
-                </div>
+                            </template>
+                        </DataTable>
+                    </div>
+                </RentacarList>
             </div>
         </div>
     </AppLayout>
@@ -54,19 +80,20 @@
 
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
+import Expand from "@/Pages/Reservations/Expand.vue";
 import CreateButton from "@/Rentacar/Components/CreateButton.vue";
 import EditItemButton from "@/Rentacar/Components/EditItemButton.vue";
-import Expand from "@/Pages/Reservations/Expand.vue";
-import Vue3EasyDataTable from "vue3-easy-data-table";
-import "vue3-easy-data-table/dist/style.css";
-import { ref } from "vue";
+import RentacarList from "@/Rentacar/Components/List.vue";
+import RentacarFilterToolbar from "@/Rentacar/Components/FilterToolbar.vue";
+import RentacarSimplePaginator from "@/Rentacar/Components/SimplePaginator.vue";
+
+import { filterData } from "@/Rentacar/Functions/table.js";
+
+import DataTable from "@/Rentacar/Components/DataTable.vue";
 
 const props = defineProps({
-    headers: Array,
-    items: Array,
+    paginator: Object,
 });
-
-const itemsSelected = ref([]);
 </script>
 
 <style lang="scss" scoped></style>
