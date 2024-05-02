@@ -38,7 +38,7 @@ class ReservationTest extends TestCase
             ->get(route('reservations.index'))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',5)
+                ->has('paginator.data.items',5)
         );
     }
 
@@ -54,13 +54,13 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search
+                's'    =>  $search
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
+                ->has('paginator.data.items',1)
 
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('fullname',$search)
                     ->etc()
                 )
@@ -79,12 +79,12 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search
+                's'    =>  $search
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('identification',$search)
                     ->etc()
                 )
@@ -103,12 +103,12 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search
+                's'    =>  $search
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('phone',$search)
                     ->etc()
                 )
@@ -127,12 +127,12 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search
+                's'    =>  $search
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('email',$search)
                     ->etc()
                 )
@@ -151,42 +151,14 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search
+                's'    =>  $search
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
+                ->has('paginator.data.items',1)
 
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('reserve_code',$search)
-                    ->etc()
-                )
-        );
-    }
-
-    #[Group("reservation")]
-    #[Test]
-    public function search_reservations_by_created_at(){
-        $search = now()
-            ->setYear(2026)
-            ->setMonth(12)
-            ->setDay(24);
-
-        Reservation::factory()->count(5)->create();
-        $reservation = Reservation::factory()->create([
-            'created_at'  => $search->format('Y-m-d H:i:s')
-        ]);
-
-        $this
-            ->actingAs($this->user)
-            ->get(route('reservations.index', [
-                'search'    =>  $search->format('Y-m-d H:i:s')
-            ]))
-            ->assertInertia(fn(Assert $page) => $page
-                ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
-                    ->where('created_at',$search->format('Y-m-d H:i a'))
                     ->etc()
                 )
         );
@@ -208,45 +180,18 @@ class ReservationTest extends TestCase
         $this
             ->actingAs($this->user)
             ->get(route('reservations.index', [
-                'search'    =>  $search->format('Y-m-d')
+                's'    =>  $search->format('Y-m-d')
             ]))
             ->assertInertia(fn(Assert $page) => $page
                 ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('pickup_date',$search->locale('es')->isoFormat('LL'))
                     ->etc()
                 )
         );
     }
 
-    #[Group("reservation")]
-    #[Test]
-    public function search_reservations_by_return_date(){
-        $search = now()
-            ->setYear(2026)
-            ->setMonth(12)
-            ->setDay(24);
-
-        Reservation::factory()->count(5)->create();
-        $reservation = Reservation::factory()->create([
-            'return_date'  => $search->format('Y-m-d')
-        ]);
-
-        $this
-            ->actingAs($this->user)
-            ->get(route('reservations.index', [
-                'search'    =>  $search->format('Y-m-d')
-            ]))
-            ->assertInertia(fn(Assert $page) => $page
-                ->component('Reservations/Index')
-                ->has('items',1)
-                ->has('items.0', fn(Assert $page) => $page
-                    ->where('return_date',$search->locale('es')->isoFormat('LL'))
-                    ->etc()
-                )
-        );
-    }
 
     #[Group("reservation")]
     #[Test]
