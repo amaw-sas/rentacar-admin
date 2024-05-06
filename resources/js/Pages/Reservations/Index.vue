@@ -24,7 +24,10 @@
                             "
                         >
                             <template #custom-filters>
-                                <!-- <AmawFilterDateRange /> -->
+                                <RentacarFilterDateRange
+                                    field="pickup_date"
+                                    placeholder="Filtrar por día de recogida"
+                                />
                             </template>
                         </RentacarFilterToolbar>
                     </template>
@@ -83,6 +86,7 @@ import AppLayout from "@/Layouts/AppLayout.vue";
 import Expand from "@/Pages/Reservations/Expand.vue";
 import CreateButton from "@/Rentacar/Components/CreateButton.vue";
 import EditItemButton from "@/Rentacar/Components/EditItemButton.vue";
+import RentacarFilterDateRange from "@/Rentacar/Components/FilterDateRange.vue";
 import RentacarList from "@/Rentacar/Components/List.vue";
 import RentacarFilterToolbar from "@/Rentacar/Components/FilterToolbar.vue";
 import RentacarSimplePaginator from "@/Rentacar/Components/SimplePaginator.vue";
