@@ -23,6 +23,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
 
+    Route::get('reservations/cleanFilters', [ReservationController::class,'cleanFilters'])->name('reservations.cleanFilters');
     Route::resource('reservations', ReservationController::class);
 
     // Route::get('/dashboard', function () {

@@ -67,16 +67,21 @@ const props = defineProps({
     defaultStartDate: {
         required: false,
         type: String,
-        default: "",
     },
     defaultEndDate: {
         required: false,
         type: String,
-        default: "",
     },
 });
 
-let dateRange = ref([props.defaultStartDate, props.defaultEndDate]);
+const defaultStartDate =
+    usePage().props.paginator.meta?.filterDateRanges?.[props.field]?.start ??
+    "";
+
+const defaultEndDate =
+    usePage().props.paginator.meta?.filterDateRanges?.[props.field]?.end ?? "";
+
+let dateRange = ref([defaultStartDate, defaultEndDate]);
 
 const presetRanges = ref([
     {
@@ -100,8 +105,8 @@ const presetRanges = ref([
     },
 ]);
 
-let filterStartDate = ref(props.defaultStartDate);
-let filterEndDate = ref(props.defaultEndDate);
+let filterStartDate = ref(defaultStartDate);
+let filterEndDate = ref(defaultEndDate);
 
 const dateTextInputOptions = {
     rangeSeparator: "~",

@@ -159,15 +159,15 @@
 </template>
 
 <script setup>
-import InputFormField from "@/Rentacar/Components/InputFormField.vue";
-import SelectFormField from "@/Rentacar/Components/SelectFormField.vue";
-import ReadOnlyFormField from "@/Rentacar/Components/ReadOnlyFormField.vue";
-import DateFormField from "@/Rentacar/Components/DateFormField.vue";
-import MoneyInputFormField from "@/Rentacar/Components/MoneyInputFormField.vue";
-import HourFormField from "@/Rentacar/Components/HourFormField.vue";
-import CancelButton from "@/Rentacar/Components/CancelButton.vue";
-import DeleteButton from "@/Rentacar/Components/DeleteButton.vue";
-import SubmitButton from "@/Rentacar/Components/SubmitButton.vue";
+import InputFormField from "@/Rentacar/Components/FormFields/InputFormField.vue";
+import SelectFormField from "@/Rentacar/Components/FormFields/SelectFormField.vue";
+import ReadOnlyFormField from "@/Rentacar/Components/FormFields/ReadOnlyFormField.vue";
+import DateFormField from "@/Rentacar/Components/FormFields/DateFormField.vue";
+import MoneyInputFormField from "@/Rentacar/Components/FormFields/MoneyInputFormField.vue";
+import HourFormField from "@/Rentacar/Components/FormFields/HourFormField.vue";
+import CancelButton from "@/Rentacar/Components/Buttons/CancelButton.vue";
+import DeleteButton from "@/Rentacar/Components/Buttons/DeleteButton.vue";
+import SubmitButton from "@/Rentacar/Components/Buttons/SubmitButton.vue";
 import FormSection from "@/Components/FormSection.vue";
 
 import { computed } from "vue";

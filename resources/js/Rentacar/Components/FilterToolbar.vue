@@ -95,7 +95,7 @@ const emit = defineEmits(["filterData"]);
 
 const filter_form = ref(null);
 
-const s = ref(usePage().props?.elements?.meta?.s ?? null);
+const s = ref(usePage().props?.paginator?.meta?.query ?? null);
 
 function filterData() {
     const data = Object.fromEntries(

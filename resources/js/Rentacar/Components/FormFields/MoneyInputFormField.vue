@@ -13,8 +13,7 @@
 </template>
 
 <script setup>
-import FormField from "@/Rentacar/Components/FormField.vue";
-// import TextInput from "@/Components/TextInput.vue";
+import FormField from "@/Rentacar/Components/FormFields/FormField.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";
 import { Money3Component } from "v-money3";

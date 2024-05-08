@@ -14,7 +14,7 @@
                     </template>
                     <template #filters>
                         <RentacarFilterToolbar
-                            :clean-url="route('reservations.index')"
+                            :clean-url="route('reservations.cleanFilters')"
                             @filterData="
                                 (data) =>
                                     filterData(
@@ -84,11 +84,11 @@
 <script setup>
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Expand from "@/Pages/Reservations/Expand.vue";
-import CreateButton from "@/Rentacar/Components/CreateButton.vue";
-import EditItemButton from "@/Rentacar/Components/EditItemButton.vue";
-import RentacarFilterDateRange from "@/Rentacar/Components/FilterDateRange.vue";
-import RentacarList from "@/Rentacar/Components/List.vue";
+import CreateButton from "@/Rentacar/Components/Buttons/CreateButton.vue";
+import EditItemButton from "@/Rentacar/Components/Buttons/EditItemButton.vue";
+import RentacarFilterDateRange from "@/Rentacar/Components/Filters/FilterDateRange.vue";
 import RentacarFilterToolbar from "@/Rentacar/Components/FilterToolbar.vue";
+import RentacarList from "@/Rentacar/Components/List.vue";
 import RentacarSimplePaginator from "@/Rentacar/Components/SimplePaginator.vue";
 
 import { filterData } from "@/Rentacar/Functions/table.js";

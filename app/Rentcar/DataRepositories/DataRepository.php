@@ -2,8 +2,10 @@
 
 namespace App\Rentcar\DataRepositories;
 
+use Illuminate\Contracts\Session\Session;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
+use Laravel\Scout\Builder as ScoutBuilder;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Log;
@@ -14,6 +16,11 @@ class DataRepository {
      * Model of the repository
      */
     public $model;
+
+    /**
+     * Instance of the model of the repository
+     */
+    public $instance;
 
     /**
      * Number of records per page
@@ -62,6 +69,7 @@ class DataRepository {
     public function __construct(Request $request) {
         $this->request = $request;
         $this->buildQuery();
+        // $this->request->mergeIfMissing($this->getQueryStringValues());
     }
 
     /**
@@ -71,11 +79,21 @@ class DataRepository {
      */
     public function getPaginator()
     {
-        $paginator = $this->query->paginate(
-            // (int) $this->perPage,
-            // null,
-            // (int) $this->request->input('page',1)
-        );
+        if($this->query instanceof EloquentBuilder){
+            $paginator = $this->query->paginate(
+                $perPage = (int) $this->getFilter('perPage') ?? $this->perPage,
+                $columns = $this->columns,
+                $pageName = $this->pageName,
+                $page = (int) $this->getFilter('page') ?? 1
+            );
+        }
+        else if($this->query instanceof ScoutBuilder){
+            $paginator = $this->query->paginate(
+                $perPage = (int) $this->getFilter('perPage') ?? $this->perPage,
+                $pageName = $this->pageName,
+                $page = (int) $this->getFilter('page') ?? 1
+            );
+        }
 
         $paginator = $this->addQueryStringValues($paginator);
 
@@ -99,30 +117,34 @@ class DataRepository {
      */
     public function addQueryStringValues($paginator)
     {
-        $query_strings = [];
+        $query_strings = $this->getQueryStringValues();
 
-        $query_strings['orderByCol'] = $this->request->input('orderByCol', $this->orderByCols[0]);
-        $query_strings['orderOrientation'] = $this->request->input('orderOrientation', $this->orderByCols[1]);
-
-        if($this->request->filled('query'))
-            $query_strings['query'] = $this->request->input('query');
-
-        if($this->request->filled('filterCols'))
-            $query_strings['filterCols'] = $this->request->input('filterCols', null);
-
-        if($this->request->filled('filterStartDate'))
-            $query_strings['filterStartDate'] = $this->request->input('filterStartDate');
-
-        if($this->request->filled('filterEndDate'))
-            $query_strings['filterEndDate'] = $this->request->input('filterEndDate');
-
-        if($this->request->filled('perPage'))
-            $query_strings['perPage'] = $this->request->input('perPage');
-
-        if(count($query_strings) > 0)
+        if(count($query_strings) > 0){
             $paginator->appends($query_strings);
+        }
 
         return $paginator;
+    }
+
+    public function getQueryStringValues(): array {
+        $query_strings = [];
+
+        $query_strings['orderByCol'] = $this->getFilter('orderByCol') ?? $this->orderByCols[0];
+        $query_strings['orderOrientation'] = $this->getFilter('orderOrientation') ?? $this->orderByCols[1];
+
+        if($this->hasFilter('query'))
+            $query_strings['query'] = $this->getFilter('query');
+
+        if($this->hasFilter('filterCols'))
+            $query_strings['filterCols'] = $this->getFilter('filterCols');
+
+        if($this->hasFilter('filterDateRanges'))
+            $query_strings['filterDateRanges'] = $this->getFilter('filterDateRanges');
+
+        if($this->hasFilter('perPage'))
+            $query_strings['perPage'] = $this->getFilter('perPage');
+
+        return $query_strings;
     }
 
     /**
@@ -132,20 +154,18 @@ class DataRepository {
      */
     public function buildQuery(): void
     {
-        $this->query = new $this->model;
+        $this->query = $this->instance = new $this->model;
 
         if(count($this->withRelations) > 0)
             $this->query = $this->query->with($this->withRelations);
 
         $this->addFreeSearch();
-
         $this->addFilters();
-
+        $this->addDateRangeFilters();
+        $this->addPerPageFilter();
         $this->addOrderByFields();
 
-        $this->addDateRangeFilters();
-
-        // $this->addPerPageFilter();
+        $this->saveFilterSession();
 
     }
 
@@ -157,10 +177,11 @@ class DataRepository {
      */
     public function addFreeSearch(): void
     {
-        if($this->request->filled('query')){
-            $search_term = $this->request->input('query');
+        $search_term = $this->getFilter('query');
+
+        if($search_term)
             $this->query = $this->query->search($search_term);
-        }
+
     }
 
     /**
@@ -170,10 +191,15 @@ class DataRepository {
      */
     public function addFilters(): void
     {
-        if($this->request->filled('filterCols')){
-            foreach($this->request->input('filterCols') as $field => $value){
-                $this->query = $this->query->where($field, 'like', "%{$value}%");
-            }
+        $filterCols = [];
+
+        if($this->request->filled('filterCols'))
+            $filterCols = $this->request->input('filterCols');
+        else if($this->request->session()->has('filters.filterCols'))
+            $filterCols = $this->request->session()->get('filters.filterCols');
+
+        foreach($filterCols as $field => $value){
+            $this->query = $this->query->where($field, 'like', "%{$value}%");
         }
     }
 
@@ -184,8 +210,8 @@ class DataRepository {
      */
     public function addOrderByFields(): void
     {
-        $orderCol = str($this->request->input('orderByCol', $this->orderByCols[0]));
-        $orderOrientation = $this->request->input('orderOrientacion', $this->orderByCols[1]);
+        $orderCol = str($this->getFilter('orderByCol') ?? $this->orderByCols[0]);
+        $orderOrientation = str($this->getFilter('orderOrientation') ?? $this->orderByCols[1]);
 
         if($orderCol->contains('.')){
             /**
@@ -194,7 +220,7 @@ class DataRepository {
              */
 
             $relation_table = (string) $orderCol->before('.');
-            $model_table = (new $this->model)->getTable();
+            $model_table = $this->instance->getTable();
             $model_join_pivot = Arr::join([$model_table, str($relation_table)->singular() . "_id"], '.');
             $relation_join_pivot = Arr::join([$relation_table,'id'], '.');
 
@@ -214,9 +240,8 @@ class DataRepository {
      */
     public function addDateRangeFilters(): void
     {
-        if($this->request->filled('filterDateRanges')){
-            // dd($this->request->input('filterDateRanges'));
-            foreach($this->request->input('filterDateRanges') as $field => $dateRange){
+        if($this->hasFilter('filterDateRanges')){
+            foreach($this->getFilter('filterDateRanges') as $field => $dateRange){
                 try {
                     $rawStartDate = $dateRange['start'];
                     $rawEndDate = $dateRange['end'];
@@ -224,8 +249,14 @@ class DataRepository {
                     $startDate = Carbon::createFromFormat($this->defaultDateFormat, $rawStartDate);
                     $endDate = Carbon::createFromFormat($this->defaultDateFormat, $rawEndDate);
 
-                    $this->query = $this->query->whereBetween($field, [$startDate, $endDate]);
-                    // $this->query->dd();
+                    if($this->query instanceof ScoutBuilder){
+                        $this->query = $this->query
+                                            ->query(fn(EloquentBuilder $query) =>
+                                                $query->whereBetween($field, [$startDate, $endDate])
+                                        );
+                    }
+                    else
+                        $this->query = $this->query->whereBetween($field, [$startDate, $endDate]);
                 } catch (\InvalidArgumentException $th) {
                     Log::warning('invalid argument in Carbon date parsing in DataRepository', $th);
                 }
@@ -241,9 +272,56 @@ class DataRepository {
      */
     public function addPerPageFilter(): void
     {
-        if($this->request->filled('perPage')){
-            $this->perPage = $this->request->input('perPage');
-        }
+        if($this->hasFilter('perPage'))
+            $this->perPage = $this->getFilter('perPage');
+
+    }
+
+    /**
+     * Save filter in session
+     */
+    public function saveFilterSession(): void
+    {
+        if($this->hasFilter('query'))
+            $this->putFilter('query', $this->getFilter('query'));
+
+        if($this->hasFilter('filterCols'))
+            $this->putFilter('filterCols', $this->getFilter('filterCols'));
+
+        if($this->hasFilter('filterDateRanges'))
+            $this->putFilter('filterDateRanges', $this->getFilter('filterDateRanges'));
+
+        if($this->hasFilter('perPage'))
+            $this->putFilter('perPage', $this->getFilter('perPage'));
+
+        if($this->hasFilter('orderByCol'))
+            $this->putFilter('orderByCol', $this->getFilter('orderByCol'));
+
+        if($this->hasFilter('orderOrientation'))
+            $this->putFilter('orderOrientation', $this->getFilter('orderOrientation'));
+
+        if($this->hasFilter('page'))
+            $this->putFilter('page', $this->getFilter('page'));
+    }
+
+    private function getSession(): Session {
+        return $this->request->session();
+    }
+
+    private function hasFilter(string $filter): bool {
+        return !! $this->getFilter($filter);
+    }
+
+    private function putFilter(string $filter, mixed $value): void {
+        $this->getSession()->put("{$this->instance->getTable()}.filters.{$filter}", $value);
+    }
+
+    private function getFilter(string $filter): mixed {
+        return $this->request->input($filter) ?? $this->getSession()->get("{$this->instance->getTable()}.filters.{$filter}");
+    }
+
+    public function flushFilters(): void {
+        $this->getSession()->forget("{$this->instance->getTable()}.filters");
     }
 
 }

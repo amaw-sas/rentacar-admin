@@ -29,7 +29,7 @@
             <li>Precio total: {{ item.total_price }}</li>
             <li>Precio total Localiza: {{ item.total_price_localiza }}</li>
             <li>Franquicia: {{ item.franchise }}</li>
-            <li>Usuario: {{ item.user }}</li>
+            <li>Referido: {{ item.user }}</li>
             <li>Código de reserva: {{ item.reserve_code }}</li>
             <li>Estado: {{ item.status }}</li>
             <li>Fecha creación: {{ item.created_at }}</li>

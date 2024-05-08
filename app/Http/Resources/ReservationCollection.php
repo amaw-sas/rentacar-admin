@@ -3,10 +3,11 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ReservationCollection extends ResourceCollection
+class ReservationCollection extends RentacarResourceCollection
 {
+    public $orderByCols = ['created_at', 'asc'];
+
     /**
      * Transform the resource collection into an array.
      *

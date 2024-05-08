@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-import FormField from "@/Rentacar/Components/FormField.vue";
+import FormField from "@/Rentacar/Components/FormFields/FormField.vue";
 import TextInput from "@/Components/TextInput.vue";
 import InputLabel from "@/Components/InputLabel.vue";
 import InputError from "@/Components/InputError.vue";

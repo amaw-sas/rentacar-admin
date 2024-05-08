@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Branch;
 use App\Models\Reservation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -25,6 +26,7 @@ class ReservationTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create();
+        session()->flush();
 
     }
 
@@ -44,7 +46,7 @@ class ReservationTest extends TestCase
 
     #[Group("reservation")]
     #[Test]
-    public function search_reservations(){
+    public function search_reservations_by_fullname(){
         $search = 'testing';
         Reservation::factory()->count(5)->create();
         $reservation = Reservation::factory()->create([
@@ -167,14 +169,12 @@ class ReservationTest extends TestCase
     #[Group("reservation")]
     #[Test]
     public function search_reservations_by_pickup_date(){
-        $search = now()
-            ->setYear(2026)
-            ->setMonth(12)
-            ->setDay(24);
 
-        Reservation::factory()->count(5)->create();
+        Reservation::factory()->count(5)->create([
+            'pickup_date'   => now()->subMonth()->format('Y-m-d')
+        ]);
         $reservation = Reservation::factory()->create([
-            'pickup_date'  => $search->format('Y-m-d')
+            'pickup_date'  => now()->format('Y-m-d')
         ]);
 
         $this
@@ -182,8 +182,8 @@ class ReservationTest extends TestCase
             ->get(route('reservations.index', [
                 'filterDateRanges'    =>  [
                     'pickup_date' => [
-                        'start' => $search->subDays(2)->format('Y-m-d'),
-                        'end' => $search->addDays(2)->format('Y-m-d'),
+                        'start' => now()->subDays(2)->format('Y-m-d'),
+                        'end' => now()->addDays(2)->format('Y-m-d'),
                     ]
                 ]
 
@@ -192,10 +192,295 @@ class ReservationTest extends TestCase
                 ->component('Reservations/Index')
                 ->has('paginator.data.items',1)
                 ->has('paginator.data.items.0', fn(Assert $page) => $page
-                    ->where('pickup_date',$search->locale('es')->isoFormat('LL'))
+                    ->where('pickup_date',now()->locale('es')->isoFormat('LL'))
                     ->etc()
                 )
         );
+    }
+
+    #[Group("reservation")]
+    #[Group("bug")]
+    #[Test]
+    public function search_reservations_by_pickup_date_and_query_get_error(){
+
+        Reservation::factory()->count(5)->create([
+            'pickup_date'   => now()->subMonth()->format('Y-m-d')
+        ]);
+        $reservation = Reservation::factory()->create([
+            'pickup_date'  => now()->format('Y-m-d'),
+            'fullname'  => 'testing',
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'filterDateRanges'    =>  [
+                    'pickup_date' => [
+                        'start' => now()->subDays(2)->format('Y-m-d'),
+                        'end' => now()->addDays(2)->format('Y-m-d'),
+                    ],
+                ],
+                'query' =>  'testing'
+
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('pickup_date',now()->locale('es')->isoFormat('LL'))
+                    ->where('fullname', 'testing')
+                    ->etc()
+                )
+        );
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function search_reservations_and_keep_filters_until_clean_filters(){
+        $search = 'testing';
+        Reservation::factory()->count(5)->create();
+        $reservation = Reservation::factory()->create([
+            'fullname'  => $search
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'query'    =>  $search
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function clean_filters(){
+        $search = 'testing';
+        Reservation::factory()->count(5)->create();
+        $reservation = Reservation::factory()->create([
+            'fullname'  => $search
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'query'    =>  $search
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.cleanFilters'));
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',6)
+        );
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function paginate_reservations(){
+        $search = 'testing';
+        $reservations = Reservation::factory()
+            ->recycle(Branch::factory()->create())
+            ->count(15)
+            ->create([
+                'created_at'    => now()
+            ]);
+        $reservation = Reservation::factory()
+            ->create([
+                'fullname'  => $search,
+                'created_at'    => now()->subDay()
+            ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'), [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  1
+            ])
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',15)
+
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  2
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function allow_keep_the_page_when_paginate_and_go_to_other_page(){
+        $search = 'testing';
+        $reservations = Reservation::factory()
+            ->recycle(Branch::factory()->create())
+            ->count(15)
+            ->create([
+                'created_at'    => now()
+            ]);
+        $reservation = Reservation::factory()
+            ->create([
+                'fullname'  => $search,
+                'created_at'    => now()->subDay()
+            ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'), [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  1
+            ])
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',15)
+
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  2
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function keep_filters_when_edit_a_reservation(){
+        $search = 'testing';
+        $reservations = Reservation::factory()
+            ->recycle(Branch::factory()->create())
+            ->count(15)
+            ->create([
+                'created_at'    => now()
+            ]);
+        $reservation = Reservation::factory()
+            ->create([
+                'fullname'  => $search,
+                'created_at'    => now()->subDay()
+            ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'), [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  1
+            ])
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',15)
+
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'orderByCol'    => 'created_at',
+                'orderOrientation'    => 'desc',
+                'page'      =>  2
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index'))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('fullname',$search)
+                    ->etc()
+                )
+        );
+
     }
 
 
