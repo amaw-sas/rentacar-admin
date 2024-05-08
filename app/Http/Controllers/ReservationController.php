@@ -119,4 +119,10 @@ class ReservationController extends Controller
 
         return redirect()->route('reservations.index');
     }
+
+    public function cleanFilters(Request $request){
+        (new ReservationDataRepository($request))->flushFilters();
+
+        return redirect()->route('reservations.index');
+    }
 }
