@@ -23,8 +23,8 @@ class CategoryMonthPriceFactory extends Factory
             '1k_kms'       =>  $this->faker->randomNumber(5),
             '2k_kms'       =>  $this->faker->randomNumber(5),
             '3k_kms'       =>  $this->faker->randomNumber(5),
-            'init_date'     =>  Carbon::now()->format('Y-m-d'),
-            'end_date'      =>  Carbon::now()->addDays(rand(1,10))->format('Y-m-d'),
+            'init_date'     =>  $this->faker->unique()->date('Y-m-d'),
+            'end_date'      =>  $this->faker->unique()->date('Y-m-d'),
         ];
     }
 }
