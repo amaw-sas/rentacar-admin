@@ -86,7 +86,7 @@ import { ref } from "vue";
 const props = defineProps({
     searchPlaceholder: {
         type: String,
-        default: "Escriba aquí palabras",
+        default: "Buscador",
     },
     cleanUrl: String,
 });
