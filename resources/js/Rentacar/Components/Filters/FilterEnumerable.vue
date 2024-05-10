@@ -1,8 +1,17 @@
 <template>
     <div class="w-auto">
-        <select :id="componentId" v-model="selected">
-            <option :value="null" v-text="nullText"></option>
+        <select
+            :id="componentId"
+            v-model="selected"
+            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-500"
+        >
             <option
+                class="text-gray-500"
+                :value="null"
+                v-text="nullText"
+            ></option>
+            <option
+                class="text-black"
                 v-for="option in options"
                 :key="componentId + '-' + option.value"
                 :value="option.value"
