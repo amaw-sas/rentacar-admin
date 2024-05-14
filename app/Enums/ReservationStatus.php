@@ -3,6 +3,7 @@
 namespace App\Enums;
 
 enum ReservationStatus: string {
+    case Confirmado = "Confirmado";
     case SinConfirmar = "Sin confirmar";
     case SinDisponibilidad = "Sin disponibilidad";
     case ConCodigo = "Con código";
