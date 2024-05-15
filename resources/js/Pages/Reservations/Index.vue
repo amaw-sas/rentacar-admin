@@ -35,6 +35,10 @@
                                     null-text="Seleccione un estado"
                                 />
                                 <RentacarFilterDateRange
+                                    field="created_At"
+                                    placeholder="Filtrar por fecha de creación"
+                                />
+                                <RentacarFilterDateRange
                                     field="pickup_date"
                                     placeholder="Filtrar por día de recogida"
                                 />
