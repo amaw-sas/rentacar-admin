@@ -261,6 +261,38 @@ class ReservationTest extends TestCase
     }
 
     #[Group("reservation")]
+    #[Test]
+    public function filter_reservations_by_created_at(){
+
+        Reservation::factory()->count(5)->create([
+            'created_at'   => now()->subMonth()
+        ]);
+        $reservation = Reservation::factory()->create([
+            'created_at'  => now()
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'filterDateRanges'    =>  [
+                    'created_at' => [
+                        'start' => now()->subDays(2)->format('Y-m-d'),
+                        'end' => now()->addDays(2)->format('Y-m-d'),
+                    ]
+                ]
+
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('created_at',now()->format('Y-m-d H:i a'))
+                    ->etc()
+                )
+        );
+    }
+
+    #[Group("reservation")]
     #[Group("bug")]
     #[Test]
     public function filter_reservations_by_pickup_date_and_query_get_error(){
@@ -423,6 +455,64 @@ class ReservationTest extends TestCase
                     ->where('fullname',$name)
                     ->where('franchise',$franchise->name)
                     ->where('pickup_date',now()->locale('es')->isoFormat('LL'))
+                    ->etc()
+                )
+        );
+    }
+
+    #[Group("reservation")]
+    #[Test]
+    public function filter_reservations_by_search_and_pickup_date_and_created_at_and_status_and_franchise_fields(){
+        $status = (ReservationStatus::SinConfirmar)->value;
+        $franchise = Franchise::factory()->create();
+        $name = 'testing';
+
+        Reservation::factory()->count(5)->create([
+            'status'    =>  (ReservationStatus::Nueva)->value,
+            'pickup_date'   => now()->subMonth()->format('Y-m-d'),
+            'created_at'   => now()->subMonth(),
+        ]);
+        $reservation = Reservation::factory()->create([
+            'status'  => $status,
+            'pickup_date'  => now()->format('Y-m-d'),
+            'created_at'  => now(),
+            'fullname'  =>  $name,
+            'franchise' =>  $franchise
+        ]);
+
+        $this
+            ->actingAs($this->user)
+            ->get(route('reservations.index', [
+                'filterCols'    =>  [
+                    'status'    =>  [
+                        'value' =>  $status
+                    ],
+                    'franchise'    =>  [
+                        'value' =>  $franchise->id
+                    ],
+                ],
+                'filterDateRanges'    =>  [
+                    'pickup_date' => [
+                        'start' => now()->subDays(2)->format('Y-m-d'),
+                        'end' => now()->addDays(2)->format('Y-m-d'),
+                    ],
+                    'created_at' => [
+                        'start' => now()->subDays(2)->format('Y-m-d'),
+                        'end' => now()->addDays(2)->format('Y-m-d'),
+                    ],
+                ],
+                'query' =>  $name,
+            ]))
+            ->assertInertia(fn(Assert $page) => $page
+                ->component('Reservations/Index')
+                ->has('paginator.data.items',1)
+
+                ->has('paginator.data.items.0', fn(Assert $page) => $page
+                    ->where('status',$status)
+                    ->where('fullname',$name)
+                    ->where('franchise',$franchise->name)
+                    ->where('pickup_date',now()->locale('es')->isoFormat('LL'))
+                    ->where('created_at',now()->format('Y-m-d H:i a'))
                     ->etc()
                 )
         );

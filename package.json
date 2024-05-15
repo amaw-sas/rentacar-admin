@@ -23,6 +23,5 @@
         "v-money3": "^3.24.1",
         "vue-feather": "^2.0.0",
         "vue3-easy-data-table": "^1.5.47"
-    },
-    "dependencies": {}
+    }
 }
