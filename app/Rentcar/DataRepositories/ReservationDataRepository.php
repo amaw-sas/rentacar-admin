@@ -10,7 +10,7 @@ class ReservationDataRepository extends DataRepository {
 
     public $model = Reservation::class;
 
-    public $orderByCols = ['created_at','desc'];
+    public array $orderByCols = ['created_at','desc'];
 
 
 }

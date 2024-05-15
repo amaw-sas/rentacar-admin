@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateReservationRequest;
 use App\Http\Resources\ReservationCollection;
 use App\Http\Resources\ReservationCreateResource;
 use App\Models\Reservation;
+use App\Rentcar\FilterManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -121,7 +122,7 @@ class ReservationController extends Controller
     }
 
     public function cleanFilters(Request $request){
-        (new ReservationDataRepository($request))->flushFilters();
+        (new FilterManager('reservations', $request))->flushFilters();
 
         return redirect()->route('reservations.index');
     }

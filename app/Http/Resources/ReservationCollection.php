@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 class ReservationCollection extends RentacarResourceCollection
 {
+    public $table = "reservations";
     public $orderByCols = ['created_at', 'asc'];
 
     /**
@@ -38,6 +39,10 @@ class ReservationCollection extends RentacarResourceCollection
                 [
                     "text"      =>  "EMAIL",
                     "value"     =>  "email",
+                ],
+                [
+                    "text"      =>  "DIA RECOGIDA",
+                    "value"     =>  "pickup_date",
                 ],
                 [
                     "text"      =>  "CÓDIGO RESERVA",

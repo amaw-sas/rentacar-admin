@@ -25,9 +25,18 @@
                         >
                             <template #custom-filters>
                                 <RentacarFilterEnumerable
+                                    field="franchise"
+                                    :options="franchisesOptions"
+                                    null-text="Seleccione una franquicia"
+                                />
+                                <RentacarFilterEnumerable
                                     field="status"
                                     :options="reservationStatusOptions"
                                     null-text="Seleccione un estado"
+                                />
+                                <RentacarFilterDateRange
+                                    field="created_At"
+                                    placeholder="Filtrar por fecha de creación"
                                 />
                                 <RentacarFilterDateRange
                                     field="pickup_date"
@@ -112,6 +121,13 @@ const reservationStatusOptions = computed(() =>
     usePage().props.reservation_status.map((identificationType) => ({
         value: identificationType.value,
         text: identificationType.value,
+    }))
+);
+
+const franchisesOptions = computed(() =>
+    usePage().props.franchises.map((franchise) => ({
+        value: franchise.id,
+        text: franchise.name,
     }))
 );
 </script>
