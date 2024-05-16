@@ -1,6 +1,6 @@
 <template>
     <div class="p-4 flex flex-row gap-2">
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
                 <template #title>Info Cliente</template>
                 <CardList>
@@ -45,7 +45,7 @@
                 </CardList>
             </Card>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
                 <template #title>Recogida</template>
                 <CardList>
@@ -93,7 +93,7 @@
                 </CardList>
             </Card>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
                 <template #title>Precios</template>
                 <CardList>
@@ -151,7 +151,7 @@
                 </CardList>
             </Card>
         </div>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
                 <template #title>Otros</template>
                 <CardList>
