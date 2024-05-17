@@ -27,20 +27,20 @@
                                 <RentacarFilterEnumerable
                                     field="franchise"
                                     :options="franchisesOptions"
-                                    null-text="Seleccione una franquicia"
+                                    null-text="Franquicia"
                                 />
                                 <RentacarFilterEnumerable
                                     field="status"
                                     :options="reservationStatusOptions"
-                                    null-text="Seleccione un estado"
+                                    null-text="Estado"
                                 />
                                 <RentacarFilterDateRange
                                     field="created_At"
-                                    placeholder="Filtrar por fecha de creación"
+                                    placeholder="Fecha de creación"
                                 />
                                 <RentacarFilterDateRange
                                     field="pickup_date"
-                                    placeholder="Filtrar por día de recogida"
+                                    placeholder="Día de recogida"
                                 />
                             </template>
                         </RentacarFilterToolbar>
