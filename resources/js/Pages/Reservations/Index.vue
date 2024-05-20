@@ -36,11 +36,11 @@
                                 />
                                 <RentacarFilterDateRange
                                     field="created_At"
-                                    placeholder="Fecha de creación"
+                                    placeholder="Creación"
                                 />
                                 <RentacarFilterDateRange
                                     field="pickup_date"
-                                    placeholder="Día de recogida"
+                                    placeholder="Recogida"
                                 />
                             </template>
                         </RentacarFilterToolbar>

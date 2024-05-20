@@ -5,7 +5,6 @@
             v-model="form[field]"
             model-type="yyyy-MM-dd"
             format="yyyy-MM-dd"
-            inline
             auto-apply
             locale="es"
             :timezone="{ tz: 'America/New_York', offset: -5 }"

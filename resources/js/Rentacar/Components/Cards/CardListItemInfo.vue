@@ -1,12 +1,12 @@
 <template>
     <div class="flex-1 min-w-0">
         <p
-            class="text-sm font-medium truncate text-gray-900"
+            class="text-xs font-medium truncate text-gray-900"
             v-text="label"
         ></p>
     </div>
     <div
-        class="text-sm inline-flex items-center font-semibold text-gray-900"
+        class="text-xs inline-flex items-center text-gray-900"
         v-text="value"
     ></div>
 </template>

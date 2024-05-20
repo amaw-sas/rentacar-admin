@@ -2,7 +2,6 @@
     <div class="p-4 flex flex-row gap-2">
         <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
-                <template #title>Info Cliente</template>
                 <CardList>
                     <CardListItem>
                         <CardListItemInfo
@@ -33,8 +32,9 @@
                     </CardListItem>
                 </CardList>
             </Card>
+        </div>
+        <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
-                <template #title>Categoria</template>
                 <CardList>
                     <CardListItem>
                         <CardListItemInfo
@@ -42,51 +42,39 @@
                             :value="item.category"
                         />
                     </CardListItem>
-                </CardList>
-            </Card>
-        </div>
-        <div class="flex flex-col gap-2 w-full max-w-80">
-            <Card>
-                <template #title>Recogida</template>
-                <CardList>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Lugar"
+                            label="Lugar recogida"
                             :value="item.pickup_location"
                         />
                     </CardListItem>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Día"
+                            label="Día recogida"
                             :value="item.pickup_date"
                         />
                     </CardListItem>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Hora"
+                            label="Hora recogida"
                             :value="item.pickup_hour"
                         />
                     </CardListItem>
-                </CardList>
-            </Card>
-            <Card>
-                <template #title>Retorno</template>
-                <CardList>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Lugar"
+                            label="Lugar retorno"
                             :value="item.return_location"
                         />
                     </CardListItem>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Día"
+                            label="Día retorno"
                             :value="item.return_date"
                         />
                     </CardListItem>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Hora"
+                            label="Hora retorno"
                             :value="item.return_hour"
                         />
                     </CardListItem>
@@ -95,18 +83,11 @@
         </div>
         <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
-                <template #title>Precios</template>
                 <CardList>
                     <CardListItem>
                         <CardListItemInfo
                             label="Días reservados"
                             :value="item.selected_days"
-                        />
-                    </CardListItem>
-                    <CardListItem>
-                        <CardListItemInfo
-                            label="Horas extra"
-                            :value="item.extra_hours"
                         />
                     </CardListItem>
                     <CardListItem>
@@ -117,13 +98,7 @@
                     </CardListItem>
                     <CardListItem>
                         <CardListItemInfo
-                            label="Días seguro"
-                            :value="item.coverage_days"
-                        />
-                    </CardListItem>
-                    <CardListItem>
-                        <CardListItemInfo
-                            label="Días seguro"
+                            label="Precio seguro"
                             :value="item.coverage_price"
                         />
                     </CardListItem>
@@ -153,7 +128,6 @@
         </div>
         <div class="flex flex-col gap-2 w-full max-w-80">
             <Card>
-                <template #title>Otros</template>
                 <CardList>
                     <CardListItem>
                         <CardListItemInfo

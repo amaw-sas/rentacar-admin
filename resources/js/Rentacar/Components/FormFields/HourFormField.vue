@@ -5,7 +5,6 @@
             v-model="form[field]"
             model-type="HH:mm"
             format="hh:mm a"
-            inline
             auto-apply
             :is24="false"
             locale="es"

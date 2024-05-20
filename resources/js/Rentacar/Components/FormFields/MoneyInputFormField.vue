@@ -5,7 +5,7 @@
             :id="field"
             :ref="field"
             v-model="form[field]"
-            class="mt-1 block w-full"
+            class="input input-bordered mt-1 block w-full"
             v-bind="vueMoney3Config"
         ></Money3Component>
         <InputError :message="form.errors[field]" class="mt-2" />

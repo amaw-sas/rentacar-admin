@@ -1,155 +1,245 @@
 <template>
     <FormSection @submitted="formSubmit(form, method, url)">
         <template #form>
-            <InputFormField field="fullname" name="Nombre" :form="form" />
-
-            <SelectFormField
-                field="identification_type"
-                name="Tipo identificación"
-                :form="form"
-                :options="identificationTypesOptions"
-            />
-
-            <InputFormField
-                field="identification"
-                name="Identificación"
-                :form="form"
-            />
-            <InputFormField field="phone" name="Teléfono" :form="form" />
-            <InputFormField field="email" name="Email" :form="form" />
-
-            <SelectFormField
-                field="category"
-                name="Categoría"
-                :form="form"
-                :options="categoryOptions"
-            />
-
-            <SelectFormField
-                field="pickup_location"
-                name="Lugar recogida"
-                :form="form"
-                :options="branchesOptions"
-            />
-            <SelectFormField
-                field="return_location"
-                name="Lugar retorno"
-                :form="form"
-                :options="branchesOptions"
-            />
-            <div class="col-span-6 sm:col-span-4">
-                <div class="flex flex-col md:flex-row space-x-2 space-y-2">
-                    <DateFormField
-                        field="pickup_date"
-                        name="Día recogida"
-                        :form="form"
-                    />
-                    <HourFormField
-                        field="pickup_hour"
-                        name="Hora recogida"
-                        :form="form"
-                    />
+            <FormField>
+                <div class="grid grid-cols-3 gap-2">
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="fullname"
+                            name="Nombre"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <SelectFormField
+                            field="identification_type"
+                            name="Tipo identificación"
+                            :form="form"
+                            :options="identificationTypesOptions"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="identification"
+                            name="Identificación"
+                            :form="form"
+                        />
+                    </div>
                 </div>
-            </div>
-            <div class="col-span-6 sm:col-span-4">
-                <div class="flex flex-col md:flex-row space-x-2 space-y-2">
-                    <DateFormField
-                        field="return_date"
-                        name="Día retorno"
-                        :form="form"
-                    />
-                    <HourFormField
-                        field="return_hour"
-                        name="Hora retorno"
-                        :form="form"
-                    />
+            </FormField>
+            <FormField>
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="phone"
+                            name="Teléfono"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="email"
+                            name="Email"
+                            :form="form"
+                        />
+                    </div>
                 </div>
-            </div>
+            </FormField>
 
-            <InputFormField
-                field="selected_days"
-                name="Días reservados"
-                :form="form"
-            />
-            <InputFormField
-                v-if="method == 'post'"
-                field="extra_hours"
-                name="Horas extras"
-                :form="form"
-            />
-            <MoneyInputFormField
-                v-if="method == 'post'"
-                field="extra_hours_price"
-                name="Precio horas extras"
-                :form="form"
-            />
-            <InputFormField
-                v-if="method == 'post'"
-                field="coverage_days"
-                name="Días seguro"
-                :form="form"
-            />
-            <MoneyInputFormField
-                v-if="method == 'post'"
-                field="coverage_price"
-                name="Precio seguro"
-                :form="form"
-            />
-            <MoneyInputFormField
-                v-if="method == 'post'"
-                field="iva_fee"
-                name="IVA"
-                :form="form"
-            />
-            <MoneyInputFormField
-                v-if="method == 'post'"
-                field="tax_fee"
-                name="Tasa administrativa"
-                :form="form"
-            />
-            <MoneyInputFormField
-                field="total_price"
-                name="Precio total"
-                :form="form"
-            />
-            <MoneyInputFormField
-                field="total_price_localiza"
-                name="Precio total Localiza"
-                :form="form"
-            />
+            <FormField>
+                <SelectFormField
+                    field="category"
+                    name="Categoría"
+                    :form="form"
+                    :options="categoryOptions"
+                />
+            </FormField>
 
-            <SelectFormField
-                field="franchise"
-                name="Franquicia"
-                :form="form"
-                :options="franchisesOptions"
-            />
+            <FormField>Recogida</FormField>
+            <FormField>
+                <div class="grid grid-cols-3 gap-2 ms-4">
+                    <div class="flex flex-col">
+                        <SelectFormField
+                            field="pickup_location"
+                            name="Lugar"
+                            :form="form"
+                            :options="branchesOptions"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <DateFormField
+                            field="pickup_date"
+                            name="Día"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <HourFormField
+                            field="pickup_hour"
+                            name="Hora"
+                            :form="form"
+                        />
+                    </div>
+                </div>
+            </FormField>
 
-            <InputFormField
-                field="reserve_code"
-                name="Código de reserva"
-                :form="form"
-            />
+            <FormField>Retorno</FormField>
+            <FormField>
+                <div class="grid grid-cols-3 gap-2 ms-4">
+                    <div class="flex flex-col">
+                        <SelectFormField
+                            field="return_location"
+                            name="Lugar"
+                            :form="form"
+                            :options="branchesOptions"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <DateFormField
+                            field="return_date"
+                            name="Día"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <HourFormField
+                            field="return_hour"
+                            name="Hora"
+                            :form="form"
+                        />
+                    </div>
+                </div>
+            </FormField>
 
-            <InputFormField field="user" name="Referido" :form="form" />
+            <FormField>Días y Horas</FormField>
+            <FormField>
+                <div class="grid grid-cols-3 gap-2 ms-4">
+                    <div class="flex flex-col">
+                        <NumberInputFormField
+                            field="selected_days"
+                            name="Días reservados"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <NumberInputFormField
+                            v-if="method == 'post'"
+                            field="coverage_days"
+                            name="Días seguro"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <NumberInputFormField
+                            v-if="method == 'post'"
+                            field="extra_hours"
+                            name="Horas extras"
+                            :form="form"
+                        />
+                    </div>
+                </div>
+            </FormField>
 
-            <SelectFormField
-                field="status"
-                name="Estado"
-                :form="form"
-                :options="reservationStatusOptions"
-            />
+            <FormField>Precios</FormField>
+            <FormField>
+                <div
+                    :class="{
+                        grid: true,
+                        'grid-cols-3': method == 'post',
+                        'grid-cols-2': method != 'post',
+                        'gap-2': true,
+                        'ms-4': true,
+                    }"
+                >
+                    <div class="flex flex-col" v-if="method == 'post'">
+                        <MoneyInputFormField
+                            field="extra_hours_price"
+                            name="Precio horas extras"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col" v-if="method == 'post'">
+                        <MoneyInputFormField
+                            field="coverage_price"
+                            name="Precio seguro"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col" v-if="method == 'post'">
+                        <MoneyInputFormField
+                            field="iva_fee"
+                            name="IVA"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col" v-if="method == 'post'">
+                        <MoneyInputFormField
+                            field="tax_fee"
+                            name="Tasa administrativa"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <MoneyInputFormField
+                            field="total_price"
+                            name="Precio total"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <MoneyInputFormField
+                            field="total_price_localiza"
+                            name="Precio total Localiza"
+                            :form="form"
+                        />
+                    </div>
+                </div>
+            </FormField>
+
+            <FormField>
+                <div class="grid grid-cols-4 gap-2">
+                    <div class="flex flex-col">
+                        <SelectFormField
+                            field="franchise"
+                            name="Franquicia"
+                            :form="form"
+                            :options="franchisesOptions"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="reserve_code"
+                            name="Código de reserva"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <InputFormField
+                            field="user"
+                            name="Referido"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col">
+                        <SelectFormField
+                            field="status"
+                            name="Estado"
+                            :form="form"
+                            :options="reservationStatusOptions"
+                        />
+                    </div>
+                </div>
+            </FormField>
         </template>
 
         <template #actions>
             <div class="grid grid-cols-2 gap-4 place-content-between h-48">
-                <div class="text-start">
+                <div class="text-start" v-if="form.id">
                     <DeleteButton
-                        v-if="form.id"
                         :action="route('reservations.destroy', form.id)"
                     ></DeleteButton>
                 </div>
-                <div class="space-x-2">
+                <div class="text-start space-x-2">
                     <SubmitButton :form="form"></SubmitButton>
                     <CancelButton :action="route('reservations.index')" />
                 </div>
@@ -160,8 +250,8 @@
 
 <script setup>
 import InputFormField from "@/Rentacar/Components/FormFields/InputFormField.vue";
+import NumberInputFormField from "@/Rentacar/Components/FormFields/NumberInputFormField.vue";
 import SelectFormField from "@/Rentacar/Components/FormFields/SelectFormField.vue";
-import ReadOnlyFormField from "@/Rentacar/Components/FormFields/ReadOnlyFormField.vue";
 import DateFormField from "@/Rentacar/Components/FormFields/DateFormField.vue";
 import MoneyInputFormField from "@/Rentacar/Components/FormFields/MoneyInputFormField.vue";
 import HourFormField from "@/Rentacar/Components/FormFields/HourFormField.vue";
@@ -173,6 +263,7 @@ import FormSection from "@/Components/FormSection.vue";
 import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { formSubmit } from "@/Rentacar/Functions/form";
+import FormField from "@/Rentacar/Components/FormFields/FormField.vue";
 
 defineProps({
     form: Object,
