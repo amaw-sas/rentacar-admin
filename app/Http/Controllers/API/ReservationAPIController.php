@@ -6,8 +6,6 @@ use App\Http\Requests\StoreReservationAPIRequest;
 use App\Mail\AlquicarrosReservationRequest;
 use App\Mail\AlquilameReservationRequest;
 use App\Mail\AlquilatucarroReservationRequest;
-use App\Mail\ReservationClientNotification;
-use App\Mail\LocalizaReservationRequest;
 use App\Models\Reservation;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -47,9 +45,10 @@ class ReservationAPIController extends Controller
                 try {
                     // send to localiza a notification
                     $franchiseEmail = $this->franchisesEmails[$franchise];
+                    $total_insurance = $request->boolean('total_insurance', false);
 
                     Mail::mailer($franchise)
-                    ->send(new $franchiseEmail($reservation));
+                    ->send(new $franchiseEmail($reservation, $total_insurance));
                 } catch (\Throwable $th) {
                     Log::error($th->getMessage());
                     abort(500, __('localiza.error_sending_reservation_request_to_localiza'));

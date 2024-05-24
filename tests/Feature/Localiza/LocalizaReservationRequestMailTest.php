@@ -158,4 +158,44 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->formattedReturnHour());
 
     }
+
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
+    public function render_email_where_theres_total_insurance(): void {
+        $reservation = Reservation::factory()->create();
+        $total_insurance = true;
+
+        $mail = new AlquilatucarroReservationRequest($reservation, $total_insurance);
+        $mail->assertSeeInHtml("El cliente requiere seguro total");
+        $mail->assertSeeInText("El cliente requiere seguro total");
+
+        $mail = new AlquilameReservationRequest($reservation, $total_insurance);
+        $mail->assertSeeInHtml("El cliente requiere seguro total");
+        $mail->assertSeeInText("El cliente requiere seguro total");
+
+        $mail = new AlquicarrosReservationRequest($reservation, $total_insurance);
+        $mail->assertSeeInHtml("El cliente requiere seguro total");
+        $mail->assertSeeInText("El cliente requiere seguro total");
+    }
+
+    #[Group("localiza_reservation_request")]
+    #[Group("localiza")]
+    #[Test]
+    public function render_email_where_theres_no_total_insurance(): void {
+        $reservation = Reservation::factory()->create();
+        $total_insurance = false;
+
+        $mail = new AlquilatucarroReservationRequest($reservation, $total_insurance);
+        $mail->assertDontSeeInHtml("El cliente requiere seguro total");
+        $mail->assertDontSeeInText("El cliente requiere seguro total");
+
+        $mail = new AlquilameReservationRequest($reservation, $total_insurance);
+        $mail->assertDontSeeInHtml("El cliente requiere seguro total");
+        $mail->assertDontSeeInText("El cliente requiere seguro total");
+
+        $mail = new AlquicarrosReservationRequest($reservation, $total_insurance);
+        $mail->assertDontSeeInHtml("El cliente requiere seguro total");
+        $mail->assertDontSeeInText("El cliente requiere seguro total");
+    }
 }
