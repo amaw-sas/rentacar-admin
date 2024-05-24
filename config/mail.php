@@ -84,7 +84,7 @@ return [
 
         /** rentacar mailers */
         'alquilatucarro' => [
-            'transport' => 'smtp',
+            'transport' => env('ALQUILATUCARRO_MAIL_MAILER', 'smtp'),
             'host' => env('ALQUILATUCARRO_MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
             'port' => env('ALQUILATUCARRO_MAIL_PORT', 587),
             'encryption' => env('ALQUILATUCARRO_MAIL_ENCRYPTION', 'tls'),
@@ -95,7 +95,7 @@ return [
         ],
 
         'alquilame' => [
-            'transport' => 'smtp',
+            'transport' => env('ALQUILATUCARRO_MAIL_MAILER', 'smtp'),
             'host' => env('ALQUILAME_MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
             'port' => env('ALQUILAME_MAIL_PORT', 587),
             'encryption' => env('ALQUILAME_MAIL_ENCRYPTION', 'tls'),
@@ -106,7 +106,7 @@ return [
         ],
 
         'alquicarros' => [
-            'transport' => 'smtp',
+            'transport' => env('ALQUILATUCARRO_MAIL_MAILER', 'smtp'),
             'host' => env('ALQUICARROS_MAIL_HOST', 'sandbox.smtp.mailtrap.io'),
             'port' => env('ALQUICARROS_MAIL_PORT', 587),
             'encryption' => env('ALQUICARROS_MAIL_ENCRYPTION', 'tls'),

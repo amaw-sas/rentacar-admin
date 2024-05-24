@@ -27,6 +27,10 @@ Fecha: {{ $reserva->formattedPickupDate() }} {{ $reserva->formattedPickupHour() 
 Retorno: {{ $reserva->formattedReturnPlace() }} <br/>
 Fecha: {{ $reserva->formattedReturnDate() }} {{ $reserva->formattedReturnHour() }} <br/>
 
+@if ($total_insurance)
+El cliente requiere seguro total
+@endif
+
 ---
 <br/>
 

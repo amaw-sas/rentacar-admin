@@ -263,6 +263,39 @@ class VehAvail implements Arrayable {
             'estimatedTotalAmount'  => $estimatedTotalAmount
         ] = $this->getTotalCharge();
 
+        $result = [
+            'totalPriceWithTotalCoverage' => 0
+        ];
+
+        if($estimatedTotalAmount){
+            $totalCoveragePrice = $this->getTotalCoveragePrice();
+            $result['totalPriceWithTotalCoverage'] = (int) $estimatedTotalAmount + $totalCoveragePrice;
+        }
+        else abort(new NoDataFoundException);
+
+        return $result;
+    }
+
+    private function getSubtotalPriceWithTotalCoverage(): array {
+        [
+            'totalAmount'  => $totalAmount
+        ] = $this->getTotalCharge();
+
+        $result = [
+            'subtotalPriceWithTotalCoverage' => 0
+        ];
+
+        if($totalAmount){
+            $totalCoveragePrice = $this->getTotalCoveragePrice();
+            $result['subtotalPriceWithTotalCoverage'] = (int) $totalAmount + $totalCoveragePrice;
+        }
+        else abort(new NoDataFoundException);
+
+        return $result;
+    }
+
+    private function getTotalCoveragePrice(): int {
+
         [
             'coverageUnitCharge' => $coverageUnitCharge,
             'coverageQuantity' => $coverageQuantity,
@@ -271,20 +304,15 @@ class VehAvail implements Arrayable {
         $totalCoveragePriceLowGamma = config('localiza.totalCoveragePriceLowGamma');
         $totalCoveragePriceHighGamma = config('localiza.totalCoveragePriceHighGamma');
 
-        $result = [
-            'totalPriceWithTotalCoverage' => 0
-        ];
-
         if(
-            $estimatedTotalAmount && $coverageQuantity && $coverageUnitCharge
+            $coverageQuantity && $coverageUnitCharge
         ){
             $coveragePrice = ($coverageUnitCharge <= 35000) ? $totalCoveragePriceLowGamma : $totalCoveragePriceHighGamma;
             $totalCoveragePrice = (int) $coveragePrice * $coverageQuantity;
-            $result['totalPriceWithTotalCoverage'] = (int) $estimatedTotalAmount + $totalCoveragePrice;
+            return $totalCoveragePrice;
         }
         else abort(new NoDataFoundException);
 
-        return $result;
     }
 
     /**
@@ -312,6 +340,7 @@ class VehAvail implements Arrayable {
             $this->getCoverage(),
             $this->getExtraHours(),
             $this->getTotalPriceWithTotalCoverage(),
+            $this->getSubtotalPriceWithTotalCoverage(),
         );
     }
 }

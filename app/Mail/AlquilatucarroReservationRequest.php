@@ -12,9 +12,9 @@ class AlquilatucarroReservationRequest extends LocalizaReservationRequest
      *
      * @return void
      */
-    public function __construct(Reservation $reservation)
+    public function __construct(Reservation $reservation, bool $total_insurance = false)
     {
-        parent::__construct($reservation);
+        parent::__construct($reservation, $total_insurance);
         $email = config('mail.mailers.alquilatucarro.username');
         $this->from($email, "Alquilatucarro");
 
@@ -28,7 +28,8 @@ class AlquilatucarroReservationRequest extends LocalizaReservationRequest
     public function build()
     {
         return $this->markdown('mail.alquilatucarro-reservation-request', [
-            'reserva' => $this->reservation
+            'reserva' => $this->reservation,
+            'total_insurance' => $this->totalInsurance,
         ]);
     }
 }

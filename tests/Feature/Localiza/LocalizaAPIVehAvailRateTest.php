@@ -65,6 +65,7 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             'extraHoursUnityAmount' =>  0,
             'extraHoursTotalAmount' =>  0,
             'totalPriceWithTotalCoverage' => 347_000,
+            'subtotalPriceWithTotalCoverage' => 246_002,
         ],$data);
     }
 
@@ -113,6 +114,7 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             'extraHoursUnityAmount' =>  0,
             'extraHoursTotalAmount' =>  0,
             'totalPriceWithTotalCoverage' => 335_000,
+            'subtotalPriceWithTotalCoverage' => 236_835,
         ],$data);
     }
 
