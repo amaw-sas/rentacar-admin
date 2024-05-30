@@ -45,8 +45,6 @@ class LocalizaAPIVehAvailRateTest extends TestCase
 
         $data = $localiza->getData();
 
-        dump($data[0]);
-
         $this->assertContains([
             'categoryCode'          =>  "FY",
             'categoryDescription'   =>  "HÍBRIDO",
