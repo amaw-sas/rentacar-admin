@@ -264,8 +264,8 @@ class VehAvail implements Arrayable {
         ] = $this->getTotalCharge();
 
         [
-            'coverageTotalAmount' => $coverageTotalAmount
-        ] = $this->getCoverage();
+            'returnFeeAmount'   =>  $returnFeeAmount
+        ] = $this->getReturnFee();
 
         $result = [
             'totalAmountPlusTotalCoverage' => 0
@@ -273,7 +273,7 @@ class VehAvail implements Arrayable {
 
         if($totalAmount){
             $totalCoveragePrice = $this->getTotalCoveragePrice();
-            $result['totalAmountPlusTotalCoverage'] = (int) $totalAmount - $coverageTotalAmount + $totalCoveragePrice;
+            $result['totalAmountPlusTotalCoverage'] = (int) $totalAmount + $returnFeeAmount + $totalCoveragePrice;
         }
 
         return $result;
