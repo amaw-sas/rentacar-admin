@@ -45,6 +45,8 @@ class LocalizaAPIVehAvailRateTest extends TestCase
 
         $data = $localiza->getData();
 
+        dump($data[0]);
+
         $this->assertContains([
             'categoryCode'          =>  "FY",
             'categoryDescription'   =>  "HÍBRIDO",
@@ -64,8 +66,11 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             'extraHoursQuantity'    =>  0,
             'extraHoursUnityAmount' =>  0,
             'extraHoursTotalAmount' =>  0,
-            'totalPriceWithTotalCoverage' => 347_000,
-            'subtotalPriceWithTotalCoverage' => 246_002,
+            'totalCoverageUnitCharge' => 61_085,
+            'totalAmountPlusTotalCoverage' => 236_087,
+            'taxFeeWithTotalCoverage'   => 23_609,
+            'ivaFeeWithTotalCoverage'   => 49_342,
+            'totalPriceWithTotalCoverage' => 309_038,
         ],$data);
     }
 
@@ -113,8 +118,11 @@ class LocalizaAPIVehAvailRateTest extends TestCase
             'extraHoursQuantity'    =>  0,
             'extraHoursUnityAmount' =>  0,
             'extraHoursTotalAmount' =>  0,
-            'totalPriceWithTotalCoverage' => 335_000,
-            'subtotalPriceWithTotalCoverage' => 236_835,
+            'totalCoverageUnitCharge' => 61_085,
+            'totalAmountPlusTotalCoverage' => 226_920,
+            'taxFeeWithTotalCoverage'   => 22_692,
+            'ivaFeeWithTotalCoverage'   => 47_426,
+            'totalPriceWithTotalCoverage' => 297_038,
         ],$data);
     }
 
