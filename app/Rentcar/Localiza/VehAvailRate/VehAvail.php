@@ -246,7 +246,9 @@ class VehAvail implements Arrayable {
      */
     private function getReturnFee(): array {
         $node = $this->node->xpath('.//A:Fees//A:Fee[@Description="Taxa de retorno"]');
-        $result = [];
+        $result = [
+            'returnFeeAmount' => 0
+        ];
 
         if(count($node) > 0){
             $node = $node[0];
