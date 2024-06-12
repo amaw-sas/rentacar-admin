@@ -1664,11 +1664,6 @@ class RentacarDataSeeder extends Seeder
                 'code'      =>  'ACMJM',
                 'name'      =>  'Rionegro'
             ]);
-            $ACMAY = Branch::create([
-                'city_id'   =>  $sabaneta->id,
-                'code'      =>  'ACMAY',
-                'name'      =>  'Sabaneta C.Cial Mayorca'
-            ]);
             $AAMTR = Branch::create([
                 'city_id'   =>  $monteria->id,
                 'code'      =>  'AAMTR',
