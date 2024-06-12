@@ -22,7 +22,7 @@ class StoreReservationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'fullname'  =>  ['required','min:5', 'max:50'],
+            'fullname'  =>  ['required','min:1', 'max:50'],
             'identification_type'   =>  ['required', 'string'],
             'identification'  =>  ['required','min:5', 'max:50'],
             'phone'  =>  ['required','min:5', 'max:50'],
