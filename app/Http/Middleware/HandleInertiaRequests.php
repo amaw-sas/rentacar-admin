@@ -45,10 +45,32 @@ class HandleInertiaRequests extends Middleware
                 fn($type) => ['text' => $type->value, 'value' => $type->value],
                 IdentificationType::cases()
             ),
-            'reservation_status'  => fn() => array_map(
-                fn($type) => ['text' => $type->name, 'value' => $type->value],
-                ReservationStatus::cases()
-            ),
+            'reservation_status' => fn() => [
+                [
+                    'value' => '1. Nueva',
+                    'text' => ReservationStatus::Nueva->value
+                ],
+                [
+                    'value' => '2. Con Código',
+                    'text' => ReservationStatus::ConCodigo->value,
+                ],
+                [
+                    'value' => '3. Sin Disponibilidad',
+                    'text' => ReservationStatus::SinDisponibilidad->value,
+                ],
+                [
+                    'value' => '4. Confirmado',
+                    'text' => ReservationStatus::Confirmado->value,
+                ],
+                [
+                    'value' => '5. Sin Confirmar',
+                    'text' => ReservationStatus::SinConfirmar->value,
+                ],
+                [
+                    'value' => '6. No Recogido',
+                    'text' => ReservationStatus::NoRecogido->value,
+                ],
+            ],
             'categories'    =>  fn() => Category::all(),
             'branches'    =>  fn() => Branch::orderBy('name','asc')->get()->all(),
             'franchises'    =>  fn() => Franchise::all(),
