@@ -50,7 +50,7 @@ class HandleInertiaRequests extends Middleware
                 ReservationStatus::cases()
             ),
             'categories'    =>  fn() => Category::all(),
-            'branches'    =>  fn() => Branch::all(),
+            'branches'    =>  fn() => Branch::orderBy('name','asc')->get()->all(),
             'franchises'    =>  fn() => Franchise::all(),
         ]);
     }
