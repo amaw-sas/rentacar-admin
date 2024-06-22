@@ -120,7 +120,7 @@ const props = defineProps({
 const reservationStatusOptions = computed(() =>
     usePage().props.reservation_status.map((identificationType) => ({
         value: identificationType.value,
-        text: identificationType.value,
+        text: identificationType.text,
     }))
 );
 

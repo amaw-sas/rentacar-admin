@@ -47,28 +47,28 @@ class HandleInertiaRequests extends Middleware
             ),
             'reservation_status' => fn() => [
                 [
-                    'value' => '1. Nueva',
-                    'text' => ReservationStatus::Nueva->value
+                    'text' => '1. Nueva',
+                    'value' => ReservationStatus::Nueva->value
                 ],
                 [
-                    'value' => '2. Con Código',
-                    'text' => ReservationStatus::ConCodigo->value,
+                    'text' => '2. Con Código',
+                    'value' => ReservationStatus::ConCodigo->value,
                 ],
                 [
-                    'value' => '3. Sin Disponibilidad',
-                    'text' => ReservationStatus::SinDisponibilidad->value,
+                    'text' => '3. Sin Disponibilidad',
+                    'value' => ReservationStatus::SinDisponibilidad->value,
                 ],
                 [
-                    'value' => '4. Confirmado',
-                    'text' => ReservationStatus::Confirmado->value,
+                    'text' => '4. Confirmado',
+                    'value' => ReservationStatus::Confirmado->value,
                 ],
                 [
-                    'value' => '5. Sin Confirmar',
-                    'text' => ReservationStatus::SinConfirmar->value,
+                    'text' => '5. Sin Confirmar',
+                    'value' => ReservationStatus::SinConfirmar->value,
                 ],
                 [
-                    'value' => '6. No Recogido',
-                    'text' => ReservationStatus::NoRecogido->value,
+                    'text' => '6. No Recogido',
+                    'value' => ReservationStatus::NoRecogido->value,
                 ],
             ],
             'categories'    =>  fn() => Category::all(),
