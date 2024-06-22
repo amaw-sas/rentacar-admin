@@ -75,6 +75,15 @@ class LocalizaAPIVehAvailRate extends LocalizaAPI {
                 if($vehicleData["categoryCode"] == "PX" || $vehicleData["categoryCode"] == "P" || $vehicleData["categoryCode"] == "U")
                     continue;
 
+                /**
+                 * when there's a result containing armenia or ibague branch and category vp, pass on
+                 * armenia AARME
+                 * ibague ACIBG
+                 * category: VP
+                 */
+                if(($vehicleData["categoryCode"] == "VP" && $this->pickupLocation == "AARME") || ($vehicleData["categoryCode"] == "VP" && $this->pickupLocation == "ACIBG"))
+                    continue;
+
                 if(!$vehicleData['totalAmount']){
 
                     abort(new NoPriceFoundException($this->context));
