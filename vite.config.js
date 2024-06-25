@@ -17,13 +17,11 @@ export default defineConfig({
             },
         }),
     ],
-    build: {
-        rollupOptions: {
-            watch: {
-                chokidar: {
-                    useFsEvents: false,
-                },
-            },
+    server: {
+        watch: {
+            usePolling: true, // Utiliza polling en lugar de eventos del sistema de archivos
+            interval: 1000, // Intervalo de polling en milisegundos
+            ignored: ["**/node_modules/**", "**/.git/**"],
         },
     },
 });
