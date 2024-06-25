@@ -9,5 +9,6 @@ enum ReservationStatus: string {
     case ConCodigo = "Con código";
     case Nueva = "Nueva";
     case NoRecogido = "No recogido";
+    case ConfirmadoPendientePago = "Confirmado Pendiente Pago";
 }
 

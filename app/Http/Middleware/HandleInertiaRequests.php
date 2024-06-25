@@ -70,6 +70,10 @@ class HandleInertiaRequests extends Middleware
                     'text' => '6. No Recogido',
                     'value' => ReservationStatus::NoRecogido->value,
                 ],
+                [
+                    'text' => '7. Confirmado Pendiente Pago',
+                    'value' => ReservationStatus::ConfirmadoPendientePago->value,
+                ],
             ],
             'categories'    =>  fn() => Category::all(),
             'branches'    =>  fn() => Branch::orderBy('name','asc')->get()->all(),
