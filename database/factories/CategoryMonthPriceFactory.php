@@ -25,6 +25,7 @@ class CategoryMonthPriceFactory extends Factory
             '3k_kms'       =>  $this->faker->randomNumber(5),
             'init_date'     =>  $this->faker->unique()->date('Y-m-d'),
             'end_date'      =>  $this->faker->unique()->date('Y-m-d'),
+            'total_insurance_price'      =>  $this->faker->randomNumber(5),
         ];
     }
 }
