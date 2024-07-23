@@ -21,6 +21,7 @@ class CategoryMonthPriceDataProviderResource extends JsonResource
             'init_date' =>  $this->init_date->format('d-m-Y'),
             'end_date'  =>  $this->end_date->format('d-m-Y'),
             'total_insurance_price'  =>  $this->total_insurance_price ?? 0,
+            'one_day_price'  =>  $this->one_day_price ?? 0,
         ];
     }
 }
