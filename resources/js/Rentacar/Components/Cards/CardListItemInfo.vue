@@ -18,7 +18,7 @@ const props = defineProps({
         type: String,
     },
     value: {
-        required: true,
+        required: false,
         type: [String, Number],
     },
 });

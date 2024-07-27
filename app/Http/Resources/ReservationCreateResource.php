@@ -42,6 +42,7 @@ class ReservationCreateResource extends JsonResource
             'total_price_localiza'  =>  $this->total_price_localiza,
             'user'  =>  $this->user,
             'reserve_code'  =>  $this->reserve_code,
+            'monthly_mileage'  =>  $this->monthly_mileage,
             'status'  =>  $this->status,
             'franchise'  =>  $this->franchise,
         ];

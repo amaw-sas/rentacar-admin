@@ -47,6 +47,7 @@ class StoreReservationRequest extends FormRequest
             'reserve_code'   =>  ['nullable',"string"],
             'user' => ['nullable', 'string'],
             'status' => ['required', 'string'],
+            'monthly_mileage' => ['nullable', 'string'],
         ];
     }
 
@@ -83,6 +84,7 @@ class StoreReservationRequest extends FormRequest
             'reserve_code' => 'Código reserva',
             'user' => 'Referido',
             'status' => 'Estado',
+            'monthly_mileage' => 'Kilometraje',
         ];
     }
 }

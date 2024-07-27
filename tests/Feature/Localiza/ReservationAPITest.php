@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Localiza;
 
+use App\Enums\MonthlyMileage;
 use App\Mail\AlquicarrosReservationRequest;
 use App\Mail\AlquilameReservationRequest;
 use App\Mail\AlquilatucarroReservationRequest;
@@ -58,6 +59,132 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->pickup_location, $pickupLocation->id);
         $this->assertEquals($reservation->return_location, $returnLocation->id);
         $this->assertEquals($reservation->franchise, $franchise->id);
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Group("monthly_mileage")]
+    #[Test]
+    public function store_a_default_reservation_with_monthly_mileage()
+    {
+        Mail::fake();
+
+        $localizaReservationEmail = config('localiza.reservationEmailAddress');
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+        $reservationData['monthly_mileage'] = MonthlyMileage::twoKKms->value;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertCreated();
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservation->pickup_location, $pickupLocation->id);
+        $this->assertEquals($reservation->return_location, $returnLocation->id);
+        $this->assertEquals($reservation->franchise, $franchise->id);
+        $this->assertEquals($reservation->monthly_mileage, MonthlyMileage::twoKKms->value);
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Group("monthly_mileage")]
+    #[Test]
+    public function store_a_default_reservation_with_empty_string_monthly_mileage()
+    {
+        Mail::fake();
+
+        $localizaReservationEmail = config('localiza.reservationEmailAddress');
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+        $reservationData['monthly_mileage'] = "";
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertCreated();
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservation->pickup_location, $pickupLocation->id);
+        $this->assertEquals($reservation->return_location, $returnLocation->id);
+        $this->assertEquals($reservation->franchise, $franchise->id);
+        $this->assertEquals($reservation->monthly_mileage, null);
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Group("monthly_mileage")]
+    #[Test]
+    public function store_a_default_reservation_with_null_monthly_mileage()
+    {
+        Mail::fake();
+
+        $localizaReservationEmail = config('localiza.reservationEmailAddress');
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+        $reservationData['monthly_mileage'] = null;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertCreated();
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservation->pickup_location, $pickupLocation->id);
+        $this->assertEquals($reservation->return_location, $returnLocation->id);
+        $this->assertEquals($reservation->franchise, $franchise->id);
+        $this->assertEquals($reservation->monthly_mileage, null);
 
     }
 
@@ -375,7 +502,7 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function when_the_request_has_total_coverage_send_a_email_with_the_total_price_with_full_coverage()
     {
-        // Mail::fake();
+        Mail::fake();
 
         $localizaReservationEmail = config('localiza.reservationEmailAddress');
 

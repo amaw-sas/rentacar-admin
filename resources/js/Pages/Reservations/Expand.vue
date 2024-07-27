@@ -145,6 +145,12 @@
                         />
                     </CardListItem>
                     <CardListItem>
+                        <CardListItemInfo
+                            label="Kilometraje"
+                            :value="item.monthly_mileage"
+                        />
+                    </CardListItem>
+                    <CardListItem>
                         <CardListItemInfo label="Estado" :value="item.status" />
                     </CardListItem>
                     <CardListItem>

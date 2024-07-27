@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\MonthlyMileage;
 use App\Enums\ReservationStatus;
 use App\Models\Branch;
 use App\Models\Franchise;
@@ -888,6 +889,40 @@ class ReservationTest extends TestCase
                 ->component('Reservations/Index')
                 ->has('paginator.data.items',6)
         );
+    }
+
+    #[Group("reservation")]
+    #[Group("monthly_mileage")]
+    #[Test]
+    public function create_a_reservation_with_monthly_mileage(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['monthly_mileage'] = MonthlyMileage::twoKKms->value;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($reservationData['monthly_mileage'], $reservation->monthly_mileage);
+    }
+
+    #[Group("reservation")]
+    #[Group("monthly_mileage")]
+    #[Test]
+    public function create_a_reservation_with_empty_monthly_mileage(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['monthly_mileage'] = null;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($reservationData['monthly_mileage'], $reservation->monthly_mileage);
     }
 
 }

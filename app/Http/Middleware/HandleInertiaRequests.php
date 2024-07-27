@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Franchise;
 use App\Enums\IdentificationType;
 use App\Enums\ReservationStatus;
+use App\Enums\MonthlyMileage;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -75,6 +76,10 @@ class HandleInertiaRequests extends Middleware
                     'value' => ReservationStatus::ConfirmadoPendientePago->value,
                 ],
             ],
+            'monthly_mileages'  => fn() => array_map(
+                fn($type) => ['text' => $type->value, 'value' => $type->value],
+                MonthlyMileage::cases()
+            ),
             'categories'    =>  fn() => Category::all(),
             'branches'    =>  fn() => Branch::orderBy('name','asc')->get()->all(),
             'franchises'    =>  fn() => Franchise::all(),
