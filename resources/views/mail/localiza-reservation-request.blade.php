@@ -31,6 +31,10 @@ Fecha: {{ $reserva->formattedReturnDate() }} {{ $reserva->formattedReturnHour() 
 El cliente requiere seguro total
 @endif
 
+@if ($reserva->monthly_mileage)
+El cliente ha seleccionado el kilometraje: {{ $reserva->monthly_mileage }}
+@endif
+
 ---
 <br/>
 
