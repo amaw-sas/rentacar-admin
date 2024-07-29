@@ -7,6 +7,7 @@ use App\Models\Branch;
 use App\Models\Category;
 use App\Models\Franchise;
 use App\Enums\IdentificationType;
+use App\Enums\MonthlyMileage;
 use App\Enums\ReservationStatus;
 
 /**
@@ -47,6 +48,7 @@ class ReservationFactory extends Factory
             'user'                  =>  $this->faker->word,
             'reserve_code'          =>  (string) $this->faker->randomNumber(6, true),
             'status'                =>  ($this->faker->randomElement(ReservationStatus::class))->value,
+            'monthly_mileage'       =>  ($this->faker->randomElement(MonthlyMileage::class))->value,
             'created_at'            =>  $this->faker->dateTime()->format('Y-m-d H:i:s')
         ];
     }
