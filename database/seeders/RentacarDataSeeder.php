@@ -25,7 +25,7 @@ class RentacarDataSeeder extends Seeder
         if(true){
             $alquilatucarro = Franchise::create([
                 'name'      			=>  'alquilatucarro',
-                'reserva_button'        =>  'https://www.reservatucarro.com',
+                'reserva_button'        =>  'https://reservatucarro.com',
                 'masinfo_button'        =>  'https://bit.ly/2i828Zf',
                 'masprecios_button'     =>  'https://www.alquilatucarro.com/precios.html',
                 'url_mail_system'       =>  'http://correosalquilatucarro.com/',
@@ -47,14 +47,14 @@ class RentacarDataSeeder extends Seeder
 
             $alquilame = Franchise::create([
                 'name'      			=>  'alquilame',
-                'reserva_button'        =>  'https://www.alquilame.co/reservas/',
+                'reserva_button'        =>  'https://reservatuauto.com/',
                 'masinfo_button'        =>  'https://bit.ly/2Dv106V',
                 'masprecios_button'     =>  'https://www.alquilame.co/precios.html',
                 'url_mail_system'       =>  'https://alquilame.com/reservas/',
                 'ad'                    =>  [
                     'activo'    =>  false,
                     'imagen'    =>  "https://www.alquilame.co/images/animacion/aviso.png",
-                    'url'       =>  "https://www.alquilame.co/reservas/"
+                    'url'       =>  "https://reservatuauto.com/"
                 ],
                 'carousel'              =>  [
                     (Object) [
@@ -69,7 +69,7 @@ class RentacarDataSeeder extends Seeder
 
             $alquicarros = Franchise::create([
                 'name'      			=>  'alquicarros',
-                'reserva_button'        =>  'https://alquicarros.com/reservas/',
+                'reserva_button'        =>  'https://reservatuvehiculo.com/',
                 'masinfo_button'        =>  'https://bit.ly/3FF5NUO',
                 'masprecios_button'     =>  'https://www.alquicarros.com/precios.html',
                 'url_mail_system'       =>  'https://www.alquicarros.com/',
