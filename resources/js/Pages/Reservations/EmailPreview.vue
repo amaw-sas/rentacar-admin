@@ -1,231 +1,280 @@
 <template>
-    <div class="body">
-        <!-- el div padre debe de contar con un display
-        flex para que el hijo sea adaptable -->
-        <div class="parent-container" style="position: relative">
-            <div class="aspect-ratio-box-inner">
-                <div class="top-header font-white">
-                    <p class="mediana">Código de Reserva</p>
-                    <p class="grande">
-                        {{ reservation.reserve_code }}
-                    </p>
-                </div>
-                <div class="d-flex-custom gap-custom-1 content-center">
-                    <div class="">
-                        <img
-                            class="img-fluid"
-                            width="230"
-                            :src="reservation.category_image"
-                            alt="carro"
-                        />
-                    </div>
-                    <div>
-                        <p class="grande-light">
-                            {{ reservation.category_name }}
-                        </p>
+  <div class="body">
+    <div class="parent-container">
+      <div class="aspect-ratio-box-inner">
+        <div
+          class="container-white"
+          style="
+            margin-top: 20%;
+            position: relative;
+            display: flex;
+            gap: 2%;
+            align-items: center;
+            flex-direction: column;
+          "
+        >
+          <div
+            style="
+              position: absolute;
+              width: 25%;
+              top: -15%;
+              padding: 3% 3% 0 3%;
+              background-color: #ffffff;
+            "
+          >
+            <img width="70" class="img-fluid" :src="qrCode" alt="" />
+          </div>
+          <div style="margin-top: 12%">
+            <p class="mediana-light text-center">Código de Reserva</p>
+            <p class="grande">{{ reservation.reserve_code }}</p>
+          </div>
 
-                        <p class="grande-light">
-                            {{ reservation.category_category }}
-                        </p>
-
-                        <p class="pequeña-light">
-                            {{ reservation.category_description }}
-                        </p>
-                    </div>
-                </div>
-                <div
-                    class="d-flex-custom space-custom gap-custom-1 content-center"
-                    style="padding-left: 10%; padding-right: 10%"
-                >
-                    <div class="hr-custom"></div>
-                    <p class="grande-light font-blue">Recogida:</p>
-                    <div class="hr-custom"></div>
-                </div>
-
-                <div
-                    class="d-flex-custom gap-custom-1"
-                    style="margin-top: 1rem; justify-content: center"
-                >
-                    <div
-                        class="d-flex-custom"
-                        style="flex-direction: column; gap: 1rem"
-                    >
-                        <p
-                            class="d-custom-inline mediana-light"
-                            style="margin-top: 1rem"
-                        >
-                            Fecha:
-                        </p>
-                        <p
-                            class="d-custom-inline mediana-light top-custom-1rem"
-                        >
-                            Hora:
-                        </p>
-                        <p
-                            class="d-custom-inline mediana-light top-custom-1rem"
-                        >
-                            Lugar:
-                        </p>
-                    </div>
-                    <div class="d-flex-custom" style="flex-direction: column">
-                        <p class="d-custom-inline grande font-blue">
-                            {{ reservation.pickup_date }}
-                        </p>
-                        <p class="d-custom-inline grande font-blue">
-                            {{ reservation.pickup_hour }}
-                        </p>
-                        <p class="d-custom-inline grande font-blue">
-                            {{ reservation.pickup_city }}
-                        </p>
-                        <p
-                            class="d-custom-inline font-blue mediana-light"
-                            style="margin-bottom: 2rem"
-                        >
-                            <strong>
-                                {{ reservation.pickup_branch }}
-                                <br />
-                                Agencia
-                                <img
-                                    class="img-fluid"
-                                    width="100"
-                                    :src="localiza_image_url"
-                                    alt="logaliza"
-                                />
-                            </strong>
-                        </p>
-                    </div>
-                </div>
-                <div
-                    style="
-                        display: flex;
-                        justify-content: center;
-                        gap: 1.5rem;
-                        align-items: center;
-                    "
-                >
-                    <div
-                        style="
-                            position: relative;
-                            bottom: -1rem;
-                            padding: 0.6rem;
-                            background-color: #ffff;
-                        "
-                    >
-                        <!-- para poder generar un QR "unico" lo que hay que hacer es cambiar solo el valor de la data
-                                                                                                vvvvvvvvvvv -->
-                        <img
-                            class="img-fluid"
-                            src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=ejemplo"
-                            alt="Codigo QR"
-                        />
-                    </div>
-                    <div
-                        style="
-                            display: flex;
-                            flex-direction: column;
-                            margin-bottom: 1rem;
-                        "
-                    >
-                        <p class="pequeña" style="width: 100%">
-                            Responsable del pago <br />
-                            Con Tarjeta de Crédito en Sede:
-                        </p>
-                        <p class="grande-light">
-                            {{ reservation.fullname }} <br />
-                            {{ reservation.identification_type }} &nbsp;
-                            {{ reservation.identification }}
-                        </p>
-                    </div>
-                </div>
-
-                <div class="buttom-footer"></div>
+          <div class="contenedor">
+            <!-- Detalles de Recogida -->
+            <div class="fila">
+              <p class="pequeña columna text-right">Fecha recogida:</p>
+              <p class="columna grande-light">
+                {{ reservation.pickup_date }}
+              </p>
             </div>
-        </div>
-
-        <div class="parent-container-2" style="position: relative">
-            <div class="aspect-ratio-box-inner background-blue-custom">
-                <div style="padding: 3rem 4rem">
-                    <p class="grande">Importante:</p>
-                    <p class="grande-light text-justify">
-                        Debería presentarse en el lugar de recogida 30 minutos
-                        antes o máximo 30 minutos después de la fecha y hora
-                        programada.
-                    </p>
-                    <br />
-                    <p class="grande-light text-justify">
-                        Lea y verifique toda la información. Realizar cambios a
-                        futuro podria afectar los descuentos aplicados a esta
-                        reserva e incrementar el costo.
-                    </p>
-                    <br />
-                    <p class="grande">Documentos:</p>
-                    <p class="grande-light">
-                        1) Tarjeta de crédito física <br />
-                        2) Licencia de conducción vigente <br />
-                        3) Cédula o pasaporte <br />
-                    </p>
-                    <p class="mediana-light" style="margin-left: 2rem">
-                        Cédula para licencias colombianas <br />
-                        pasaporte para licencias extranjeras
-                    </p>
-                    <div
-                        class="d-flex-custom space-custom gap-custom-1 content-center"
-                        style="
-                            padding-left: 10%;
-                            padding-right: 10%;
-                            margin-top: 2rem;
-                        "
-                    >
-                        <div class="hr-custom-white"></div>
-                        <p class="grande-light">Recogida:</p>
-                        <div class="hr-custom-white"></div>
-                    </div>
-
-                    <div
-                        class="d-flex-custom gap-custom-1"
-                        style="margin-top: 1rem; justify-content: center"
-                    >
-                        <div
-                            class="d-flex-custom"
-                            style="flex-direction: column; gap: 1rem"
-                        >
-                            <p class="d-custom-inline mediana-light">Fecha:</p>
-                            <p class="d-custom-inline mediana-light">Hora:</p>
-                            <p class="d-custom-inline mediana-light">Lugar:</p>
-                        </div>
-                        <div
-                            class="d-flex-custom"
-                            style="flex-direction: column"
-                        >
-                            <p class="d-custom-inline grande">
-                                {{ reservation.pickup_date }}
-                            </p>
-                            <p class="d-custom-inline grande">
-                                {{ reservation.pickup_hour }}
-                            </p>
-                            <p class="d-custom-inline grande">
-                                {{ reservation.pickup_city }}
-                            </p>
-                            <p
-                                class="d-custom-inline mediana-light"
-                                style="margin-bottom: 2rem"
-                            >
-                                <strong>{{ reservation.pickup_branch }}</strong>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+            <div class="fila">
+              <p class="pequeña columna text-right">Hora recogida:</p>
+              <p class="columna grande-light">
+                {{ reservation.pickup_hour }}
+              </p>
             </div>
+            <div class="fila">
+              <p class="pequeña columna text-right">Lugar recogida:</p>
+              <p class="columna grande-light">
+                {{ reservation.pickup_city }}
+              </p>
+            </div>
+            <div class="fila">
+              <p class="columna"></p>
+              <div class="columna">
+                <p class="pequeña">
+                  {{ reservation.pickup_branch }}
+                </p>
+                <div style="width: 37%">
+                  <img class="img-fluid" :src="localiza_image_url" alt="agencia" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="contenedor" style="margin-top: 5%">
+            <!-- Detalles de Retorno -->
+            <div class="fila">
+              <p class="pequeña columna text-right">Fecha retorno:</p>
+              <p class="columna grande-light">
+                {{ reservation.return_date }}
+              </p>
+            </div>
+            <div class="fila">
+              <p class="pequeña columna text-right">Hora retorno:</p>
+              <p class="columna grande-light">
+                {{ reservation.return_hour }}
+              </p>
+            </div>
+            <div class="fila">
+              <p class="pequeña columna text-right">Lugar retorno:</p>
+              <p class="columna grande-light">
+                {{ reservation.return_city }}
+              </p>
+            </div>
+            <div class="fila">
+              <p class="pequeña columna text-right"></p>
+              <p class="pequeña columna">
+                {{ reservation.return_branch }}
+              </p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <!-- AQUI CAMBIAN LOS PRECIOS DE LA RESERVA -->
+      <div class="aspect-ratio-box-inner-2">
+        <div class="container-white">
+          <p class="grande-light text-center" style="margin-top: 3%">
+            Datos del Vehículo
+          </p>
+          <div style="display: flex; justify-content: center; align-items: center">
+            <div style="width: 35%">
+              <img
+                class="img-fluid"
+                :src="reservation.category_image"
+                :alt="reservation.category_name"
+              />
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <p class="mediana">
+                {{ reservation.category_name }}
+              </p>
+              <p class="mediana">
+                {{ reservation.category_category }}
+              </p>
+              <p class="pequeña-light">*Suzuki Presso o Similar*</p>
+            </div>
+          </div>
+          <p class="grande-light text-center">Datos Financieros</p>
+          <div
+            class="contenedor"
+            style="
+              margin-top: 5%;
+              margin-left: 15%;
+              margin-right: 15%;
+              width: auto !important;
+            "
+          >
+            <!-- DETALLES DE TARIFAS -->
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Tarifa Diaria:</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.daily_base_fee }}
+              </p>
+            </div>
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">
+                Descuento {{ reservation.discount_percentage }}:
+              </p>
+              <p class="pequeña text-right columna">
+                {{ reservation.discount_amount }}
+              </p>
+            </div>
+            <div v-if="reservation.extra_hours" class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Horas Extras ({{ reservation.extra_hours }}):</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.extra_hours_price }}
+              </p>
+            </div>
+            <div v-if="reservation.return_fee" class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Retorno Otra Sede:</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.return_fee }}
+              </p>
+            </div>
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">
+                Total por ({{ reservation.selected_days }}) días:
+              </p>
+              <p class="pequeña text-right columna">
+                {{ reservation.subtotal_fee }}
+              </p>
+            </div>
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Tasa Administrativa:</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.tax_fee }}
+              </p>
+            </div>
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Impuesto 19%:</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.iva_fee }}
+              </p>
+            </div>
+            <div class="fila" style="margin-bottom: 1%">
+              <p class="pequeña columna">Total a pagar:</p>
+              <p class="pequeña text-right columna">
+                {{ reservation.total_fee }}
+              </p>
+            </div>
+
+            <!-- OTROS QUE SE INCLUYEN SEGUN SEA EL CASO -->
+            <div style="margin-top: 6%">
+              <p class="pequeña">
+                <strong>El valor Incluye:</strong>
+              </p>
+              <p class="pequeña">
+                {{ reservation.included_fees }}
+              </p>
+            </div>
+            <div style="margin-top: 6%">
+              <p class="pequeña">
+                <strong>Método de Pago:</strong>
+              </p>
+              <p class="pequeña">Tarjeta de Crédito en Sede</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AQUI CAMBIAN LOS DATOS DEL ARRENDADOR -->
+      <div class="aspect-ratio-box-inner-3">
+        <div class="container-white">
+          <p class="grande-light text-center" style="margin-top: 3%">
+            Datos del Arrendador
+          </p>
+          <div
+            style="
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-top: 3%;
+            "
+          >
+            <div style="width: 20%; margin-right: 10px">
+              <img
+                class="img-fluid"
+                style="border-radius: 50%"
+                :src="user_image_url"
+                :alt="`usuario ` + reservation.fullname"
+              />
+            </div>
+
+            <div style="display: flex; flex-direction: column">
+              <!-- NOMBRE DEL ARRENDADOR -->
+              <p class="mediana">{{ reservation.fullname }}</p>
+              <!-- CEDULA DEL ARRENDADOR -->
+              <p class="mediana">
+                {{ reservation.identification_type }}
+                {{ reservation.identification }}
+              </p>
+              <p class="pequeña-light">Único Reservante Autorizado</p>
+            </div>
+          </div>
+          <div style="margin-left: 7%; margin-right: 7%; margin-top: 4%">
+            <p class="pequeña text-justify">
+              Los descuentos adquiridos en esta reserva son Intransferibles.
+            </p>
+            <br />
+            <p class="pequeña text-justify">
+              Solicitar cambios puede afectar los descuentos adquiridos, verifique que la
+              Información sea correcta o de lo contrario solicite cuanto antes una nueva
+              reserva.
+            </p>
+            <br />
+            <p class="pequeña text-justify">
+              Evite perder la reserva presentandose en el lugar de Recogida 30 minutos
+              antes de la hora programada con los siguientes documentos:
+            </p>
+            <br />
+            <p class="pequeña">
+              1) Tarjeta de Crédito
+              <br />
+              2) Cédula ó Pasaporte
+              <br />
+              3) Licencia de Conducción vigente
+            </p>
+            <br />
+            <p class="pequeña-pequeña text-justify">
+              Para nacidos en Colombia se requiere licencia colombiana o permiso temporal,
+              no se aceptan licencias extranjeras
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 
 const props = defineProps({
-    reservation: Object,
-    localiza_image_url: String,
+  reservation: Object,
+  localiza_image_url: String,
+  user_image_url: String,
 });
 
 const layout = null;
@@ -233,230 +282,251 @@ const layout = null;
 const qrCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${props.reservation.reserve_code}`;
 
 function adjustFontSize() {
-    // Configuración para el primer contenedor
-    const config1 = [
-        { class: ".grande", minFontSize: 16, maxFontSize: 48, divisor: 15 },
-        {
-            class: ".grande-light",
-            minFontSize: 14,
-            maxFontSize: 30,
-            divisor: 20,
-        },
-        {
-            class: ".mediana",
-            minFontSize: 13,
-            maxFontSize: 30,
-            divisor: 22,
-        },
-        {
-            class: ".mediana-light",
-            minFontSize: 13,
-            maxFontSize: 26,
-            divisor: 23,
-        },
-        {
-            class: ".pequeña",
-            minFontSize: 12,
-            maxFontSize: 22,
-            divisor: 30,
-        },
-        {
-            class: ".pequeña-light",
-            minFontSize: 13,
-            maxFontSize: 22,
-            divisor: 24,
-        },
-    ];
+  const config1 = [
+    { class: ".grande", minFontSize: 5, maxFontSize: 35, divisor: 11 },
+    {
+      class: ".grande-light",
+      minFontSize: 2,
+      maxFontSize: 32,
+      divisor: 14,
+    },
+    { class: ".mediana", minFontSize: 2, maxFontSize: 30, divisor: 18 },
+    {
+      class: ".mediana-light",
+      minFontSize: 2,
+      maxFontSize: 25,
+      divisor: 15,
+    },
+    { class: ".pequeña", minFontSize: 1, maxFontSize: 20, divisor: 23 },
+    {
+      class: ".pequeña-light",
+      minFontSize: 1,
+      maxFontSize: 20,
+      divisor: 25,
+    },
+  ];
 
-    // Configuración para el segundo contenedor
-    const config2 = [
-        { class: ".grande", minFontSize: 18, maxFontSize: 35, divisor: 14 },
-        {
-            class: ".grande-light",
-            minFontSize: 16,
-            maxFontSize: 24,
-            divisor: 18,
-        },
-        {
-            class: ".mediana",
-            minFontSize: 15,
-            maxFontSize: 32,
-            divisor: 20,
-        },
-        {
-            class: ".mediana-light",
-            minFontSize: 13,
-            maxFontSize: 24,
-            divisor: 22,
-        },
-        {
-            class: ".pequeña",
-            minFontSize: 14,
-            maxFontSize: 24,
-            divisor: 28,
-        },
-        {
-            class: ".pequeña-light",
-            minFontSize: 14,
-            maxFontSize: 24,
-            divisor: 26,
-        },
-    ];
+  const config2 = [
+    { class: ".grande", minFontSize: 5, maxFontSize: 35, divisor: 11 },
+    {
+      class: ".grande-light",
+      minFontSize: 2,
+      maxFontSize: 30,
+      divisor: 15,
+    },
+    { class: ".mediana", minFontSize: 2, maxFontSize: 25, divisor: 19 },
+    {
+      class: ".mediana-light",
+      minFontSize: 2,
+      maxFontSize: 20,
+      divisor: 1,
+    },
+    { class: ".pequeña", minFontSize: 1, maxFontSize: 20, divisor: 24 },
+    {
+      class: ".pequeña-light",
+      minFontSize: 1,
+      maxFontSize: 20,
+      divisor: 26,
+    },
+  ];
 
-    adjustContainerFontSize(".parent-container", config1);
-    adjustContainerFontSize(".parent-container-2", config2);
+  const config3 = [
+    { class: ".grande", minFontSize: 5, maxFontSize: 35, divisor: 11 },
+    {
+      class: ".grande-light",
+      minFontSize: 2,
+      maxFontSize: 30,
+      divisor: 15,
+    },
+    { class: ".mediana", minFontSize: 2, maxFontSize: 25, divisor: 19 },
+    {
+      class: ".mediana-light",
+      minFontSize: 2,
+      maxFontSize: 20,
+      divisor: 1,
+    },
+    { class: ".pequeña", minFontSize: 1, maxFontSize: 19, divisor: 23 },
+    {
+      class: ".pequeña-light",
+      minFontSize: 1,
+      maxFontSize: 20,
+      divisor: 29,
+    },
+    {
+      class: ".pequeña-pequeña",
+      minFontSize: 1,
+      maxFontSize: 15,
+      divisor: 29,
+    },
+  ];
+
+  adjustContainerFontSize(".aspect-ratio-box-inner", config1);
+  adjustContainerFontSize(".aspect-ratio-box-inner-2", config2);
+  adjustContainerFontSize(".aspect-ratio-box-inner-3", config3);
 }
 
 function adjustContainerFontSize(containerSelector, config) {
-    const parent = document.querySelector(containerSelector);
-    const parentWidth = parent.clientWidth;
+  const parent = document.querySelector(containerSelector);
+  const parentWidth = parent.clientWidth;
 
-    config.forEach((element) => {
-        const items = parent.querySelectorAll(element.class);
-        const fontSize = Math.min(
-            Math.max(parentWidth / element.divisor, element.minFontSize),
-            element.maxFontSize
-        );
-        items.forEach((item) => {
-            item.style.fontSize = `${fontSize}px`;
-        });
+  config.forEach((element) => {
+    const items = parent.querySelectorAll(element.class);
+    let fontSize = Math.min(
+      Math.max(parentWidth / element.divisor, element.minFontSize),
+      element.maxFontSize
+    );
+
+    // Aumentar tamaño de fuente proporcionalmente para pantallas grandes
+    if (parentWidth > 720) {
+      fontSize = fontSize * 1.1;
+    } else if (parentWidth < 700) {
+      fontSize = fontSize * 0.9;
+    }
+
+    items.forEach((item) => {
+      item.style.fontSize = `${fontSize}px`;
     });
+  });
+
+  adjustImages(containerSelector);
+}
+
+function adjustImages(containerSelector) {
+  const parent = document.querySelector(containerSelector);
+  const images = parent.querySelectorAll("img.img-fluid");
+  const parentWidth = parent.clientWidth;
+
+  images.forEach((img) => {
+    const originalWidth = img.getAttribute("width");
+    img.style.width = `${parentWidth * 0.5}px`;
+    img.style.height = "auto";
+  });
 }
 
 onMounted(() => {
-    // Llama a la función al cargar la página y al redimensionar la ventana
-    window.addEventListener("resize", adjustFontSize);
-    adjustFontSize();
-    // document.addEventListener("DOMContentLoaded", adjustFontSize);
+  // Llama a la función al cargar la página y al redimensionar la ventana
+  window.addEventListener("resize", adjustFontSize);
+  adjustFontSize();
+  // document.addEventListener("DOMContentLoaded", adjustFontSize);
 });
 </script>
 
 <style lang="css">
-.body {
-    display: flex;
-    justify-content: center;
-}
-
-.parent-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%; /* Adjust as needed */
-    height: auto;
-    background-color: #ffffff; /* Just to visualize the parent container */
-}
-
-.aspect-ratio-box-inner {
-    width: 100%; /* Width of the child relative to the parent */
-    max-width: 720px; /* Max width to constrain the size */
-    aspect-ratio: 18 / 22; /* Maintain the 18:25 aspect ratio */
-    background-color: #ffffff; /* Just to visualize the box */
-}
-.parent-container-2 {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 50%; /* Adjust as needed */
-    height: auto;
-    background-color: #ffffff; /* Just to visualize the parent container */
-    color: #ffffff;
-}
-
-.top-header {
-    background-color: #1266fd;
-    padding: 2rem;
-    padding-top: 1rem;
-    padding-bottom: 0.6rem;
-    text-align: center;
-}
-.buttom-footer {
-    background-color: #1266fd;
-    content: "";
-    padding: 2.2rem;
-}
-.text-justify {
-    text-align: justify;
-}
-
-.background-blue-custom {
-    background-color: #1266fd;
+body {
+  margin: 0;
 }
 
 p {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.parent-container {
+  display: flex;
+  gap: 1%;
+  position: relative;
+}
+
+.aspect-ratio-box-inner {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 14 / 19 !important;
+  background-color: #1266fd;
+  overflow: hidden;
+}
+
+.aspect-ratio-box-inner-2 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 14 / 19 !important;
+  background-color: #1266fd;
+  overflow: hidden;
+}
+
+.aspect-ratio-box-inner-3 {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  aspect-ratio: 14 / 19 !important;
+  background-color: #1266fd;
+  overflow: hidden;
 }
 
 .grande {
-    font-weight: 700;
+  font-weight: 900;
 }
 
-.font-white {
-    color: #ffff;
-}
-.font-blue {
-    color: #1266fd;
-}
 .grande-light {
-    font-weight: 400;
-}
-.mediana {
-    font-weight: 700;
-}
-.mediana-light {
-    font-weight: 400;
-}
-.pequeña {
-    font-weight: 600;
-}
-.pequeña-light {
-    font-weight: 200;
+  font-weight: 800;
 }
 
-.top-custom-1rem {
-    margin-top: 1rem;
+.mediana {
+  font-weight: 500;
+}
+
+.mediana-light {
+  font-weight: 500;
+}
+
+.pequeña {
+}
+
+.pequeña-light {
+  font-weight: 200;
 }
 
 .img-fluid {
-    max-width: 100%;
-    height: auto;
+  max-width: 100%;
+  height: auto;
 }
 
-.d-flex-custom {
-    display: flex;
+.container-white {
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  margin-top: 5%;
+  margin-bottom: 5%;
 }
 
-.content-center {
-    justify-content: center;
-    align-items: center;
-}
-.space-custom {
-    justify-content: space-between;
+.text-center {
+  text-align: center;
 }
 
-.gap-custom-1 {
-    gap: 1rem;
+.text-right {
+  text-align: right;
 }
 
-.hr-custom {
-    flex: 1;
-    margin: 0 1rem; /* Adds some space between the divs */
-    max-width: 100%;
-    background-color: #1266fd;
-    height: 5px;
-}
-.hr-custom-white {
-    flex: 1;
-    margin: 0 1rem; /* Adds some space between the divs */
-    max-width: 100%;
-    background-color: #ffffff;
-    height: 5px;
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-right: 11%;
 }
 
-.d-custom-inline {
-    display: inline;
+.fila {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
 }
-.flex-column {
-    flex-direction: column;
+
+.columna {
+  width: 48%;
+}
+
+.columna-1 {
+  width: 38%;
+}
+
+.ultimo {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+}
+
+.text-justify {
+  text-align: justify;
 }
 </style>

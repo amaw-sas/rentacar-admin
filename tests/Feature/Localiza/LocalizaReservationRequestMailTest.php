@@ -30,13 +30,13 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->formattedCategory());
-        $mail->assertSeeInHtml($reservation->formattedPickupPlace());
-        $mail->assertSeeInHtml($reservation->formattedReturnPlace());
-        $mail->assertSeeInHtml($reservation->formattedPickupDate());
-        $mail->assertSeeInHtml($reservation->formattedReturnDate());
-        $mail->assertSeeInHtml($reservation->formattedPickupHour());
-        $mail->assertSeeInHtml($reservation->formattedReturnHour());
+        $mail->assertSeeInHtml($reservation->formatted_category);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_place);
+        $mail->assertSeeInHtml($reservation->formatted_return_place);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->formatted_return_date);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
+        $mail->assertSeeInHtml($reservation->formatted_return_hour);
 
 
         $mail->assertSeeInText($reservation->fullname);
@@ -44,13 +44,13 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->formattedCategory());
-        $mail->assertSeeInText($reservation->formattedPickupPlace());
-        $mail->assertSeeInText($reservation->formattedReturnPlace());
-        $mail->assertSeeInText($reservation->formattedPickupDate());
-        $mail->assertSeeInText($reservation->formattedReturnDate());
-        $mail->assertSeeInText($reservation->formattedPickupHour());
-        $mail->assertSeeInText($reservation->formattedReturnHour());
+        $mail->assertSeeInText($reservation->formatted_category);
+        $mail->assertSeeInText($reservation->formatted_pickup_place);
+        $mail->assertSeeInText($reservation->formatted_return_place);
+        $mail->assertSeeInText($reservation->formatted_pickup_date);
+        $mail->assertSeeInText($reservation->formatted_return_date);
+        $mail->assertSeeInText($reservation->formatted_pickup_hour);
+        $mail->assertSeeInText($reservation->formatted_return_hour);
 
     }
 
@@ -66,26 +66,26 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->formattedCategory());
-        $mail->assertSeeInHtml($reservation->formattedPickupPlace());
-        $mail->assertSeeInHtml($reservation->formattedReturnPlace());
-        $mail->assertSeeInHtml($reservation->formattedPickupDate());
-        $mail->assertSeeInHtml($reservation->formattedReturnDate());
-        $mail->assertSeeInHtml($reservation->formattedPickupHour());
-        $mail->assertSeeInHtml($reservation->formattedReturnHour());
+        $mail->assertSeeInHtml($reservation->formatted_category);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_place);
+        $mail->assertSeeInHtml($reservation->formatted_return_place);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->formatted_return_date);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
+        $mail->assertSeeInHtml($reservation->formatted_return_hour);
 
         $mail->assertSeeInText($reservation->fullname);
         $mail->assertSeeInText($reservation->identification_type);
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->formattedCategory());
-        $mail->assertSeeInText($reservation->formattedPickupPlace());
-        $mail->assertSeeInText($reservation->formattedReturnPlace());
-        $mail->assertSeeInText($reservation->formattedPickupDate());
-        $mail->assertSeeInText($reservation->formattedReturnDate());
-        $mail->assertSeeInText($reservation->formattedPickupHour());
-        $mail->assertSeeInText($reservation->formattedReturnHour());
+        $mail->assertSeeInText($reservation->formatted_category);
+        $mail->assertSeeInText($reservation->formatted_pickup_place);
+        $mail->assertSeeInText($reservation->formatted_return_place);
+        $mail->assertSeeInText($reservation->formatted_pickup_date);
+        $mail->assertSeeInText($reservation->formatted_return_date);
+        $mail->assertSeeInText($reservation->formatted_pickup_hour);
+        $mail->assertSeeInText($reservation->formatted_return_hour);
 
     }
 
@@ -101,26 +101,26 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->formattedCategory());
-        $mail->assertSeeInHtml($reservation->formattedPickupPlace());
-        $mail->assertSeeInHtml($reservation->formattedReturnPlace());
-        $mail->assertSeeInHtml($reservation->formattedPickupDate());
-        $mail->assertSeeInHtml($reservation->formattedReturnDate());
-        $mail->assertSeeInHtml($reservation->formattedPickupHour());
-        $mail->assertSeeInHtml($reservation->formattedReturnHour());
+        $mail->assertSeeInHtml($reservation->formatted_category);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_place);
+        $mail->assertSeeInHtml($reservation->formatted_return_place);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->formatted_return_date);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
+        $mail->assertSeeInHtml($reservation->formatted_return_hour);
 
         $mail->assertSeeInText($reservation->fullname);
         $mail->assertSeeInText($reservation->identification_type);
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->formattedCategory());
-        $mail->assertSeeInText($reservation->formattedPickupPlace());
-        $mail->assertSeeInText($reservation->formattedReturnPlace());
-        $mail->assertSeeInText($reservation->formattedPickupDate());
-        $mail->assertSeeInText($reservation->formattedReturnDate());
-        $mail->assertSeeInText($reservation->formattedPickupHour());
-        $mail->assertSeeInText($reservation->formattedReturnHour());
+        $mail->assertSeeInText($reservation->formatted_category);
+        $mail->assertSeeInText($reservation->formatted_pickup_place);
+        $mail->assertSeeInText($reservation->formatted_return_place);
+        $mail->assertSeeInText($reservation->formatted_pickup_date);
+        $mail->assertSeeInText($reservation->formatted_return_date);
+        $mail->assertSeeInText($reservation->formatted_pickup_hour);
+        $mail->assertSeeInText($reservation->formatted_return_hour);
 
     }
 
@@ -136,26 +136,26 @@ class LocalizaReservationRequestMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->identification);
         $mail->assertSeeInHtml($reservation->phone);
         $mail->assertSeeInHtml($reservation->email);
-        $mail->assertSeeInHtml($reservation->formattedCategory());
-        $mail->assertSeeInHtml($reservation->formattedPickupPlace());
-        $mail->assertSeeInHtml($reservation->formattedReturnPlace());
-        $mail->assertSeeInHtml($reservation->formattedPickupDate());
-        $mail->assertSeeInHtml($reservation->formattedReturnDate());
-        $mail->assertSeeInHtml($reservation->formattedPickupHour());
-        $mail->assertSeeInHtml($reservation->formattedReturnHour());
+        $mail->assertSeeInHtml($reservation->formatted_category);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_place);
+        $mail->assertSeeInHtml($reservation->formatted_return_place);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->formatted_return_date);
+        $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
+        $mail->assertSeeInHtml($reservation->formatted_return_hour);
 
         $mail->assertSeeInText($reservation->fullname);
         $mail->assertSeeInText($reservation->identification_type);
         $mail->assertSeeInText($reservation->identification);
         $mail->assertSeeInText($reservation->phone);
         $mail->assertSeeInText($reservation->email);
-        $mail->assertSeeInText($reservation->formattedCategory());
-        $mail->assertSeeInText($reservation->formattedPickupPlace());
-        $mail->assertSeeInText($reservation->formattedReturnPlace());
-        $mail->assertSeeInText($reservation->formattedPickupDate());
-        $mail->assertSeeInText($reservation->formattedReturnDate());
-        $mail->assertSeeInText($reservation->formattedPickupHour());
-        $mail->assertSeeInText($reservation->formattedReturnHour());
+        $mail->assertSeeInText($reservation->formatted_category);
+        $mail->assertSeeInText($reservation->formatted_pickup_place);
+        $mail->assertSeeInText($reservation->formatted_return_place);
+        $mail->assertSeeInText($reservation->formatted_pickup_date);
+        $mail->assertSeeInText($reservation->formatted_return_date);
+        $mail->assertSeeInText($reservation->formatted_pickup_hour);
+        $mail->assertSeeInText($reservation->formatted_return_hour);
 
     }
 

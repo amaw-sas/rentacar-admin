@@ -959,5 +959,56 @@ class ReservationTest extends TestCase
         $this->assertFalse((bool) $reservation->total_insurance);
     }
 
+    #[Group("reservation")]
+    #[Group("return_fee")]
+    #[Test]
+    public function create_a_reservation_with_return_fee(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['return_fee'] = 1000;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($reservationData['return_fee'], $reservation->return_fee);
+    }
+
+    #[Group("reservation")]
+    #[Group("return_fee")]
+    #[Test]
+    public function create_a_reservation_with_null_return_fee_and_return_0(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['return_fee'] = null;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals(0, $reservation->return_fee);
+    }
+
+    #[Group("reservation")]
+    #[Group("return_fee")]
+    #[Test]
+    public function create_a_reservation_with_0_return_fee_and_return_0(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['return_fee'] = 0;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals(0, $reservation->return_fee);
+    }
+
 
 }

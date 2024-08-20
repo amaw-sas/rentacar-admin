@@ -21,11 +21,11 @@ Email: **{{ $reserva->email }}** <br/>
 
 <br/>
 
-**{{ $reserva->formattedCategory() }}** <br/>
-Recogida: {{ $reserva->formattedPickupPlace() }} <br/>
-Fecha: {{ $reserva->formattedPickupDate() }} {{ $reserva->formattedPickupHour() }} <br/>
-Retorno: {{ $reserva->formattedReturnPlace() }} <br/>
-Fecha: {{ $reserva->formattedReturnDate() }} {{ $reserva->formattedReturnHour() }} <br/>
+**{{ $reserva->formatted_category }}** <br/>
+Recogida: {{ $reserva->formatted_pickup_place }} <br/>
+Fecha: {{ $reserva->formatted_pickup_date }} {{ $reserva->formatted_pickup_hour }} <br/>
+Retorno: {{ $reserva->formatted_return_place }} <br/>
+Fecha: {{ $reserva->formatted_return_date }} {{ $reserva->formatted_return_hour }} <br/>
 
 @if ($reserva->total_insurance)
 El cliente requiere seguro total

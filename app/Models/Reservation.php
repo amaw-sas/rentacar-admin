@@ -10,10 +10,11 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 
 use App\Traits\ReservationFormatTrait;
+use App\Traits\ReservationEmailPreviewTrait;
 
 class Reservation extends Model
 {
-    use HasFactory, Searchable, ReservationFormatTrait;
+    use HasFactory, Searchable, ReservationFormatTrait, ReservationEmailPreviewTrait;
 
     protected $guarded = [];
     protected $with = ['categoryObject','pickupLocation','returnLocation','franchiseObject'];
@@ -52,6 +53,15 @@ class Reservation extends Model
      */
     public function categoryObject(){
         return $this->hasOne(Category::class, 'id', 'category');
+    }
+
+    /**
+     * get subtotal of this instance
+     *
+     * @return number
+     */
+    public function getSubtotalPrice(){
+        return $this->total_price - $this->tax_fee - $this->iva_fee;
     }
 
     /**

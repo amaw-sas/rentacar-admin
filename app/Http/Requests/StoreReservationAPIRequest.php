@@ -44,6 +44,7 @@ class StoreReservationAPIRequest extends FormRequest
             'extra_hours_price'   =>  ['nullable','numeric'],
             'coverage_days'   =>  ['required','numeric'],
             'coverage_price'   =>  ['required','numeric'],
+            'return_fee'   =>  ['nullable','numeric'],
             'tax_fee'   =>  ['required','numeric'],
             'iva_fee'   =>  ['required','numeric'],
             'total_price'   =>  ['required','numeric'],

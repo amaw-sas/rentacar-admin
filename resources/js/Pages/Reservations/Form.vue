@@ -141,7 +141,7 @@
                 <div
                     :class="{
                         grid: true,
-                        'grid-cols-3': method == 'post',
+                        'grid-cols-4': method == 'post',
                         'grid-cols-2': method != 'post',
                         'gap-2': true,
                         'ms-4': true,
@@ -158,6 +158,13 @@
                         <MoneyInputFormField
                             field="coverage_price"
                             name="Precio seguro"
+                            :form="form"
+                        />
+                    </div>
+                    <div class="flex flex-col" v-if="method == 'post'">
+                        <MoneyInputFormField
+                            field="return_fee"
+                            name="Tarifa retorno"
                             :form="form"
                         />
                     </div>

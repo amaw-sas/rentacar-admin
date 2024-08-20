@@ -12,7 +12,8 @@ class ReservationEmailPreviewController extends Controller
     {
         return inertia('Reservations/EmailPreview', [
             'reservation' => new ReservationEmailPreviewResource($reservation),
-            'localiza_image_url' => asset('storage/Localiza.png')
+            'localiza_image_url' => asset('storage/Localiza.png'),
+            'user_image_url' => asset('storage/user.jpeg')
         ]);
 
     }

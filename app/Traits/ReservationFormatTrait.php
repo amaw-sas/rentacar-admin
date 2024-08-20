@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Enums\IdentificationType;
 use App\Models\Branch;
 
@@ -9,79 +10,119 @@ trait ReservationFormatTrait {
 
     use FormatTrait;
 
-    public function formattedShortIdentificationType(): string {
+    public function shortIdentificationType(): Attribute {
         $identificationType = IdentificationType::from($this->identification_type);
-        $format = "";
 
-        if($identificationType === IdentificationType::Cedula)
-            $format = "C.C.";
-        else if($identificationType === IdentificationType::CedulaExtranjeria)
-            $format = "C.E.";
-        else if($identificationType === IdentificationType::Pasaporte)
-            $format = "Pasaporte";
-
-        return $format;
+        return Attribute::make(
+            get: fn () => match(true){
+                ($identificationType === IdentificationType::Cedula) => "C.C.",
+                ($identificationType === IdentificationType::CedulaExtranjeria) => "C.E.",
+                ($identificationType === IdentificationType::Pasaporte) => "Pasaporte"
+            }
+        );
 
     }
 
-    public function formattedCategory(): string {
-        return $this->categoryObject->category ?? "";
+    public function formattedCategory(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->categoryObject->category ?? "",
+        );
     }
 
-    public function formattedPickupPlace(): string {
-        return $this->formattedBranch($this->pickupLocation);
+    public function formattedPickupPlace(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->formattedBranch($this->pickupLocation)
+        );
     }
 
-    public function formattedPickupCity(): string {
-        return $this->pickupLocation->city->name;
+    public function formattedPickupCity(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->pickupLocation->city->name
+        );
     }
 
-    public function formattedReturnPlace(): string {
-        return $this->formattedBranch($this->returnLocation);
+    public function formattedReturnPlace(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->formattedBranch($this->returnLocation)
+        );
     }
 
-    public function formattedReturnCity(): string {
-        return $this->returnLocation->city->name;
+    public function formattedReturnCity(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->returnLocation->city->name
+        );
     }
 
-    public function formattedExtraHoursPrice(): string {
-        return $this->moneyFormat($this->extra_hours_price);
+    public function formattedExtraHoursPrice(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->extra_hours_price)
+        );
     }
 
-    public function formattedCoveragePrice(): string {
-        return $this->moneyFormat($this->coverage_price);
+    public function formattedCoveragePrice(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->coverage_price)
+        );
     }
 
-    public function formattedTaxFee(): string{
-        return $this->moneyFormat($this->tax_fee);
+    public function formattedTaxFee(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->tax_fee)
+        );
     }
 
-    public function formattedIVAFee(): string {
-        return $this->moneyFormat($this->tax_fee);
+    public function formattedIVAFee(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->iva_fee)
+        );
     }
 
-    public function formattedTotalPrice(): string {
-        return $this->moneyFormat($this->total_price);
+    public function formattedReturnFee(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->return_fee ?? 0)
+        );
     }
 
-    public function formattedTotalPriceLocaliza(): string {
-        return $this->moneyFormat($this->total_price_localiza);
+    public function formattedSubtotalPrice(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->getSubtotalPrice())
+        );
     }
 
-    public function formattedPickupDate(): string {
-        return $this->dateFormat($this->pickup_date);
+    public function formattedTotalPrice(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->total_price)
+        );
     }
 
-    public function formattedReturnDate(): string {
-        return $this->dateFormat($this->return_date);
+    public function formattedTotalPriceLocaliza(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->moneyFormat($this->total_price_localiza)
+        );
     }
 
-    public function formattedPickupHour(): string {
-        return $this->hourFormat($this->pickup_hour);
+    public function formattedPickupDate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->dateFormat($this->pickup_date)
+        );
     }
 
-    public function formattedReturnHour(): string {
-        return $this->hourFormat($this->return_hour);
+    public function formattedReturnDate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->dateFormat($this->return_date)
+        );
+    }
+
+    public function formattedPickupHour(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->hourFormat($this->pickup_hour)
+        );
+    }
+
+    public function formattedReturnHour(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->hourFormat($this->return_hour)
+        );
     }
 
     private function formattedBranch(Branch|null $branch): string{

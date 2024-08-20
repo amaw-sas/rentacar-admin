@@ -40,6 +40,7 @@ class ReservationFactory extends Factory
             'extra_hours_price'     =>  $this->faker->randomNumber(6, true),
             'coverage_days'         =>  $this->faker->numberBetween(0, 10),
             'coverage_price'        =>  $this->faker->randomNumber(6, true),
+            'return_fee'            =>  $this->faker->randomNumber(6, true),
             'tax_fee'               =>  $this->faker->randomNumber(6, true),
             'iva_fee'               =>  $this->faker->randomNumber(6, true),
             'total_price'           =>  $this->faker->randomNumber(6, true),
