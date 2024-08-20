@@ -32,7 +32,7 @@ trait ReservationEmailPreviewTrait {
     }
 
     public function ivaFeeFromLocalizaPrice(): Attribute {
-        $totalPrice = $this->total_price_localiza;
+        $totalPrice = $this->total_price;
         $ivaPercentaje = config('localiza.ivaPercentage');
 
         return Attribute::make(
@@ -47,12 +47,12 @@ trait ReservationEmailPreviewTrait {
     }
 
     public function taxFeeFromLocalizaPrice(): Attribute {
-        $localizaPrice = $this->total_price_localiza;
+        $totalPrice = $this->total_price;
         $ivaFee = $this->iva_fee_from_localiza_price;
         $taxFeePercentaje = config('localiza.taxFeePercentage');
 
         return Attribute::make(
-            get: fn () => ($localizaPrice && $ivaFee) ? $this->applyPercentageToAmount($localizaPrice - $ivaFee, $taxFeePercentaje) : null,
+            get: fn () => ($totalPrice && $ivaFee) ? $this->applyPercentageToAmount($totalPrice - $ivaFee, $taxFeePercentaje) : null,
         );
     }
 
@@ -63,12 +63,12 @@ trait ReservationEmailPreviewTrait {
     }
 
     public function subtotalFromLocalizaPrice(): Attribute {
-        $localizaPrice = $this->total_price_localiza;
+        $totalPrice = $this->total_price;
         $ivaFee = $this->iva_fee_from_localiza_price;
         $taxFee = $this->tax_fee_from_localiza_price;
 
         return Attribute::make(
-            get: fn () => ($localizaPrice && $ivaFee && $taxFee) ? $localizaPrice - $ivaFee - $taxFee : null,
+            get: fn () => ($totalPrice && $ivaFee && $taxFee) ? $totalPrice - $ivaFee - $taxFee : null,
         );
     }
 
