@@ -1,109 +1,87 @@
 <template>
-    <AppLayout title="Reservas">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Reservas
-            </h2>
-        </template>
+  <AppLayout title="Reservas">
+    <template #header>
+      <h2 class="font-semibold text-xl text-gray-800 leading-tight">Reservas</h2>
+    </template>
 
-        <div class="py-12">
-            <div class="mx-auto sm:px-6 lg:px-8">
-                <RentacarList>
-                    <template #actions>
-                        <CreateButton :action="route('reservations.create')" />
-                    </template>
-                    <template #filters>
-                        <RentacarFilterToolbar
-                            :clean-url="route('reservations.cleanFilters')"
-                            @filterData="
-                                (data) =>
-                                    filterData(
-                                        route('reservations.index'),
-                                        data
-                                    )
-                            "
-                        >
-                            <template #custom-filters>
-                                <RentacarFilterEnumerable
-                                    field="franchise"
-                                    :options="franchisesOptions"
-                                    null-text="Franquicia"
-                                />
-                                <RentacarFilterEnumerable
-                                    field="status"
-                                    :options="reservationStatusOptions"
-                                    null-text="Estado"
-                                />
-                                <RentacarFilterDateRange
-                                    field="created_At"
-                                    placeholder="Creación"
-                                />
-                                <RentacarFilterDateRange
-                                    field="pickup_date"
-                                    placeholder="Recogida"
-                                />
-                            </template>
-                        </RentacarFilterToolbar>
-                    </template>
-                    <template #pagination>
-                        <RentacarSimplePaginator
-                            v-if="paginator.meta.total > 0"
-                            :links="paginator.links"
-                            :meta="paginator.meta"
-                        />
-                    </template>
+    <div class="py-12">
+      <div class="mx-auto sm:px-6 lg:px-8">
+        <RentacarList>
+          <template #actions>
+            <CreateButton :action="route('reservations.create')" />
+          </template>
+          <template #filters>
+            <RentacarFilterToolbar
+              :clean-url="route('reservations.cleanFilters')"
+              @filterData="(data) => filterData(route('reservations.index'), data)"
+            >
+              <template #custom-filters>
+                <RentacarFilterEnumerable
+                  field="franchise"
+                  :options="franchisesOptions"
+                  null-text="Franquicia"
+                />
+                <RentacarFilterEnumerable
+                  field="status"
+                  :options="reservationStatusOptions"
+                  null-text="Estado"
+                />
+                <RentacarFilterDateRange field="created_At" placeholder="Creación" />
+                <RentacarFilterDateRange field="pickup_date" placeholder="Recogida" />
+              </template>
+            </RentacarFilterToolbar>
+          </template>
+          <template #pagination>
+            <RentacarSimplePaginator
+              v-if="paginator.meta.total > 0"
+              :links="paginator.links"
+              :meta="paginator.meta"
+            />
+          </template>
 
-                    <div class="mb-2"></div>
-                    <div
-                        class="bg-white overflow-hidden shadow-xl sm:rounded-lg"
-                    >
-                        <DataTable
-                            :headers="paginator.data.headers"
-                            :items="paginator.data.items"
-                        >
-                            <template #expand="item">
-                                <Expand :item="item" />
-                            </template>
-                            <template #item-phone="{ phone, whatsapp_link }">
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="text-blue-500 hover:text-blue-800 cursor-pointer"
-                                    :href="whatsapp_link"
-                                    v-text="phone"
-                                ></a>
-                            </template>
-                            <template #item-email="{ email }">
-                                <a
-                                    class="text-blue-500 hover:text-blue-800 cursor-pointer"
-                                    :href="'mailto:' + email"
-                                    v-text="email"
-                                ></a>
-                            </template>
-                            <template
-                                #item-operation="{
-                                    edit_url,
-                                    email_preview_url,
-                                }"
-                            >
-                                <div class="operation-wrapper">
-                                    <div
-                                        style="padding: 15px"
-                                        class="flex flex-row gap-2"
-                                    >
-                                        <EditItemButton :action="edit_url" />
-                                        <PreviewClientMailButton
-                                            :action="email_preview_url"
-                                        />
-                                    </div>
-                                </div>
-                            </template>
-                        </DataTable>
-                    </div>
-                </RentacarList>
-            </div>
-        </div>
-    </AppLayout>
+          <div class="mb-2"></div>
+          <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+            <DataTable :headers="paginator.data.headers" :items="paginator.data.items">
+              <template #expand="item">
+                <Expand :item="item" />
+              </template>
+              <template #item-phone="{ phone, whatsapp_link }">
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  :href="whatsapp_link"
+                  v-text="phone"
+                ></a>
+              </template>
+              <template #item-email="{ email }">
+                <a
+                  class="text-blue-500 hover:text-blue-800 cursor-pointer"
+                  :href="'mailto:' + email"
+                  v-text="email"
+                ></a>
+              </template>
+              <template
+                #item-operation="{
+                  edit_url,
+                  email_preview_url,
+                }"
+              >
+                <div class="operation-wrapper">
+                  <div style="padding: 15px" class="flex flex-row gap-2">
+                    <EditItemButton :action="edit_url" />
+                    <PreviewClientMailButton
+                      :action="email_preview_url"
+                    />
+                  </div>
+                </div>
+              </template>
+            </DataTable>
+          </div>
+        </RentacarList>
+      </div>
+    </div>
+  </AppLayout>
 </template>
 
 <script setup>
@@ -126,20 +104,20 @@ import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
-    paginator: Object,
+  paginator: Object,
 });
 
 const reservationStatusOptions = computed(() =>
-    usePage().props.reservation_status.map((identificationType) => ({
-        value: identificationType.value,
-        text: identificationType.text,
-    }))
+  usePage().props.reservation_status.map((identificationType) => ({
+    value: identificationType.value,
+    text: identificationType.text,
+  }))
 );
 
 const franchisesOptions = computed(() =>
-    usePage().props.franchises.map((franchise) => ({
-        value: franchise.id,
-        text: franchise.name,
-    }))
+  usePage().props.franchises.map((franchise) => ({
+    value: franchise.id,
+    text: franchise.name,
+  }))
 );
 </script>
