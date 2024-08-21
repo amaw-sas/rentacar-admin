@@ -21,6 +21,7 @@ class CategoryMonthOneDayPriceSeeder extends Seeder
             'FU' => 340_000,
             'GC' => 550_000,
             'G4' => 550_000,
+            'GR' => 550_000,
             'VP' => 550_000,
             'GL' => 595_000,
             'LE' => 570_000,

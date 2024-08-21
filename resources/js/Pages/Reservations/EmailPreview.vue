@@ -412,7 +412,7 @@ onMounted(() => {
 </script>
 
 <style lang="css">
-body {
+.body {
   margin: 0;
 }
 

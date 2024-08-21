@@ -54,14 +54,16 @@ class PreviewClientMailTest extends TestCase
             'city_id'   => $city->id
         ]);
 
+        $output_date_format = 'DD MMM YYYY';
+
         $date_pickup = now()->addDay();
         $pickup_date = $date_pickup->format('Y-m-d');
-        $pickup_date_output = $date_pickup->isoFormat('LL');
+        $pickup_date_output = $date_pickup->isoFormat($output_date_format);
         $pickup_hour = '9:00';
 
         $date_return = now()->addDays(2);
         $return_date = $date_return->format('Y-m-d');
-        $return_date_output = $date_return->isoFormat('LL');
+        $return_date_output = $date_return->isoFormat($output_date_format);
         $return_hour = '9:00';
 
         $reservation = Reservation::factory()->create([

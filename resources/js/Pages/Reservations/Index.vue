@@ -66,14 +66,14 @@
                   edit_url,
                   email_preview_url,
                   reserve_code,
-                  total_price_localiza,
+                  total_price,
                 }"
               >
                 <div class="operation-wrapper">
                   <div style="padding: 15px" class="flex flex-row gap-2">
                     <EditItemButton :action="edit_url" />
                     <PreviewClientMailButton
-                      v-if="reserve_code && total_price_localiza"
+                      v-if="reserve_code && total_price"
                       :action="email_preview_url"
                     />
                   </div>

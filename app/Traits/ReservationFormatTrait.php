@@ -107,9 +107,21 @@ trait ReservationFormatTrait {
         );
     }
 
+    public function shortFormattedPickupDate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->dateFormat($this->pickup_date, output_format:"DD MMM YYYY")
+        );
+    }
+
     public function formattedReturnDate(): Attribute {
         return Attribute::make(
             get: fn () => $this->dateFormat($this->return_date)
+        );
+    }
+
+    public function shortFormattedReturnDate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->dateFormat($this->return_date, output_format:"DD MMM YYYY")
         );
     }
 

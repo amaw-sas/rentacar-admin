@@ -11,9 +11,9 @@ trait FormatTrait {
         return numfmt_format_currency($fmt, $number, "COP");
     }
 
-    public function dateFormat($date, $format = "Y-m-d"){
+    public function dateFormat($date, $format = "Y-m-d", $output_format = "LL"){
         if($date instanceof Carbon){
-            return $date->locale('es')->isoFormat('LL');
+            return $date->locale('es')->isoFormat($output_format);
         }
         else if(is_string($date)) {
             try {
