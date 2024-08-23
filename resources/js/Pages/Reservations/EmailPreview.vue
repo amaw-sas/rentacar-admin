@@ -128,17 +128,11 @@
           >
             <!-- DETALLES DE TARIFAS -->
             <div class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">Tarifa Diaria:</p>
+              <p class="pequeña columna">
+                Tarifa con Dto ({{ reservation.discount_percentage }}:):
+              </p>
               <p class="pequeña text-right columna">
                 {{ reservation.daily_base_fee }}
-              </p>
-            </div>
-            <div class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">
-                Descuento {{ reservation.discount_percentage }}:
-              </p>
-              <p class="pequeña text-right columna">
-                {{ reservation.discount_amount }}
               </p>
             </div>
             <div v-if="reservation.extra_hours" class="fila" style="margin-bottom: 1%">
@@ -245,8 +239,8 @@
             </p>
             <br />
             <p class="pequeña text-justify">
-              Evite perder la reserva presentandose en el lugar de Recogida 30 minutos
-              antes de la hora programada con los siguientes documentos:
+              Presentese en el lugar de recogida 30 minutos antes de la hora programada
+              con los siguientes documentos:
             </p>
             <br />
             <p class="pequeña">
@@ -257,10 +251,6 @@
               3) Licencia de Conducción vigente
             </p>
             <br />
-            <p class="pequeña-pequeña text-justify">
-              Para nacidos en Colombia se requiere licencia colombiana o permiso temporal,
-              no se aceptan licencias extranjeras
-            </p>
           </div>
         </div>
       </div>
