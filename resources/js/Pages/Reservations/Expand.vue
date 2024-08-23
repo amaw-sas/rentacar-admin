@@ -70,13 +70,16 @@
             <CardListItemInfo label="IVA" :value="item.iva_fee" />
           </CardListItem>
           <CardListItem>
-            <CardListItemInfo label="Precio total" :value="item.total_price" />
+            <CardListItemInfo label="Precio sin iva con tasa" :value="item.total_price" />
           </CardListItem>
           <CardListItem>
             <CardListItemInfo
-              label="Precio Localiza"
-              :value="item.total_price_localiza"
+              label="Precio total a pagar"
+              :value="item.total_price_to_pay"
             />
+          </CardListItem>
+          <CardListItem>
+            <CardListItemInfo label="Valor OC" :value="item.total_price_localiza" />
           </CardListItem>
         </CardList>
       </Card>
