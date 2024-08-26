@@ -144,13 +144,15 @@
               </p>
             </div>
             <div v-if="reservation.extra_hours" class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">Horas Extras ({{ reservation.extra_hours }}):</p>
+              <p class="pequeña columna">
+                + Horas Extras ({{ reservation.extra_hours }}):
+              </p>
               <p class="pequeña text-right columna">
                 {{ reservation.extra_hours_price }}
               </p>
             </div>
             <div v-if="reservation.return_fee" class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">Retorno Otra Sede:</p>
+              <p class="pequeña columna">+ Retorno Otra Sede:</p>
               <p class="pequeña text-right columna">
                 {{ reservation.return_fee }}
               </p>
@@ -162,13 +164,13 @@
               </p>
             </div>
             <div class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">Tasa Admin (10%):</p>
+              <p class="pequeña columna">+ Tasa Admin (10%):</p>
               <p class="pequeña text-right columna">
                 {{ reservation.tax_fee }}
               </p>
             </div>
             <div class="fila" style="margin-bottom: 1%">
-              <p class="pequeña columna">Impuesto 19%:</p>
+              <p class="pequeña columna">+ Impuesto 19%:</p>
               <p class="pequeña text-right columna">
                 {{ reservation.iva_fee }}
               </p>
