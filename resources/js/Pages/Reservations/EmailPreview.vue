@@ -129,7 +129,7 @@
             <!-- DETALLES DE TARIFAS -->
             <div class="fila" style="margin-bottom: 1%">
               <p class="pequeña columna">
-                Tarifa con Dto ({{ reservation.discount_percentage }}:):
+                Tarifa con Dto ({{ reservation.discount_percentage }}):
               </p>
               <p class="pequeña text-right columna">
                 {{ reservation.daily_base_fee }}
