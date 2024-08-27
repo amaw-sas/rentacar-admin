@@ -396,6 +396,83 @@ class ReservationAPITest extends TestCase
 
     #[Group("reservation_api")]
     #[Group("localiza")]
+    #[Group("total_price_to_pay")]
+    #[Test]
+    public function store_a_default_reservation_with_total_price_to_pay()
+    {
+        Mail::fake();
+
+        $localizaReservationEmail = config('localiza.reservationEmailAddress');
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+        $reservationData['total_price_to_pay'] = 100;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertCreated();
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservation->pickup_location, $pickupLocation->id);
+        $this->assertEquals($reservation->return_location, $returnLocation->id);
+        $this->assertEquals($reservation->franchise, $franchise->id);
+        $this->assertEquals($reservation->total_price_to_pay, 100);
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Group("total_price_to_pay")]
+    #[Test]
+    public function store_a_default_reservation_with_total_price_to_pay_null_and_show_error()
+    {
+        Mail::fake();
+
+        $localizaReservationEmail = config('localiza.reservationEmailAddress');
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+        $reservationData['total_price_to_pay'] = null;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertFound();
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
     #[Test]
     public function send_a_mail_to_localiza_car_provider_when_record_a_reservation(): void {
         Mail::fake();
@@ -689,6 +766,7 @@ class ReservationAPITest extends TestCase
             'tax_fee'           => "93583",
             'iva_fee'           => "195588",
             'total_price'           => "935829",
+            'total_price_to_pay'           => "1000000",
             'franchise'           => 'alquilame',
         ];
 

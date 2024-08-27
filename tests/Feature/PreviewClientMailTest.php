@@ -6,6 +6,7 @@ use App\Enums\IdentificationType;
 use App\Enums\MonthlyMileage;
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Traits\FormatTrait;
 use Inertia\Testing\AssertableInertia as Assert;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
@@ -17,7 +18,7 @@ use Tests\TestCase;
 
 class PreviewClientMailTest extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase, FormatTrait;
 
     public $user;
 
@@ -119,9 +120,9 @@ class PreviewClientMailTest extends TestCase
                 ->where('tax_fee', $reservation->formatted_tax_fee_from_localiza_price)
                 ->where('iva_fee', $reservation->formatted_iva_fee_from_localiza_price)
                 ->where('subtotal_fee', $reservation->formatted_subtotal_from_localiza_price)
-                ->where('total_fee', $reservation->formatted_total_price_localiza)
+                ->where('total_fee', $reservation->formatted_total_price_to_pay)
                 ->where('base_fee', $reservation->formatted_base_price_from_localiza_price)
-                ->where('daily_base_fee', $reservation->formatted_original_vehicle_unit_price)
+                ->where('daily_base_fee', $reservation->formatted_daily_base_price_from_localiza_price)
                 ->where('discount_percentage', $reservation->formatted_discount_percentage_from_localiza_price)
                 ->where('discount_amount', $reservation->formatted_daily_base_price_from_localiza_price)
                 ->etc()
@@ -404,6 +405,42 @@ class PreviewClientMailTest extends TestCase
             ->component('Reservations/EmailPreview')
             ->has('reservation', fn(Assert $page) => $page
                 ->where('included_fees', "Kilometraje ilimitado, Seguro total",)
+                ->etc()
+            )
+        );
+    }
+
+    #[Group("preview_client_mail")]
+    #[Test]
+    public function check_if_calcs_of_taxes_are_ok(): void
+    {
+        $category = Category::factory()->hasModels(2)->create([
+            'name'  => 'Gama C',
+            'category'  => 'Sedán automático',
+            'description'  => '3 puertas',
+        ]);
+
+        $city = City::factory()->create([
+            'name'  => "Cali",
+        ]);
+
+        $reservation = Reservation::factory()->create([
+            'category' => $category->id,
+            'selected_days'   =>  10,
+            'total_price_to_pay' => 1000,
+        ]);
+
+        $response = $this
+        ->actingAs($this->user)
+        ->get(route('reservations.emailPreview', [
+            'reservation' => $reservation
+        ]))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Reservations/EmailPreview')
+            ->has('reservation', fn(Assert $page) => $page
+                ->where('total_fee', $this->moneyFormat(1000))
+                ->where('iva_fee', $this->moneyFormat(160))
+                ->where('tax_fee', $this->moneyFormat(76))
                 ->etc()
             )
         );

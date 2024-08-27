@@ -61,11 +61,11 @@ class ReservationCollection extends RentacarResourceCollection
                     "value"     =>  "status",
                 ],
                 [
-                    "text"      =>  "TOTAL",
+                    "text"      =>  "TOTAL+TAX",
                     "value"     =>  "total_price",
                 ],
                 [
-                    "text"      =>  "T LOCALIZA",
+                    "text"      =>  "VALOR OC",
                     "value"     =>  "total_price_localiza",
                 ],
                 [

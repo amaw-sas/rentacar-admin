@@ -44,6 +44,7 @@ class ReservationFactory extends Factory
             'tax_fee'               =>  $this->faker->randomNumber(6, true),
             'iva_fee'               =>  $this->faker->randomNumber(6, true),
             'total_price'           =>  $this->faker->randomNumber(6, true),
+            'total_price_to_pay'    =>  $this->faker->randomNumber(6, true),
             'total_price_localiza'  =>  $this->faker->randomNumber(6, true),
             'franchise'             =>  Franchise::factory(),
             'user'                  =>  $this->faker->word,

@@ -8,6 +8,7 @@ trait FormatTrait {
 
     public function moneyFormat($number){
         $fmt = numfmt_create( 'es_CO', \NumberFormatter::CURRENCY );
+        numfmt_set_attribute($fmt, \NumberFormatter::FRACTION_DIGITS, 0);
         return numfmt_format_currency($fmt, $number, "COP");
     }
 

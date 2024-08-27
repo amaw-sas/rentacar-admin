@@ -50,6 +50,7 @@ class StoreReservationRequest extends FormRequest
             'status' => ['required', 'string'],
             'monthly_mileage' => ['nullable', 'string'],
             'total_insurance' => ['nullable', 'boolean'],
+            'total_price_to_pay'   =>  ['required','numeric'],
         ];
     }
 
@@ -81,8 +82,9 @@ class StoreReservationRequest extends FormRequest
             'return_fee' => 'Tasa retorno',
             'tax_fee' => 'Tasa administrativa',
             'iva_fee' => 'Precio IVA',
-            'total_price' => 'Precio final',
-            'total_price_localiza' => 'Precio final Localiza',
+            'total_price' => 'Precio sin iva con tasa',
+            'total_price_to_pay' => 'Precio total a pagar',
+            'total_price_localiza' => 'Valor OC',
             'franchise' => 'Franquicia',
             'reserve_code' => 'Código reserva',
             'user' => 'Referido',

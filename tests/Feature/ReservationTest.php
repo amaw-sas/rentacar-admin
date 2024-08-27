@@ -777,7 +777,8 @@ class ReservationTest extends TestCase
                     ->where('errors.coverage_price.0', "El campo Precio seguro es requerido.")
                     ->where('errors.tax_fee.0', "El campo Tasa administrativa es requerido.")
                     ->where('errors.iva_fee.0', "El campo Precio IVA es requerido.")
-                    ->where('errors.total_price.0', "El campo Precio final es requerido.")
+                    ->where('errors.total_price.0', "El campo Precio sin iva con tasa es requerido.")
+                    ->where('errors.total_price_to_pay.0', "El campo Precio total a pagar es requerido.")
                     ->where('errors.franchise.0', "El campo Franquicia es requerido.")
                     ->where('errors.status.0', "El campo Estado es requerido.")
 

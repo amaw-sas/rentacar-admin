@@ -38,6 +38,7 @@ class ReservationResource extends JsonResource
             'tax_fee'  =>  $this->formatted_tax_fee,
             'iva_fee'  =>  $this->formatted_iva_fee,
             'total_price'  =>  $this->formatted_total_price,
+            'total_price_to_pay'  =>  $this->formatted_total_price_to_pay,
             'total_price_localiza'  =>  ($this->total_price_localiza > 0) ? $this->formatted_total_price_localiza : null,
             'user'  =>  $this->user,
             'reserve_code'  =>  $this->reserve_code,

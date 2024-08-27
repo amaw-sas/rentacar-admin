@@ -52,6 +52,7 @@ class StoreReservationAPIRequest extends FormRequest
             'user' => ['nullable', 'string'],
             'monthly_mileage' => ['nullable', 'string'],
             'total_insurance' => ['nullable', 'boolean'],
+            'total_price_to_pay'   =>  ['required','numeric'],
 
         ];
     }
