@@ -24,8 +24,7 @@ class ReservationEmailPreviewResource extends JsonResource
 
         $category = Str::after($this->categoryObject->category, $this->categoryObject->name);
         $description = Str::words($this->categoryObject->description, 3, '');
-
-
+        $franchiseColor = config("rentacar.{$this->franchiseObject->name}.main_color");
 
         return [
             'fullname' => $this->fullname,
@@ -58,6 +57,7 @@ class ReservationEmailPreviewResource extends JsonResource
             'discount_percentage' => $this->formatted_discount_percentage_from_localiza_price,
             'discount_amount' => $this->formatted_daily_base_price_from_localiza_price,
             'included_fees'  =>  $this->formatted_included_fees,
+            'franchise_color' => $franchiseColor,
         ];
     }
 

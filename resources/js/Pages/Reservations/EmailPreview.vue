@@ -279,6 +279,8 @@ const layout = null;
 
 const qrCode = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${props.reservation.reserve_code}`;
 
+const franchiseColor = props.reservation.franchise_color;
+
 function adjustFontSize() {
   const config1 = [
     { class: ".grande", minFontSize: 5, maxFontSize: 35, divisor: 11 },
@@ -409,7 +411,7 @@ onMounted(() => {
 });
 </script>
 
-<style lang="css">
+<style scoped>
 .body {
   margin: 0;
 }
@@ -430,7 +432,7 @@ p {
   flex-direction: column;
   width: 100%;
   aspect-ratio: 14 / 19 !important;
-  background-color: #1266fd;
+  background-color: v-bind(franchiseColor);
   overflow: hidden;
 }
 
@@ -439,7 +441,7 @@ p {
   flex-direction: column;
   width: 100%;
   aspect-ratio: 14 / 19 !important;
-  background-color: #1266fd;
+  background-color: v-bind(franchiseColor);
   overflow: hidden;
 }
 
@@ -448,7 +450,7 @@ p {
   flex-direction: column;
   width: 100%;
   aspect-ratio: 14 / 19 !important;
-  background-color: #1266fd;
+  background-color: v-bind(franchiseColor);
   overflow: hidden;
 }
 
