@@ -1011,5 +1011,30 @@ class ReservationTest extends TestCase
         $this->assertEquals(0, $reservation->return_fee);
     }
 
+    #[Group("reservation")]
+    #[Group("pickup_date_time")]
+    #[Test]
+    public function get_reservation_pickup_date_time(){
+        $reservation = Reservation::factory()->create([
+            'pickup_date'   =>  '2028-01-01',
+            'pickup_hour'   =>  '08:00',
+        ]);
+
+
+        $this->assertEquals('2028-01-01 08:00:00', $reservation->getPickupDateTime());
+    }
+
+    #[Group("reservation")]
+    #[Group("return_date_time")]
+    #[Test]
+    public function get_reservation_return_date_time(){
+        $reservation = Reservation::factory()->create([
+            'return_date'   =>  '2028-01-01',
+            'return_hour'   =>  '08:00',
+        ]);
+
+
+        $this->assertEquals('2028-01-01 08:00:00', $reservation->getReturnDateTime());
+    }
 
 }
