@@ -99,7 +99,7 @@
             Datos del Vehículo
           </p>
           <div style="display: flex; justify-content: center; align-items: center">
-            <div style="width: 35%">
+            <div style="width: 35%; margin-right: 20px">
               <img
                 class="img-fluid"
                 :src="reservation.category_image"
@@ -110,10 +110,6 @@
               <p class="mediana">
                 {{ reservation.category_name }}
               </p>
-              <p class="mediana">
-                {{ reservation.category_category }}
-              </p>
-              <p class="pequeña-light">*Suzuki Presso o Similar*</p>
             </div>
           </div>
           <p class="grande-light text-center">Datos Financieros</p>
