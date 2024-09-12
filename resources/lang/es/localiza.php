@@ -83,4 +83,6 @@ return [
     'error_sending_reservation_request_to_localiza' => $errorSendingReservationRequestToLocaliza,
     'holiday_out_of_schedule_pickup_date_branch' => $holidayOutOfSchedulePickupDateBranch,
     'holiday_out_of_schedule_return_date_branch' => $holidayOutOfScheduleReturnDateBranch,
+    'no_reserve_code'           => "No se pudo obtener el código de reserva",
+    'no_reservation_status'           => "No se pudo obtener el estado de la reserva",
 ];
