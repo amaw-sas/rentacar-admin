@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Rentcar\Localiza\Exceptions;
+namespace App\Rentcar\Localiza\Exceptions\VehAvailRate;
+
+use App\Rentcar\Localiza\Exceptions\LocalizaResponseException;
 
 class HolidayPickupDateBranchException extends LocalizaResponseException {
     public function __construct($context = []){
