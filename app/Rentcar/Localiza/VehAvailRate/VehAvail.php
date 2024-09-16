@@ -269,19 +269,13 @@ class VehAvail implements Arrayable {
             'returnFeeAmount'   =>  $returnFeeAmount
         ] = $this->getReturnFee();
 
-        [
-            'coverageUnitCharge' => $coverageUnitCharge,
-            'coverageQuantity' => $coverageQuantity,
-        ] = $this->getCoverage();
-
         $result = [
             'totalAmountPlusTotalCoverage' => 0
         ];
 
         if($totalAmount){
-            $coveragePrice = $coverageUnitCharge * $coverageQuantity;
             $totalCoveragePrice = $this->getTotalCoveragePrice();
-            $result['totalAmountPlusTotalCoverage'] = (int) $totalAmount + $returnFeeAmount + $totalCoveragePrice - $coveragePrice;
+            $result['totalAmountPlusTotalCoverage'] = (int) $totalAmount + $returnFeeAmount + $totalCoveragePrice;
         }
 
         return $result;
