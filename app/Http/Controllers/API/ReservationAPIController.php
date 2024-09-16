@@ -28,7 +28,7 @@ class ReservationAPIController extends Controller
      */
     public function __invoke(StoreReservationAPIRequest $request)
     {
-        $reservationData = $request->safe()->all();
+        $reservationData = $request->safe()->except(['rate_qualifier','reference_token']);
 
         try {
             $reservation = Reservation::create($reservationData);

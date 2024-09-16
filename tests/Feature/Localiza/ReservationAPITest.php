@@ -45,7 +45,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -85,7 +85,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -127,7 +127,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -169,7 +169,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -209,7 +209,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -249,7 +249,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -291,7 +291,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -333,7 +333,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -375,7 +375,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -417,7 +417,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -459,7 +459,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -492,7 +492,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -533,7 +533,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -573,7 +573,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -613,7 +613,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -649,7 +649,7 @@ class ReservationAPITest extends TestCase
             'name'  =>  'alquilame'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = "AABOG";
         $reservationData['return_location'] = $returnLocation->code;
@@ -680,7 +680,7 @@ class ReservationAPITest extends TestCase
             'name'  =>  'alquilame'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = "AABOG";
@@ -711,7 +711,7 @@ class ReservationAPITest extends TestCase
             'name'  =>  'alquilame'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = "test";
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
@@ -803,7 +803,7 @@ class ReservationAPITest extends TestCase
             'identification'  =>  'FX'
         ]);
 
-        $reservationData = Reservation::factory()->make();
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
         $reservationData['return_location'] = $returnLocation->code;
