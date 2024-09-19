@@ -9,56 +9,39 @@ use App\Rentcar\Localiza\Exceptions\VehRes\NoReserveCodeException;
 use App\Rentcar\Localiza\ProcessWarning;
 use App\Rentcar\Localiza\LocalizaAPI;
 use App\Rentcar\Localiza\VehRes\VehRes;
+use App\Traits\MultipleAttributeSetter;
 use SimpleXMLElement;
 
 class LocalizaAPIVehRes extends LocalizaAPI implements LocalizaAPIRequest {
 
-    private $name;
+    use MultipleAttributeSetter;
+
+    private $fullname;
     private $email;
-    private $phoneNumber;
-    private $referenceToken;
-    private $returnDateTime;
-    private $pickupDateTime;
-    private $returnLocation;
-    private $pickupLocation;
+    private $phone;
+    private $reference_token;
+    private $return_datetime;
+    private $pickup_datetime;
+    private $return_location;
+    private $pickup_location;
     private $category;
-    private $rateQualifier;
+    private $rate_qualifier;
 
     private $soapAction = '"http://www.opentravel.org/OTA/2003/05:OTA_VehResRQ"';
     private $context;
 
-    public function __construct(
-        $name,
-        $email,
-        $phoneNumber,
-        $referenceToken,
-        $returnDateTime,
-        $pickupDateTime,
-        $returnLocation,
-        $pickupLocation,
-        $category,
-        $rateQualifier
-    ){
+    public function __construct(array $attributes){
         parent::__construct();
 
-        $this->name = $name;
-        $this->email = $email;
-        $this->phoneNumber = $phoneNumber;
-        $this->referenceToken = $referenceToken;
-        $this->pickupDateTime = $pickupDateTime;
-        $this->returnDateTime = $returnDateTime;
-        $this->pickupLocation = $pickupLocation;
-        $this->returnLocation = $returnLocation;
-        $this->category = $category;
-        $this->rateQualifier = $rateQualifier;
+        $this->setAttributes($attributes);
 
         $this->context = [
-            'pickupDateTime'    => $pickupDateTime,
-            'returnDateTime'    => $returnDateTime,
-            'pickupLocation'    => $pickupLocation,
-            'returnLocation'    => $returnLocation,
-            'category'          => $category,
-            'rateQualifier'     => $rateQualifier,
+            'pickupDateTime'    => $this->pickup_datetime,
+            'returnDateTime'    => $this->return_datetime,
+            'pickupLocation'    => $this->pickup_location,
+            'returnLocation'    => $this->return_location,
+            'category'          => $this->category,
+            'rateQualifier'     => $this->rate_qualifier,
         ];
 
     }
@@ -66,8 +49,8 @@ class LocalizaAPIVehRes extends LocalizaAPI implements LocalizaAPIRequest {
     public function getData(): array
     {
         try {
-            $filledVehicleAvailableRateXML = $this->getFilledInputXML();
-            $response = $this->callAPI($this->soapAction, $filledVehicleAvailableRateXML);
+            $filledVehicleReservationXML = $this->getFilledInputXML();
+            $response = $this->callAPI($this->soapAction, $filledVehicleReservationXML);
         }
         catch(\Exception $th){
             abort(new TimeoutException($this->context));
