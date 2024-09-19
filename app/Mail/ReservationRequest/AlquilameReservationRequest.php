@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\ReservationRequest;
 
 use App\Models\Reservation;
 
@@ -27,7 +27,7 @@ class AlquilameReservationRequest extends LocalizaReservationRequest
      */
     public function build()
     {
-        return $this->markdown('mail.alquilame-reservation-request', [
+        return $this->markdown('mail.reservation_request.alquilame', [
             'reserva' => $this->reservation,
         ]);
     }

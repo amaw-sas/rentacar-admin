@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\ReservationClientNotification;
 
 use App\Models\Reservation;
 
-class AlquilatucarroReservationRequest extends LocalizaReservationRequest
-{
+class AlquilameReservationClientNotification extends ReservationClientNotification {
 
     /**
      * Create a new message instance.
@@ -15,8 +14,8 @@ class AlquilatucarroReservationRequest extends LocalizaReservationRequest
     public function __construct(Reservation $reservation)
     {
         parent::__construct($reservation);
-        $email = config('mail.mailers.alquilatucarro.username');
-        $this->from($email, "Alquilatucarro");
+        $email = config('mail.mailers.alquilame.username');
+        $this->from($email, "Alquilame");
 
     }
 
@@ -27,7 +26,7 @@ class AlquilatucarroReservationRequest extends LocalizaReservationRequest
      */
     public function build()
     {
-        return $this->markdown('mail.alquilatucarro-reservation-request', [
+        return $this->markdown('mail.reservation_client_notification.alquilame', [
             'reserva' => $this->reservation,
         ]);
     }

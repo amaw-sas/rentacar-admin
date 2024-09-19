@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\ReservationClientNotification;
 
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
@@ -31,6 +31,6 @@ class ReservationClientNotification extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('mail.reservation-client-notification');
+        return $this->markdown('mail.reservation-client-notification.notification');
     }
 }

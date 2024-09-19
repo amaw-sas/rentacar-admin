@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\ReservationClientNotification;
 
 use App\Models\Reservation;
 
-class AlquicarrosReservationRequest extends LocalizaReservationRequest
-{
+class AlquicarrosReservationClientNotification extends ReservationClientNotification {
 
     /**
      * Create a new message instance.
@@ -27,7 +26,7 @@ class AlquicarrosReservationRequest extends LocalizaReservationRequest
      */
     public function build()
     {
-        return $this->markdown('mail.alquicarros-reservation-request', [
+        return $this->markdown('mail.reservation_client_notification.alquicarros', [
             'reserva' => $this->reservation,
         ]);
     }

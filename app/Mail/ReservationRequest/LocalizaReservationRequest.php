@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\ReservationRequest;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -39,7 +39,7 @@ class LocalizaReservationRequest extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('mail.localiza-reservation-request', [
+        return $this->markdown('mail.reservation_request.localiza', [
             'reserva' => $this->reservation,
         ]);
     }

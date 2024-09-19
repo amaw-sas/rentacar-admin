@@ -1,4 +1,4 @@
-@extends("mail.localiza-reservation-request")
+@extends("mail.reservation_request.localiza")
 
 @section('franchise')
 
