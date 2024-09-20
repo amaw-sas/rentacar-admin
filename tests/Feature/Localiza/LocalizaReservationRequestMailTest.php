@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-use App\Mail\LocalizaReservationRequest;
-use App\Mail\AlquilatucarroReservationRequest;
-use App\Mail\AlquilameReservationRequest;
-use App\Mail\AlquicarrosReservationRequest;
+use App\Mail\ReservationRequest\LocalizaReservationRequest;
+use App\Mail\ReservationRequest\AlquilatucarroReservationRequest;
+use App\Mail\ReservationRequest\AlquilameReservationRequest;
+use App\Mail\ReservationRequest\AlquicarrosReservationRequest;
 use App\Models\Reservation;
 
 class LocalizaReservationRequestMailTest extends TestCase
