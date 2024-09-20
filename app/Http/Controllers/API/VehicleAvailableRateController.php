@@ -15,12 +15,16 @@ class VehicleAvailableRateController extends Controller
         $pickupDateTime = $request->input('pickupDateTime');
         $returnDateTime = $request->input('returnDateTime');
 
+        $payload = [
+            "pickupLocation" => $pickupLocation,
+            "returnLocation" => $returnLocation,
+            "pickupDateTime" => $pickupDateTime,
+            "returnDateTime" => $returnDateTime,
+        ];
+
 
         $localizaApi = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
+            $payload
         );
 
         return $localizaApi->getData();
