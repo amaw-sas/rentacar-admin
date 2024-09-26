@@ -2,14 +2,21 @@
 
 namespace App\Enums;
 
+/**
+ * Cambiar Confirmado por
+ */
 enum ReservationStatus: string {
-    case Confirmado = "Confirmado";
-    case SinConfirmar = "Sin confirmar";
-    case SinDisponibilidad = "Sin disponibilidad";
-    case ConCodigo = "Con código";
-    case ConCodigoEnRevision = "Con código En revisión";
     case Nueva = "Nueva";
+    case Pendiente = "Pendiente";
+    case Reservado = "Reservado";
+    case SinDisponibilidad = "Sin disponibilidad";
+    case Utilizado = "Utilizado";
+    case NoContactado = "No Contactado";
+    case Baneado = "Baneado";
     case NoRecogido = "No recogido";
-    case ConfirmadoPendientePago = "Confirmado Pendiente Pago";
+    case PendientePago = "Pendiente Pago";
+    case PendienteModificar = "Pendiente Modificar";
+    case Cancelado = "Cancelado";
+    case Indeterminado = "Indeterminado";
 }
 

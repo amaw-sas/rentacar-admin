@@ -48,32 +48,48 @@ class HandleInertiaRequests extends Middleware
             ),
             'reservation_status' => fn() => [
                 [
-                    'text' => '1. Nueva',
-                    'value' => ReservationStatus::Nueva->value
+                    'text' => '1. Pendiente',
+                    'value' => ReservationStatus::Pendiente->value
                 ],
                 [
-                    'text' => '2. Con Código',
-                    'value' => ReservationStatus::ConCodigo->value,
+                    'text' => '2. Reservado',
+                    'value' => ReservationStatus::Reservado->value,
                 ],
                 [
                     'text' => '3. Sin Disponibilidad',
                     'value' => ReservationStatus::SinDisponibilidad->value,
                 ],
                 [
-                    'text' => '4. Confirmado',
-                    'value' => ReservationStatus::Confirmado->value,
+                    'text' => '4. Utilizado',
+                    'value' => ReservationStatus::Utilizado->value,
                 ],
                 [
-                    'text' => '5. Sin Confirmar',
-                    'value' => ReservationStatus::SinConfirmar->value,
+                    'text' => '5. No Contactado',
+                    'value' => ReservationStatus::NoContactado->value,
+                ],
+                [
+                    'text' => '5a. Baneado',
+                    'value' => ReservationStatus::Baneado->value,
                 ],
                 [
                     'text' => '6. No Recogido',
                     'value' => ReservationStatus::NoRecogido->value,
                 ],
                 [
-                    'text' => '7. Confirmado Pendiente Pago',
-                    'value' => ReservationStatus::ConfirmadoPendientePago->value,
+                    'text' => '7. Pendiente Pago',
+                    'value' => ReservationStatus::PendientePago->value,
+                ],
+                [
+                    'text' => '8. Pendiente x Modificar',
+                    'value' => ReservationStatus::PendienteModificar->value,
+                ],
+                [
+                    'text' => '9. Cancelado',
+                    'value' => ReservationStatus::Cancelado->value,
+                ],
+                [
+                    'text' => '10. Indeterminado',
+                    'value' => ReservationStatus::Indeterminado->value,
                 ],
             ],
             'monthly_mileages'  => fn() => array_map(

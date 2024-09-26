@@ -144,8 +144,8 @@ trait ReservationFormatTrait {
 
         if($status){
             $formatted_status = match($status) {
-                ReservationStatus::ConCodigo => "Aprobado",
-                ReservationStatus::ConCodigoEnRevision => "En revisión",
+                ReservationStatus::Reservado => "Aprobado",
+                ReservationStatus::Pendiente => "En revisión",
                 default => null
             };
         }
