@@ -78,4 +78,27 @@ class LocalizaAPIVehResTest extends TestCase
         ], $data);
     }
 
+    #[Group("localiza_veh_res")]
+    #[Group("localiza")]
+    #[Test]
+    public function get_data_for_pending_reservation(){
+
+        $xml = view('localiza.tests.responses.vehres.vehres-pending-xml')->render();
+
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
+        $localizaReservation = new LocalizaAPIVehRes(
+            $this->defaultPayload
+        );
+
+        $data = $localizaReservation->getData();
+
+        $this->assertEquals([
+            'reserveCode' => 'AV1BRQW35U',
+            'reservationStatus' => 'Pending',
+        ], $data);
+    }
+
 }
