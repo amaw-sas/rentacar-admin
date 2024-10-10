@@ -19,7 +19,7 @@
                             </ns:PersonName>
                             <ns:Email>{{ $email }}</ns:Email>
                             <ns:CitizenCountryName Code="CO" />
-                            <ns:Telephone PhoneNumber="{{ $phone }}"/>
+                            <ns:Telephone CountryCode="{{ $phone_country_code }}" PhoneNumber="{{ $phone }}"/>
                         </ns:Primary>
                     </ns:Customer>
                     <ns:VehPref CodeContext="internal code" Code="{{ $category }}" />

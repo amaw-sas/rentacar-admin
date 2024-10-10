@@ -12,6 +12,7 @@ use App\Rentcar\Localiza\LocalizaAPI;
 use App\Rentcar\Localiza\VehRes\VehRes;
 use App\Traits\MultipleAttributeSetter;
 use Illuminate\Http\Client\ConnectionException;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use SimpleXMLElement;
 
 class LocalizaAPIVehRes extends LocalizaAPI implements LocalizaAPIRequest {
@@ -89,6 +90,16 @@ class LocalizaAPIVehRes extends LocalizaAPI implements LocalizaAPIRequest {
 
     public function getFilledInputXML() : string {
         $data = array_merge($this->attributes, $this->getAgencyIdentificationData());
+
+        $phone = new PhoneNumber($data['phone']);
+        if($phone->isValid()){
+            $libPhone = $phone->toLibPhoneObject();
+            $data['phone'] = (string) $libPhone->getNationalNumber();
+            $data['phone_country_code'] = (string) $libPhone->getCountryCode();
+        }
+        else {
+            $data['phone_country_code'] = "57";
+        }
 
         return view('localiza.inputs.vehres', $data)->render();
     }

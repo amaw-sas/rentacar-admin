@@ -12,6 +12,7 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Carbon;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
+use SimpleXMLElement;
 use Tests\TestCase;
 
 class LocalizaAPIVehResTest extends TestCase
@@ -19,6 +20,7 @@ class LocalizaAPIVehResTest extends TestCase
     use RefreshDatabase;
 
     private $defaultPayload;
+    protected $namespace = "http://www.opentravel.org/OTA/2003/05";
 
     public function setUp(): void
     {
@@ -100,5 +102,58 @@ class LocalizaAPIVehResTest extends TestCase
             'reservationStatus' => 'Pending',
         ], $data);
     }
+
+    #[Group("localiza_veh_res")]
+    #[Group("localiza")]
+    #[Test]
+    public function get_input_data_with_phone_and_phone_country_code_for_colombian_phone(){
+        $newPayload = $this->defaultPayload;
+        $newPayload['phone'] = '+57 315 5555555';
+
+        $localizaReservation = new LocalizaAPIVehRes(
+            $newPayload
+        );
+
+        $rawXml = $localizaReservation->getFilledInputXML();
+        $nodeXml = new SimpleXMLElement($rawXml);
+        $nodeXml->registerXPathNamespace("OTA",$this->namespace);
+        $phoneNodes = $nodeXml->xpath('//OTA:Telephone');
+
+        if(count($phoneNodes) > 0){
+            $phoneNode = $phoneNodes[0];
+            $countryCodePhone = $phoneNode->attributes()->AreaCityCode;
+            $phone = $phoneNode->attributes()->PhoneNumber;
+            $this->assertEquals('57', $countryCodePhone);
+            $this->assertEquals('3155555555', $phone);
+        }
+        else $this->fail('No phone nodes founded!');
+    }
+
+    #[Group("localiza_veh_res")]
+    #[Group("localiza")]
+    #[Test]
+    public function get_input_data_with_phone_and_phone_country_code_for_american_phone(){
+        $newPayload = $this->defaultPayload;
+        $newPayload['phone'] = '+1 315 5555555';
+
+        $localizaReservation = new LocalizaAPIVehRes(
+            $newPayload
+        );
+
+        $rawXml = $localizaReservation->getFilledInputXML();
+        $nodeXml = new SimpleXMLElement($rawXml);
+        $nodeXml->registerXPathNamespace("OTA",$this->namespace);
+        $phoneNodes = $nodeXml->xpath('//OTA:Telephone');
+
+        if(count($phoneNodes) > 0){
+            $phoneNode = $phoneNodes[0];
+            $countryCodePhone = $phoneNode->attributes()->AreaCityCode;
+            $phone = $phoneNode->attributes()->PhoneNumber;
+            $this->assertEquals('1', $countryCodePhone);
+            $this->assertEquals('3155555555', $phone);
+        }
+        else $this->fail('No phone nodes founded!');
+    }
+
 
 }
