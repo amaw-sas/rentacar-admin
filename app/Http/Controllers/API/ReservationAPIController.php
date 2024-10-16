@@ -56,11 +56,11 @@ class ReservationAPIController extends Controller
             ){
                 if($reservationStatus === ReservationAPIStatus::Confirmed){
                     $reservation->status = ReservationStatus::Reservado->value;
-                    $reservationStatus['reservationStatus'] = "Confirmado";
+                    $reservationResult['reservationStatus'] = "Confirmado";
                 }
                 else if($reservationStatus === ReservationAPIStatus::Pending){
                     $reservation->status = ReservationStatus::Pendiente->value;
-                    $reservationStatus['reservationStatus'] = "Pendiente";
+                    $reservationResult['reservationStatus'] = "Pendiente";
                 }
 
                 if($reservation->save())
