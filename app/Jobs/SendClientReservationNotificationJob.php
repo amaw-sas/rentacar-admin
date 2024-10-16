@@ -53,10 +53,13 @@ class SendClientReservationNotificationJob implements ShouldQueue
 
                 Mail::mailer($franchise)
                 ->send(new $franchiseEmail($this->reservation));
+
+                Log::info("An email was send to {$this->reservation->email}", $this->reservation->toArray());
             } catch (\Throwable $th) {
                 Log::error($th->getMessage());
                 \Sentry\captureException($th);
             }
         }
+        else Log::error("No franchise associated", $this->reservation->toArray());
     }
 }
