@@ -22,6 +22,9 @@ class ReservationClientNotification extends Mailable implements ShouldQueue
     public function __construct(Reservation $reservation)
     {
         $this->reservation = $reservation;
+
+        $this->to($this->reservation->email);
+        $this->subject("Detalles de reserva");
     }
 
     /**
