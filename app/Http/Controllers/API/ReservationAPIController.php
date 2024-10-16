@@ -63,6 +63,8 @@ class ReservationAPIController extends Controller
                     $reservationResult['reservationStatus'] = "Pendiente";
                 }
 
+                $reservation->reserve_code = $reservationResult['reserveCode'];
+
                 if($reservation->save())
                     dispatch(new SendClientReservationNotificationJob($reservation));
 

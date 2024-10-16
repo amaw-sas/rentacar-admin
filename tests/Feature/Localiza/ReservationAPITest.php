@@ -765,6 +765,39 @@ class ReservationAPITest extends TestCase
     #[Group("reservation_api")]
     #[Group("localiza")]
     #[Test]
+    public function store_a_default_reservation_and_expect_a_reserve_code()
+    {
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertOk();
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals("AV1BRQW35U", $reservation->reserve_code);
+
+    }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
     public function when_the_request_has_total_coverage_send_a_email_with_the_total_price_with_full_coverage()
     {
 
