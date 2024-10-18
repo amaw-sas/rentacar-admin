@@ -4,6 +4,7 @@ namespace Tests\Feature\Localiza;
 
 use App\Models\Reservation;
 use App\Rentcar\Localiza\VehRetRes\LocalizaAPIVehRetRes;
+use App\Rentcar\Localiza\Exceptions\VehRes\ReservationCancelledException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
 use PHPUnit\Framework\Attributes\Group;
@@ -82,6 +83,8 @@ class LocalizaAPIVehRetResTest extends TestCase
     #[Test]
     public function get_data_for_cancelled_reservation(){
 
+        $this->expectException(ReservationCancelledException::class);
+
         $xml = view('localiza.tests.responses.vehretres.vehretres-cancelled-xml')->render();
 
         Http::fake([
@@ -92,11 +95,10 @@ class LocalizaAPIVehRetResTest extends TestCase
             $this->defaultPayload
         );
 
-        $data = $localizaReservation->getData();
+        $localizaReservation->getData();
 
-        $this->assertEquals([
-            'reservationStatus' => 'Cancelled',
-        ], $data);
+        $this->fail('expected ReservationCancelledException');
+
     }
 
     #[Group("localiza_veh_ret_res")]

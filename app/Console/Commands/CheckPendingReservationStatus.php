@@ -6,6 +6,7 @@ use App\Enums\ReservationAPIStatus;
 use App\Enums\ReservationStatus;
 use App\Jobs\SendClientReservationNotificationJob;
 use App\Models\Reservation;
+use App\Rentcar\Localiza\Exceptions\VehRes\ReservationCancelledException;
 use App\Rentcar\Localiza\VehRetRes\LocalizaAPIVehRetRes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
@@ -69,7 +70,17 @@ class CheckPendingReservationStatus extends Command
                 'reserve_code'  =>  $reservation->reserve_code,
             ]);
 
-            $localizaResponse = $localizaRequest->getData();
+            /** catch all the reservation status exception from localiza api */
+            try {
+                $localizaResponse = $localizaRequest->getData();
+            }
+            catch (ReservationCancelledException $th) {
+                $reservation->status = ReservationStatus::SinDisponibilidad->value;
+                $reservation->save();
+                dispatch(new SendClientReservationNotificationJob($reservation));
+
+                continue;
+            }
 
             Log::info($localizaResponse);
 

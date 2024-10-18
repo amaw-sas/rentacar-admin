@@ -15,6 +15,7 @@ use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayPickupDateBranchExceptio
 use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayReturnDateBranchException;
 use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayOutOfSchedulePickupDateBranchException;
 use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayOutOfScheduleReturnDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehRes\ReservationCancelledException;
 use App\Rentcar\Localiza\Exceptions\UnknowException;
 
 class ProcessWarning {
@@ -29,6 +30,11 @@ class ProcessWarning {
         "LLNRAG015" => OutOfScheduleReturnHourException::class,
         "LLNRAG016" => HolidayReturnDateBranchException::class,
         "LLNRAG017" => OutOfScheduleReturnDateException::class,
+
+    ];
+
+    public $reservation_status_errors = [
+        "LLNRRE045" => ReservationCancelledException::class,
     ];
 
     /**
@@ -38,12 +44,17 @@ class ProcessWarning {
      */
     public function __construct($warning, $context, $job = null){
         $code = (string) $warning->attributes()->ShortText;
-
         $exception = null;
+
+        /** catch reservation status treated as warnings */
+        if(Arr::exists($this->reservation_status_errors, $code))
+            throw new $this->reservation_status_errors[$code];
 
         if(Arr::exists($this->errors, $code))
             $exception = new $this->errors[$code];
         else $exception = new UnknowException($context);
+
+
 
         if($job){
             $job->errorResponse = $exception->original;
