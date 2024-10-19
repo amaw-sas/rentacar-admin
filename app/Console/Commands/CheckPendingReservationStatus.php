@@ -35,10 +35,7 @@ class CheckPendingReservationStatus extends Command
      * @var array[ReservationAPIStatus]
      */
     protected $negativeReservationApiStatuses = [
-        ReservationAPIStatus::Cancelled,
-        ReservationAPIStatus::NoShow,
         ReservationAPIStatus::Failed,
-        ReservationAPIStatus::Expired,
     ];
 
     /**
@@ -47,8 +44,11 @@ class CheckPendingReservationStatus extends Command
      * @var array[ReservationAPIStatus]
      */
     protected $undeterminateReservationApiStatuses = [
+        ReservationAPIStatus::Cancelled,
+        ReservationAPIStatus::NoShow,
         ReservationAPIStatus::OnRequest,
         ReservationAPIStatus::Waitlist,
+        ReservationAPIStatus::Expired,
     ];
 
     /**
@@ -75,14 +75,11 @@ class CheckPendingReservationStatus extends Command
                 $localizaResponse = $localizaRequest->getData();
             }
             catch (ReservationCancelledException $th) {
-                $reservation->status = ReservationStatus::SinDisponibilidad->value;
+                $reservation->status = ReservationStatus::Indeterminado->value;
                 $reservation->save();
-                dispatch(new SendClientReservationNotificationJob($reservation));
 
                 continue;
             }
-
-            Log::info($localizaResponse);
 
             $reservationStatus = ReservationAPIStatus::tryFrom($localizaResponse['reservationStatus']) ?? null;
 
@@ -101,7 +98,7 @@ class CheckPendingReservationStatus extends Command
                     dispatch(new SendClientReservationNotificationJob($reservation));
                 }
                 else if(in_array($reservationStatus, $this->undeterminateReservationApiStatuses)){
-                    $reservation->status = ReservationStatus::Indeterminado;
+                    $reservation->status = ReservationStatus::Indeterminado->value;
                     $reservation->save();
                 }
             }
