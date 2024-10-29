@@ -22,6 +22,9 @@ class BranchFactory extends Factory
             'code' =>  $this->faker->unique()->word(5),
             'name' =>  $this->faker->sentence(),
             'pickup_address'  => $this->faker->streetAddress(),
+            'return_address'  => $this->faker->streetAddress(),
+            'pickup_map'  => $this->faker->url(),
+            'return_map'  => $this->faker->url(),
         ];
     }
 }
