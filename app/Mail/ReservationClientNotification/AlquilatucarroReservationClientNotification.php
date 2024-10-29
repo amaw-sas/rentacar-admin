@@ -2,6 +2,7 @@
 
 namespace App\Mail\ReservationClientNotification;
 
+use App\Http\Resources\ReservationEmailPreviewResource;
 use App\Models\Reservation;
 
 class AlquilatucarroReservationClientNotification extends ReservationClientNotification {
@@ -26,8 +27,10 @@ class AlquilatucarroReservationClientNotification extends ReservationClientNotif
      */
     public function build()
     {
-        return $this->markdown('mail.reservation_client_notification.alquilatucarro', [
-            'reserva' => $this->reservation,
-        ]);
+        $reservationResource = (new ReservationEmailPreviewResource($this->reservation))->toArray(request());
+
+        $reservation = array_merge($reservationResource, ['reserva' => $this->reservation]);
+
+        return $this->markdown('mail.reservation_client_notification.alquilatucarro', $reservation);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Mail\ReservationClientNotification;
 
+use App\Http\Resources\ReservationEmailPreviewResource;
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -34,6 +35,9 @@ class ReservationClientNotification extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('mail.reservation-client-notification.notification');
+        $reservationResource = (new ReservationEmailPreviewResource($this->reservation))->toArray(request());
+        $reservation = array_merge($reservationResource, ['reserva' => $this->reservation]);
+
+        return $this->markdown('mail.reservation_client_notification.notification', $reservation);
     }
 }

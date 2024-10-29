@@ -39,11 +39,13 @@ class ReservationEmailPreviewResource extends JsonResource
             'selected_days'  =>  $this->selected_days,
             'pickup_branch_name'  =>  $this->pickupLocation->name,
             'pickup_branch_address'  =>  $this->pickupLocation->pickup_address,
+            'pickup_branch_map'  =>  $this->pickupLocation->pickup_map,
             'pickup_city'  =>  $this->formatted_pickup_city,
             'pickup_date'  =>  $this->short_formatted_pickup_date,
             'pickup_hour'  =>  $this->formatted_pickup_hour,
             'return_branch_name'  =>  $this->returnLocation->name,
             'return_branch_address'  =>  $this->returnLocation->return_address ?? $this->returnLocation->pickup_address,
+            'return_branch_map'  =>  $this->returnLocation->return_map ?? $this->returnLocation->pickup_map,
             'return_city'  =>  $this->formatted_return_city,
             'return_date'  =>  $this->short_formatted_return_date,
             'return_hour'  =>  $this->formatted_return_hour,
@@ -60,6 +62,7 @@ class ReservationEmailPreviewResource extends JsonResource
             'discount_percentage' => $this->formatted_discount_percentage_from_localiza_price,
             'discount_amount' => $this->formatted_daily_base_price_from_localiza_price,
             'included_fees'  =>  $this->formatted_included_fees,
+            'reservation_status' => Str::of($this->formatted_client_reservation_status)->upper(),
         ];
     }
 
