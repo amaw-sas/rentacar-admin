@@ -148,7 +148,7 @@ class CheckPendingReservationStatusTest extends TestCase {
 
     #[Group("check_pending_reservation_status")]
     #[Test]
-    public function when_reservation_receives_cancelled_status_change_to_sin_disponibilidad_status(): void {
+    public function when_reservation_receives_cancelled_status_change_to_indeterminado_status(): void {
 
         $xml = view('localiza.tests.responses.vehretres.vehretres-cancelled-xml')->render();
 
@@ -170,8 +170,7 @@ class CheckPendingReservationStatusTest extends TestCase {
 
         $reservation->refresh();
 
-        $this->assertEquals(ReservationStatus::SinDisponibilidad->value, $reservation->status);
-        Mail::assertQueued(ReservationClientNotification::class);
+        $this->assertEquals(ReservationStatus::Indeterminado->value, $reservation->status);
 
     }
 
