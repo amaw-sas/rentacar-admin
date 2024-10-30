@@ -91,6 +91,10 @@ class HandleInertiaRequests extends Middleware
                     'text' => '10. Indeterminado',
                     'value' => ReservationStatus::Indeterminado->value,
                 ],
+                [
+                    'text' => '11. Mensualidad',
+                    'value' => ReservationStatus::Mensualidad->value,
+                ],
             ],
             'monthly_mileages'  => fn() => array_map(
                 fn($type) => ['text' => $type->value, 'value' => $type->value],

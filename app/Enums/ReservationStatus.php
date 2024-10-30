@@ -18,5 +18,6 @@ enum ReservationStatus: string {
     case PendienteModificar = "Pendiente Modificar";
     case Cancelado = "Cancelado";
     case Indeterminado = "Indeterminado";
+    case Mensualidad = "Mensualidad";
 }
 
