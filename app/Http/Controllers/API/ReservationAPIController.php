@@ -64,6 +64,8 @@ class ReservationAPIController extends Controller
                     else if($reservationStatus === ReservationAPIStatus::Pending){
                         $reservation->status = ReservationStatus::Pendiente->value;
                         $reservationResult['reservationStatus'] = "Pendiente";
+
+                        dispatch(new SendLocalizaReservationRequestJob($reservation)); // aditional notification to localiza to hurry them up
                     }
 
                     $reservation->reserve_code = $reservationResult['reserveCode'];
