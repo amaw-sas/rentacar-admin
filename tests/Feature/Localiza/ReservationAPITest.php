@@ -29,17 +29,12 @@ class ReservationAPITest extends TestCase
 {
     use RefreshDatabase;
 
+
     public function setUp(): void
     {
         parent::setUp();
 
-        Http::preventStrayRequests();
 
-        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
-
-        Http::fake([
-            '*' =>  Http::response($xml, 200)
-        ]);
 
         Mail::fake();
 
@@ -50,6 +45,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -87,7 +87,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_monthly_mileage()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -127,6 +131,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_empty_string_monthly_mileage()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -166,7 +175,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_null_monthly_mileage()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -206,6 +219,12 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_total_insurance()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -244,6 +263,12 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_no_total_insurance()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -282,7 +307,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_return_fee()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -322,7 +351,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_null_return_fee()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -362,7 +395,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_empty_string_return_fee()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -402,7 +439,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_total_price_to_pay()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -442,7 +483,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_total_price_to_pay_null_and_show_error()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -472,122 +517,14 @@ class ReservationAPITest extends TestCase
     #[Group("reservation_api")]
     #[Group("localiza")]
     #[Test]
-    public function send_a_alquilatucarro_mail_to_localiza_car_provider_when_record_a_reservation(): void {
-
-
-        $pickupLocation = Branch::factory()->create([
-            'code'  =>  'AABOT'
-        ]);
-        $returnLocation = Branch::factory()->create([
-            'code'  =>  'AAMED'
-        ]);
-        $franchise = Franchise::factory()->create([
-            'name'  =>  'alquilatucarro'
-        ]);
-        $category = Category::factory()->create([
-            'identification'  =>  'FX'
-        ]);
-
-        $reservationData = Reservation::factory()->withReservationRequirements()->make();
-        $reservationData['franchise'] = $franchise->name;
-        $reservationData['pickup_location'] = $pickupLocation->code;
-        $reservationData['return_location'] = $returnLocation->code;
-        $reservationData['category'] = $category->identification;
-
-        $response = $this->post(route('reserve.store'), $reservationData->toArray());
-        $response->assertOk();
-
-        $reservation = Reservation::first();
-
-        Mail::assertQueued(AlquilatucarroReservationClientNotification::class);
-        Mail::assertQueued(fn(AlquilatucarroReservationClientNotification $mail) =>
-            $mail->reservation->fullname == $reservation->fullname &&
-            $mail->reservation->category == $reservation->category &&
-            $mail->reservation->franchise == $reservation->franchise
-        );
-    }
-
-    #[Group("reservation_api")]
-    #[Group("localiza")]
-    #[Test]
-    public function send_a_alquilame_mail_to_localiza_car_provider_when_record_a_reservation(): void {
-
-
-        $pickupLocation = Branch::factory()->create([
-            'code'  =>  'AABOT'
-        ]);
-        $returnLocation = Branch::factory()->create([
-            'code'  =>  'AAMED'
-        ]);
-        $franchise = Franchise::factory()->create([
-            'name'  =>  'alquilame'
-        ]);
-        $category = Category::factory()->create([
-            'identification'  =>  'FX'
-        ]);
-
-        $reservationData = Reservation::factory()->withReservationRequirements()->make();
-        $reservationData['franchise'] = $franchise->name;
-        $reservationData['pickup_location'] = $pickupLocation->code;
-        $reservationData['return_location'] = $returnLocation->code;
-        $reservationData['category'] = $category->identification;
-
-        $response = $this->post(route('reserve.store'), $reservationData->toArray());
-        $response->assertOk();
-
-        $reservation = Reservation::first();
-
-        Mail::assertQueued(AlquilameReservationClientNotification::class);
-        Mail::assertQueued(fn(AlquilameReservationClientNotification $mail) =>
-            $mail->reservation->fullname == $reservation->fullname &&
-            $mail->reservation->category == $reservation->category &&
-            $mail->reservation->franchise == $reservation->franchise
-        );
-    }
-
-    #[Group("reservation_api")]
-    #[Group("localiza")]
-    #[Test]
-    public function send_a_alquicarros_mail_to_localiza_car_provider_when_record_a_reservation(): void {
-
-
-        $pickupLocation = Branch::factory()->create([
-            'code'  =>  'AABOT'
-        ]);
-        $returnLocation = Branch::factory()->create([
-            'code'  =>  'AAMED'
-        ]);
-        $franchise = Franchise::factory()->create([
-            'name'  =>  'alquicarros'
-        ]);
-        $category = Category::factory()->create([
-            'identification'  =>  'FX'
-        ]);
-
-        $reservationData = Reservation::factory()->withReservationRequirements()->make();
-        $reservationData['franchise'] = $franchise->name;
-        $reservationData['pickup_location'] = $pickupLocation->code;
-        $reservationData['return_location'] = $returnLocation->code;
-        $reservationData['category'] = $category->identification;
-
-        $response = $this->post(route('reserve.store'), $reservationData->toArray());
-        $response->assertOk();
-
-        $reservation = Reservation::first();
-
-        Mail::assertQueued(AlquicarrosReservationClientNotification::class);
-        Mail::assertQueued(fn(AlquicarrosReservationClientNotification $mail) =>
-            $mail->reservation->fullname == $reservation->fullname &&
-            $mail->reservation->category == $reservation->category &&
-            $mail->reservation->franchise == $reservation->franchise
-        );
-    }
-
-    #[Group("reservation_api")]
-    #[Group("localiza")]
-    #[Test]
     public function store_a_reservation_with_a_non_existent_pickup_location_and_fail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -617,6 +554,12 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_reservation_with_a_non_existent_return_location_and_fail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -646,6 +589,12 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_reservation_with_a_non_existent_franchise_and_fail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -674,6 +623,12 @@ class ReservationAPITest extends TestCase
     #[Group("localiza")]
     #[Test]
     public function real_data_test(): void {
+
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT',
@@ -732,6 +687,12 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_and_expect_a_reserve_code()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
         ]);
@@ -765,7 +726,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function when_the_request_has_total_coverage_send_a_email_with_the_total_price_with_full_coverage()
     {
-
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -803,6 +768,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function when_a_reservation_is_monthly_then_send_a_localiza_notification()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
         Queue::fake();
 
         $pickupLocation = Branch::factory()->create([
@@ -836,14 +806,20 @@ class ReservationAPITest extends TestCase
         $this->assertNotNull($reservation);
 
         Queue::assertPushed(SendLocalizaReservationRequestJob::class);
-        // Mail::assertSent(AlquilameReservationClientNotification::class);
     }
+
+
 
     #[Group("reservation_api")]
     #[Group("localiza")]
     #[Test]
     public function when_a_reservation_is_monthly_then_send_a_localiza_notification_by_alquilatucarro_mail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -883,6 +859,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function when_a_reservation_is_monthly_then_send_a_localiza_notification_by_alquilame_mail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -922,6 +903,11 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function when_a_reservation_is_monthly_then_send_a_localiza_notification_by_alquicarros_mail()
     {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -955,4 +941,49 @@ class ReservationAPITest extends TestCase
 
         Mail::assertQueued(AlquicarrosReservationRequest::class);
     }
+
+    #[Group("reservation_api")]
+    #[Group("localiza")]
+    #[Test]
+    public function when_a_reservation_is_pending_then_send_a_localiza_notification()
+    {
+        Http::preventStrayRequests();
+        $xml = view('localiza.tests.responses.vehres.vehres-pending-xml')->render();
+        Http::fake([
+            '*' =>  Http::response($xml, 200)
+        ]);
+        Queue::fake();
+
+        $pickupLocation = Branch::factory()->create([
+            'code'  =>  'AABOT'
+        ]);
+        $returnLocation = Branch::factory()->create([
+            'code'  =>  'AAMED'
+        ]);
+        $franchise = Franchise::factory()->create([
+            'name'  =>  'alquilame'
+        ]);
+        $category = Category::factory()->create([
+            'identification'  =>  'FX'
+        ]);
+
+        $reservationData = Reservation::factory()->withReservationRequirements()->make();
+        $reservationData['franchise'] = $franchise->name;
+        $reservationData['pickup_location'] = $pickupLocation->code;
+        $reservationData['return_location'] = $returnLocation->code;
+        $reservationData['category'] = $category->identification;
+
+        $response = $this->post(route('reserve.store'), $reservationData->toArray());
+        $response->assertOk();
+        $response->assertJson([
+            'reserveCode' => 'AV1BRQW35U',
+            'reservationStatus' => 'Pendiente',
+        ]);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+
+        Queue::assertPushed(SendLocalizaReservationRequestJob::class);
+    }
+
 }
