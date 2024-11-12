@@ -17,7 +17,7 @@ class ReservationEmailPreviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $image = $this->categoryObject->models->first()->image;
+        $image = Str::of($this->categoryObject->models->first()->image)->replace('webp','png');
         $cloudStorageProviderURI = Str::of(config('filesystems.disks.gcs.storage_api_uri'));
         $imageProdURI = $cloudStorageProviderURI->append($image);
         $imageDevURI = asset("storage/carcategories/car.png");
@@ -69,7 +69,6 @@ class ReservationEmailPreviewResource extends JsonResource
 
     private function avoidClientEmailLinks(string $string){
         return Str::of($string)->prepend('<a style="text-decoration:none; color:#000; cursor:default;" href="#" rel="nofollow noopener noreferer">')->append('</a>');
-        // return Str::of($string)->replace(' ', "</span>&nbsp;<span>")->prepend('<span>')->append('</span>');
     }
 
 }
