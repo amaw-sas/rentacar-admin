@@ -59,10 +59,11 @@ Subtotal: {{ $subtotal_fee }}  \
 **Valor total**: {{ $total_fee }}
 
 **El valor Incluye:** {{ $included_fees }} \
-**Método de pago:** Tarjeta de Crédito en Sede
+**Método de pago:** Tarjeta de Crédito en Sede \
 **Descuentos:** Los descuentos adquiridos en esta reserva son Intransferibles y no se admiten cambios.
 Verifique que la información sea correcta o de lo contrario solicite cuanto antes una nueva reserva.
 Realizar una nueva reserva no garantiza obtener los descuentos de una reserva previa.
+
 </div>
 
 <div class="section">
