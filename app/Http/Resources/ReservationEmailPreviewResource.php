@@ -25,7 +25,8 @@ class ReservationEmailPreviewResource extends JsonResource
         $category = Str::after($this->categoryObject->category, $this->categoryObject->name);
         $description = Str::words($this->categoryObject->description, 3, '');
 
-
+        $pickupLocationBranchAddress = $this->avoidClientEmailLinks($this->pickupLocation->pickup_address);
+        $returnLocationBranchAddress = $this->avoidClientEmailLinks($this->returnLocation->return_address ?? $this->returnLocation->pickup_address);
 
         return [
             'fullname' => $this->fullname,
@@ -38,13 +39,13 @@ class ReservationEmailPreviewResource extends JsonResource
             'category_image' => (App::environment('production')) ? $imageProdURI : $imageDevURI,
             'selected_days'  =>  $this->selected_days,
             'pickup_branch_name'  =>  $this->pickupLocation->name,
-            'pickup_branch_address'  =>  $this->pickupLocation->pickup_address,
+            'pickup_branch_address'  =>  $pickupLocationBranchAddress,
             'pickup_branch_map'  =>  $this->pickupLocation->pickup_map,
             'pickup_city'  =>  $this->formatted_pickup_city,
             'pickup_date'  =>  $this->short_formatted_pickup_date,
             'pickup_hour'  =>  $this->formatted_pickup_hour,
             'return_branch_name'  =>  $this->returnLocation->name,
-            'return_branch_address'  =>  $this->returnLocation->return_address ?? $this->returnLocation->pickup_address,
+            'return_branch_address'  =>  $returnLocationBranchAddress,
             'return_branch_map'  =>  $this->returnLocation->return_map ?? $this->returnLocation->pickup_map,
             'return_city'  =>  $this->formatted_return_city,
             'return_date'  =>  $this->short_formatted_return_date,
@@ -66,5 +67,9 @@ class ReservationEmailPreviewResource extends JsonResource
         ];
     }
 
+    private function avoidClientEmailLinks(string $string){
+        return Str::of($string)->prepend('<a style="text-decoration:none; color:#000; cursor:default;" href="#" rel="nofollow noopener noreferer">')->append('</a>');
+        // return Str::of($string)->replace(' ', "</span>&nbsp;<span>")->prepend('<span>')->append('</span>');
+    }
 
 }
