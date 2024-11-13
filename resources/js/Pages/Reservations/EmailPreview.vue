@@ -90,8 +90,7 @@
                             <p class="columna"></p>
                             <div class="columna">
                                 <p class="pequeña">
-                                    {{ reservation.pickup_branch_address }} -
-                                    Localiza
+                                    <span v-html="reservation.pickup_branch_address"></span> - Localiza
                                 </p>
                             </div>
                         </div>
@@ -126,8 +125,7 @@
                         <div class="fila">
                             <p class="pequeña columna text-right"></p>
                             <p class="pequeña columna">
-                                {{ reservation.return_branch_address }} -
-                                Localiza
+                                <span v-html="reservation.return_branch_address"></span> - Localiza
                             </p>
                         </div>
                     </div>
