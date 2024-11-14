@@ -70,8 +70,10 @@ class ReservationAPIController extends Controller
 
                     if($reservation->save()){
                         dispatch(new SendClientReservationNotificationJob($reservation));
-                        if($reservationStatus === ReservationAPIStatus::Pending)
-                            dispatch(new SendLocalizaReservationRequestJob($reservation)); // aditional notification to localiza to hurry them up
+                        if($reservationStatus === ReservationAPIStatus::Pending){
+                            // dispatch(new SendLocalizaReservationRequestJob($reservation)); // aditional notification to localiza to hurry them up
+                            // TODO pending to send a notification
+                        }
                     }
 
                 }
