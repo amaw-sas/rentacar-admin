@@ -8,12 +8,12 @@
 
 </div>
 
-<div class="section">
+<div class="section centered">
 
 **GAMA RESERVADA**
 
-{{ $category_name }}  \
 ![categoria]({{ $category_image }} "{{ $category_name }}")  \
+{{ $category_name }}  \
 **{{ $category_category }}**
 
 Arrendador: **{{ $reserva->fullname }}** \
@@ -155,11 +155,4 @@ Lavado completo con aspirado y tapicería: $225.000 IVA incluido.
 
 </div>
 
-Apreciamos su paciencia y confianza en nuestros servicios.
-
-Atentamente,
-
-@yield('franchise')
-Travel: Amaw SAS \
-Código: 07334927
 @endcomponent

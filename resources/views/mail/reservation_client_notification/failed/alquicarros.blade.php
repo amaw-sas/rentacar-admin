@@ -2,8 +2,6 @@
 
 @section('franchise')
 
-![alquicarros](https://storage.googleapis.com/alquicarros/landing2022/images/logo.png "Alquicarros")
+@include("mail.footers.alquicarros")
 
-Web: www.alquicarros.com <br/>
-Tel: +57 318 770 3670 <br/>
 @endsection

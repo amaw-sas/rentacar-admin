@@ -6,30 +6,20 @@
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
 <style>
-@media only screen and (max-width: 600px) {
-.inner-body {
-width: 100% !important;
-}
-
-.footer {
-width: 100% !important;
-}
-}
-
-@media only screen and (max-width: 500px) {
-.button {
-width: 100% !important;
-}
-}
+ /* Es mejor usar estilos inline para mayor compatibilidad, pero aquí puedes poner algo de CSS básico para Outlook */
+ @media only screen and (max-width: 600px) {
+            .content { width: 100% !important; }
+        }
 </style>
 </head>
-<body>
+<body style="margin: 0; padding: 0; background-color: #f2f2f2;">
 
 <br/>
 
 {{ Illuminate\Mail\Markdown::parse($slot) }}
 
 {{ $subcopy ?? '' }}
+
 
 <br/>
 </body>

@@ -2,12 +2,9 @@
 
 @section('franchise')
 
-![alquilatucarro](https://storage.googleapis.com/alquilatucarrocom/images/logo.png "Alquilatucarro")
+@include("mail.footers.alquilatucarro")
 
-Web: www.alquilatucarro.com <br/>
-Tel: +57-301-672-9550 <br/>
 @endsection
 
-º
 
 

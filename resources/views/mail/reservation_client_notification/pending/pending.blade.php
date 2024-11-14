@@ -1,14 +1,18 @@
 @component('mail::message')
-Estimado/a {{ $fullname }},
+Estado de la Reserva:
+# **EN PROCESO**
+**Gracias por elegirnos.** \
+Tu reserva está siendo procesada y pronto recibirás la confirmación por correo.
 
-Le informamos que su solicitud de reserva está en proceso. Estaremos verificando, y le
-proporcionaremos una respuesta tan pronto como sea posible.
+**Próximos Pasos:** \
+Revisa tu correo y SPAM para ver la confirmación \
+(tiempo de respuesta promedio 5 horas) \
+¡¡Pronto te confirmaremos!!
 
-Apreciamos su paciencia y confianza en nuestros servicios.
+**¿Necesita Aprobación Inmediata?** \
+Si requieres un vehículo con aprobación inmediata intenta reservar: \
+Gama C - Compacto Mecánico \
+Gama F - Sedán Mecánico \
+Gama FX - Sedán Automático
 
-Atentamente,
-
-@yield('franchise')
-Travel: Amaw SAS \
-Código: 07334927
 @endcomponent

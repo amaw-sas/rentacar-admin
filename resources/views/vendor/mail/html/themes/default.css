@@ -298,10 +298,21 @@ img {
     margin-bottom: 10px;
 }
 
+.section.centered p,
+.section.centered h1,
+.section.centered img
+{
+    text-align: center;
+}
+
 .aproved {
     background-color: #8ae981; /* Fondo blanco grisáceo */
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.aproved h1 {
+    text-align: center;
 }

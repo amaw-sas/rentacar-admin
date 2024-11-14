@@ -1,14 +1,16 @@
 @component('mail::message')
-Estimado/a {{ $fullname }},
+### SIN DISPONIBILIDAD
 
-Lamentamos notificarte que la gama solicitada no se encuentra disponible para la fecha. Contáctanos
-en nuestro canal de WhatsApp para mayor asesoría.
+Lamentamos notificarle que la gama solicitada no se encuentra disponible para la ciudad y fecha solicitadas.
 
-Apreciamos su paciencia y confianza en nuestros servicios.
+**¿Necesita Aprobación Inmediata?** \
+Si requieres un vehículo con aprobación inmediata intenta reservar: \
+Gama C - Compacto Mecánico \
+Gama F - Sedán Mecánico \
+Gama FX - Sedán Automático
 
-Atentamente,
+**Contáctanos** \
+Si necesita asistencia adicional, estamos aquí para ayudarle.
 
-@yield('franchise')
-Travel: Amaw SAS \
-Código: 07334927
 @endcomponent
+
