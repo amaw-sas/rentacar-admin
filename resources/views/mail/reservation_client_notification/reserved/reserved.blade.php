@@ -17,6 +17,7 @@
 **{{ $category_category }}**
 
 Arrendador: **{{ $reserva->fullname }}** \
+Contacto: **{{ $reserva->phone }}** \
 {{ $reserva->short_identification_type }} **{{ $reserva->identification }}** \
 Único Reservante Autorizado
 

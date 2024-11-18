@@ -24,6 +24,12 @@ trait ReservationFormatTrait {
 
     }
 
+    public function formattedPhone(): Attribute {
+        return Attribute::make(
+           get: fn() => $this->phoneFormat($this->phone)
+        );
+    }
+
     public function formattedCategory(): Attribute {
         return Attribute::make(
             get: fn () => $this->categoryObject->category ?? "",
@@ -159,4 +165,5 @@ trait ReservationFormatTrait {
     private function formattedBranch(Branch|null $branch): string{
         return ($branch) ? "{$branch->name} - {$branch->code}" : "";
     }
+
 }
