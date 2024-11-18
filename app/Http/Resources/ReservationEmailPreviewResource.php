@@ -17,7 +17,7 @@ class ReservationEmailPreviewResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $image = $this->categoryObject->models->first()->image;
+        $image = Str::of($this->categoryObject->models->first()->image)->replace('webp','png');
         $cloudStorageProviderURI = Str::of(config('filesystems.disks.gcs.storage_api_uri'));
         $imageProdURI = $cloudStorageProviderURI->append($image);
         $imageDevURI = asset("storage/carcategories/car.png");
@@ -25,6 +25,9 @@ class ReservationEmailPreviewResource extends JsonResource
         $category = Str::after($this->categoryObject->category, $this->categoryObject->name);
         $description = Str::words($this->categoryObject->description, 3, '');
         $franchiseColor = config("rentacar.{$this->franchiseObject->name}.main_color");
+
+        $pickupLocationBranchAddress = $this->avoidClientEmailLinks($this->pickupLocation->pickup_address);
+        $returnLocationBranchAddress = $this->avoidClientEmailLinks($this->returnLocation->return_address ?? $this->returnLocation->pickup_address);
 
         return [
             'fullname' => $this->fullname,
@@ -36,11 +39,15 @@ class ReservationEmailPreviewResource extends JsonResource
             'category_description' => $description,
             'category_image' => (App::environment('production')) ? $imageProdURI : $imageDevURI,
             'selected_days'  =>  $this->selected_days,
-            'pickup_branch'  =>  $this->pickupLocation->name,
+            'pickup_branch_name'  =>  $this->pickupLocation->name,
+            'pickup_branch_address'  =>  $pickupLocationBranchAddress,
+            'pickup_branch_map'  =>  $this->pickupLocation->pickup_map,
             'pickup_city'  =>  $this->formatted_pickup_city,
             'pickup_date'  =>  $this->short_formatted_pickup_date,
             'pickup_hour'  =>  $this->formatted_pickup_hour,
-            'return_branch'  =>  $this->returnLocation->name,
+            'return_branch_name'  =>  $this->returnLocation->name,
+            'return_branch_address'  =>  $returnLocationBranchAddress,
+            'return_branch_map'  =>  $this->returnLocation->return_map ?? $this->returnLocation->pickup_map,
             'return_city'  =>  $this->formatted_return_city,
             'return_date'  =>  $this->short_formatted_return_date,
             'return_hour'  =>  $this->formatted_return_hour,
@@ -58,8 +65,12 @@ class ReservationEmailPreviewResource extends JsonResource
             'discount_amount' => $this->formatted_daily_base_price_from_localiza_price,
             'included_fees'  =>  $this->formatted_included_fees,
             'franchise_color' => $franchiseColor,
+            'reservation_status' => Str::of($this->formatted_client_reservation_status)->upper(),
         ];
     }
 
+    private function avoidClientEmailLinks(string $string){
+        return Str::of($string)->prepend('<a style="text-decoration:none; color:#000; cursor:default;" href="#" rel="nofollow noopener noreferer">')->append('</a>');
+    }
 
 }

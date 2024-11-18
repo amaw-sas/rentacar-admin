@@ -172,9 +172,9 @@ class ReservationTest extends TestCase
     #[Group("reservation")]
     #[Test]
     public function filter_reservations_by_status(){
-        $search = (ReservationStatus::SinConfirmar)->value;
+        $search = (ReservationStatus::Reservado)->value;
         Reservation::factory()->count(5)->create([
-            'status'    =>  (ReservationStatus::Nueva)->value
+            'status'    =>  (ReservationStatus::Pendiente)->value
         ]);
         $reservation = Reservation::factory()->create([
             'status'  => $search
@@ -368,11 +368,11 @@ class ReservationTest extends TestCase
     #[Group("reservation")]
     #[Test]
     public function filter_reservations_by_search_and_pickup_date_and_status_fields(){
-        $status = (ReservationStatus::SinConfirmar)->value;
+        $status = (ReservationStatus::Reservado)->value;
         $name = 'testing';
 
         Reservation::factory()->count(5)->create([
-            'status'    =>  (ReservationStatus::Nueva)->value,
+            'status'    =>  (ReservationStatus::Pendiente)->value,
             'pickup_date'   => now()->subMonth()->format('Y-m-d'),
         ]);
         $reservation = Reservation::factory()->create([
@@ -413,12 +413,12 @@ class ReservationTest extends TestCase
     #[Group("reservation")]
     #[Test]
     public function filter_reservations_by_search_and_pickup_date_and_status_and_franchise_fields(){
-        $status = (ReservationStatus::SinConfirmar)->value;
+        $status = (ReservationStatus::Reservado)->value;
         $franchise = Franchise::factory()->create();
         $name = 'testing';
 
         Reservation::factory()->count(5)->create([
-            'status'    =>  (ReservationStatus::Nueva)->value,
+            'status'    =>  (ReservationStatus::Pendiente)->value,
             'pickup_date'   => now()->subMonth()->format('Y-m-d'),
         ]);
         $reservation = Reservation::factory()->create([
@@ -464,12 +464,12 @@ class ReservationTest extends TestCase
     #[Group("reservation")]
     #[Test]
     public function filter_reservations_by_search_and_pickup_date_and_created_at_and_status_and_franchise_fields(){
-        $status = (ReservationStatus::SinConfirmar)->value;
+        $status = (ReservationStatus::Reservado)->value;
         $franchise = Franchise::factory()->create();
         $name = 'testing';
 
         Reservation::factory()->count(5)->create([
-            'status'    =>  (ReservationStatus::Nueva)->value,
+            'status'    =>  (ReservationStatus::Pendiente)->value,
             'pickup_date'   => now()->subMonth()->format('Y-m-d'),
             'created_at'   => now()->subMonth(),
         ]);
@@ -1011,5 +1011,30 @@ class ReservationTest extends TestCase
         $this->assertEquals(0, $reservation->return_fee);
     }
 
+    #[Group("reservation")]
+    #[Group("pickup_date_time")]
+    #[Test]
+    public function get_reservation_pickup_date_time(){
+        $reservation = Reservation::factory()->create([
+            'pickup_date'   =>  '2028-01-01',
+            'pickup_hour'   =>  '08:00',
+        ]);
+
+
+        $this->assertEquals('2028-01-01T08:00:00', $reservation->getPickupDateTime());
+    }
+
+    #[Group("reservation")]
+    #[Group("return_date_time")]
+    #[Test]
+    public function get_reservation_return_date_time(){
+        $reservation = Reservation::factory()->create([
+            'return_date'   =>  '2028-01-01',
+            'return_hour'   =>  '08:00',
+        ]);
+
+
+        $this->assertEquals('2028-01-01T08:00:00', $reservation->getReturnDateTime());
+    }
 
 }

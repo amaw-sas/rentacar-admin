@@ -3,18 +3,19 @@
 namespace App\Rentcar\Localiza;
 
 use Illuminate\Support\Arr;
-use App\Rentcar\Localiza\Exceptions\OutOfSchedulePickupDateException;
-use App\Rentcar\Localiza\Exceptions\OutOfSchedulePickupHourException;
-use App\Rentcar\Localiza\Exceptions\OutOfScheduleReturnDateException;
-use App\Rentcar\Localiza\Exceptions\OutOfScheduleReturnHourException;
-use App\Rentcar\Localiza\Exceptions\NoAvailableCategoriesException;
-use App\Rentcar\Localiza\Exceptions\SameHourException;
-use App\Rentcar\Localiza\Exceptions\InferiorPickupDateException;
-use App\Rentcar\Localiza\Exceptions\InferiorReturnDateException;
-use App\Rentcar\Localiza\Exceptions\HolidayPickupDateBranchException;
-use App\Rentcar\Localiza\Exceptions\HolidayReturnDateBranchException;
-use App\Rentcar\Localiza\Exceptions\HolidayOutOfSchedulePickupDateBranchException;
-use App\Rentcar\Localiza\Exceptions\HolidayOutOfScheduleReturnDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\OutOfSchedulePickupDateException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\OutOfSchedulePickupHourException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\OutOfScheduleReturnDateException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\OutOfScheduleReturnHourException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\NoAvailableCategoriesException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\SameHourException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\InferiorPickupDateException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\InferiorReturnDateException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayPickupDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayReturnDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayOutOfSchedulePickupDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\HolidayOutOfScheduleReturnDateBranchException;
+use App\Rentcar\Localiza\Exceptions\VehRes\ReservationCancelledException;
 use App\Rentcar\Localiza\Exceptions\UnknowException;
 
 class ProcessWarning {
@@ -29,6 +30,11 @@ class ProcessWarning {
         "LLNRAG015" => OutOfScheduleReturnHourException::class,
         "LLNRAG016" => HolidayReturnDateBranchException::class,
         "LLNRAG017" => OutOfScheduleReturnDateException::class,
+
+    ];
+
+    public $reservation_status_errors = [
+        "LLNRRE045" => ReservationCancelledException::class,
     ];
 
     /**
@@ -38,12 +44,17 @@ class ProcessWarning {
      */
     public function __construct($warning, $context, $job = null){
         $code = (string) $warning->attributes()->ShortText;
-
         $exception = null;
+
+        /** catch reservation status treated as warnings */
+        if(Arr::exists($this->reservation_status_errors, $code))
+            throw new $this->reservation_status_errors[$code];
 
         if(Arr::exists($this->errors, $code))
             $exception = new $this->errors[$code];
         else $exception = new UnknowException($context);
+
+
 
         if($job){
             $job->errorResponse = $exception->original;

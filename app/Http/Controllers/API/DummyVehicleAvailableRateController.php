@@ -8,6 +8,13 @@ use App\Rentcar\Localiza\VehAvailRate\LocalizaAPIVehAvailRate;
 
 class DummyVehicleAvailableRateController extends Controller
 {
+    private array $payload = [
+        "pickupLocation" => "AABOT",
+        "returnLocation" => "AABOT",
+        "pickupDateTime" => "2024-01-15T23:00:00",
+        "returnDateTime" => "2024-01-17T13:00:00",
+    ];
+
     public function index(){
         $raw_xml = view('localiza.tests.responses.vehavailrate.vehavailrate-xml');
 
@@ -15,17 +22,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -38,17 +36,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -61,17 +50,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -84,17 +64,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -107,17 +78,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -130,17 +92,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -153,17 +106,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -176,17 +120,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -199,17 +134,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 200)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();
@@ -222,17 +148,8 @@ class DummyVehicleAvailableRateController extends Controller
             '*' =>  Http::response($raw_xml, 408)
         ]);
 
-        $pickupLocation = "AABOT";
-        $returnLocation = "AABOT";
-        $pickupDateTime = "2024-01-15T23:00:00";
-        $returnDateTime = "2024-01-17T13:00:00";
-
         $localiza = new LocalizaAPIVehAvailRate(
-            $pickupLocation,
-            $returnLocation,
-            $pickupDateTime,
-            $returnDateTime,
-            false
+            $this->payload
         );
 
         return $localiza->getData();

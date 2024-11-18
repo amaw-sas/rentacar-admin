@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dummy\DummyVehicleAvailableRateController;
-
+use App\Http\Controllers\Dummy\DummyVehicleReserveController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(DummyVehicleAvailableRateController::class)->group(function(){
@@ -17,4 +17,11 @@ Route::controller(DummyVehicleAvailableRateController::class)->group(function(){
     Route::post('/disponibilidad/timeout','timeout')->name('dummy.timeout');
 });
 
-Route::post('/subscribe/formlead', fn() => response('ok',200))->name('dummy.registrar');
+Route::controller(DummyVehicleReserveController::class)->group(function(){
+    Route::post('/subscribe/formlead', 'index')->name('dummy.reserve.index');
+    Route::post('/subscribe/formlead/reservado', 'reservado')->name('dummy.reserve.reservado');
+    Route::post('/subscribe/formlead/pendiente', 'pendiente')->name('dummy.reserve.pendiente');
+    Route::post('/subscribe/formlead/errordesconocido', 'error_desconocido')->name('dummy.reserve.errordesconocido');
+    Route::post('/subscribe/formlead/timeout', 'timeout')->name('dummy.reserve.timeout');
+});
+

@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use App\Enums\IdentificationType;
+use App\Enums\ReservationStatus;
 use App\Models\Branch;
 
 trait ReservationFormatTrait {
@@ -21,6 +22,12 @@ trait ReservationFormatTrait {
             }
         );
 
+    }
+
+    public function formattedPhone(): Attribute {
+        return Attribute::make(
+           get: fn() => $this->phoneFormat($this->phone)
+        );
     }
 
     public function formattedCategory(): Attribute {
@@ -137,7 +144,26 @@ trait ReservationFormatTrait {
         );
     }
 
+    public function formattedClientReservationStatus(): Attribute {
+        $formatted_status = null;
+        $status = ReservationStatus::tryFrom($this->status) ?? null;
+
+        if($status){
+            $formatted_status = match($status) {
+                ReservationStatus::Reservado => "Aprobado",
+                ReservationStatus::Pendiente => "En revisión",
+                ReservationStatus::SinDisponibilidad => "Sin disponibilidad",
+                default => null
+            };
+        }
+
+        return Attribute::make(
+            get: fn() => $formatted_status
+        );
+    }
+
     private function formattedBranch(Branch|null $branch): string{
         return ($branch) ? "{$branch->name} - {$branch->code}" : "";
     }
+
 }

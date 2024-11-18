@@ -2,151 +2,105 @@
 
 namespace App\Rentcar\Localiza\VehRes;
 
+use App\Rentcar\Localiza\Contracts\LocalizaAPIRequest;
+use App\Rentcar\Localiza\Exceptions\TimeoutException;
+use App\Rentcar\Localiza\Exceptions\UnknowException;
+use App\Rentcar\Localiza\Exceptions\VehRes\NoReservationStatusException;
+use App\Rentcar\Localiza\Exceptions\VehRes\NoReserveCodeException;
+use App\Rentcar\Localiza\ProcessWarning;
 use App\Rentcar\Localiza\LocalizaAPI;
 use App\Rentcar\Localiza\VehRes\VehRes;
+use App\Traits\MultipleAttributeSetter;
+use Illuminate\Http\Client\ConnectionException;
+use Propaganistas\LaravelPhone\PhoneNumber;
 use SimpleXMLElement;
 
-class LocalizaAPIVehRes extends LocalizaAPI {
+class LocalizaAPIVehRes extends LocalizaAPI implements LocalizaAPIRequest {
 
-    private $name;
+    use MultipleAttributeSetter;
+
+    private $fullname;
     private $email;
-    private $phoneNumber;
-    private $phonePrefix;
-    private $documentType;
-    private $document;
-    private $reference;
-    private $returnDateTime;
-    private $pickupDateTime;
-    private $returnLocation;
-    private $pickupLocation;
+    private $phone;
+    private $reference_token;
+    private $return_datetime;
+    private $pickup_datetime;
+    private $return_location;
+    private $pickup_location;
     private $category;
-    private $selectedDays;
-    private $vehicleChargeDay;
-    private $vehicleChargeTotal;
-    private $aeroline;
-    private $flightNumber;
-    private $flightDateTime;
+    private $rate_qualifier;
 
-
-    private $soapAction = '"http://www.opentravel.org/OTA/2003/05:OTA_VehAvailRateRQ"';
+    private $soapAction = '"http://www.opentravel.org/OTA/2003/05:OTA_VehResRQ"';
     private $context;
 
-    public function __construct(
-        $name,
-        $email,
-        $phoneNumber,
-        $phonePrefix,
-        $documentType,
-        $document,
-        $reference,
-        $returnDateTime,
-        $pickupDateTime,
-        $returnLocation,
-        $pickupLocation,
-        $category,
-        $selectedDays,
-        $vehicleChargeDay,
-        $vehicleChargeTotal,
-        $aeroline,
-        $flightNumber,
-        $flightDateTime,
-    ){
+    public function __construct(array $attributes){
         parent::__construct();
 
-        $this->name = $name;
-        $this->email = $email;
-        $this->phoneNumber = $phoneNumber;
-        $this->phonePrefix = $phonePrefix;
-        $this->documentType = $documentType;
-        $this->document = $document;
-        $this->reference = $reference;
-        $this->returnDateTime = $returnDateTime;
-        $this->pickupDateTime = $pickupDateTime;
-        $this->returnLocation = $returnLocation;
-        $this->pickupLocation = $pickupLocation;
-        $this->category = $category;
-        $this->selectedDays = $selectedDays;
-        $this->vehicleChargeDay = $vehicleChargeDay;
-        $this->vehicleChargeTotal = $vehicleChargeTotal;
-        $this->aeroline = $aeroline;
-        $this->flightNumber = $flightNumber;
-        $this->flightDateTime = $flightDateTime;
+        $this->setAttributes($attributes);
+
+        $this->context = [
+            'pickupDateTime'    => $this->pickup_datetime,
+            'returnDateTime'    => $this->return_datetime,
+            'pickupLocation'    => $this->pickup_location,
+            'returnLocation'    => $this->return_location,
+            'category'          => $this->category,
+            'rateQualifier'     => $this->rate_qualifier,
+        ];
 
     }
 
-    private function getFilledInputXML(){
-        return <<<XML
-        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-            <s:Body
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <OTA_VehRes
-                    xmlns="http://tempuri.org/">
-                    <OTA_VehResRQ PrimaryLangID="esp"
-                        RetransmissionIndicator="false" TransactionStatusCode="Start" Version="0"
-                        TimeStamp="0001-01-01T00:00:00" EchoToken="{$this->token}"
-                        MaxPerVendorInd="false">
-                        <POS>
-                            <Source ISOCountry="CO">
-                                <RequestorID
-                                    ID="{$this->requestorID}" Type="5" xmlns="http://www.opentravel.org/OTA/2003/05" />
-                            </Source>
-                        </POS>
-                        <VehResRQCore>
-                            <Customer
-                                xmlns="http://www.opentravel.org/OTA/2003/05">
-                                <Primary>
-                                    <PersonName Surname="{$this->name}" />
-                                    <Email>{$this->email}</Email>
-                                    <Telephone
-                                        PhoneUseType="5"
-                                        PhoneTechnologyType="5"
-                                        CountryAccessCode="57"
-                                        PhoneNumber="3155555555"
-                                    />
-                                    <CitizenCountryName Code="CO" />
-                                    <!-- 5 cedula -->
-                                    <!-- 2 pasaporte -->
-                                    <Document
-                                        DocumentType="{$this->documentType}"
-                                        DocID="{$this->document}"
-                                    />
-                                </Primary>
-                            </Customer>
-                            <!-- parece la referencia obtenida de la busqueda -->
-                            <UniqueID Type="24" ID="{$this->reference}" />
+    public function getData(): array
+    {
+        try {
+            $filledVehicleReservationXML = $this->getFilledInputXML();
+            $response = $this->callAPI($this->soapAction, $filledVehicleReservationXML);
+        }
+        catch(ConnectionException $th){
+            abort(new TimeoutException($this->context));
+        }
+        catch(\Exception $th){
+            abort(new UnknowException($this->context));
+        }
 
-                            <!-- info devuelto por la busqueda de categorias -->
-                            <VehRentalCore OneWayIndicator="true" ReturnDateTime="{$this->returnDateTime}" PickUpDateTime="{$this->pickupDateTime}" xmlns="http://www.opentravel.org/OTA/2003/05">
-                                <PickUpLocation LocationCode="{$this->pickupLocation}" CodeContext="internal code"/>
-                                <ReturnLocation LocationCode="{$this->returnLocation}" CodeContext="internal code"/>
-                            </VehRentalCore>
-                            <!-- info devuelto por la busqueda de categorias -->
-                            <RateQualifier RatePeriod="Daily" RateQualifier="018118" RateCategory="16"/>
-                            <VehPref Code="{$this->category}" />
-                            <VehicleCharges>
-                                <VehicleCharge IncludedInRate="true" RateConvertInd="false" IncludedInEstTotalInd="true" Description="Diárias" DecimalPlaces="2" CurrencyCode="COP" TaxInclusive="false" Amount="142886.94" Purpose="1">
-                                    <Calculation UnitCharge="{$this->vehicleChargeDay}" UnitName="Day" Quantity="{$this->selectedDays}" Total="{$this->vehicleChargeTotal}"/>
-                                </VehicleCharge>
-                            </VehicleCharges>
-                        </VehResRQCore>
-                        <VehResRQInfo>
-                            <!-- al parecer en caso de reservar en una sucursal aeropuerto, se debe especificar datos del vuelo -->
-                            <ArrivalDetails>
-                                <OperatingCompany Code="{$this->aeroline}" />
-                                <Number>{$this->flightNumber}</Number>
-                                <ArrivalDateTime>{$this->flightDateTime}</ArrivalDateTime>
-                            </ArrivalDetails>
-                            <!-- 19 Travel Agency IATA Number -->
-                            <RentalPaymentPref PaymentType="19" />
-                            <!-- 7 Collision damage waiver -->
-                            <CoveragePref CoverageType="7" />
+        $xml = new SimpleXMLElement($response->body());
+        $xml->registerXPathNamespace("OTA",$this->namespace);
 
-                        </VehResRQInfo>
-                    </OTA_VehResRQ>
-                </OTA_VehRes>
-            </s:Body>
-        </s:Envelope>
-        XML;
+        $warnings = (array) $xml->xpath("//OTA:Warning");
+        if(count($warnings) > 0) {
+            new ProcessWarning($warnings[0], $this->context);
+        }
+
+        $reservationNodes = (array) $xml->xpath("//OTA:VehReservation");
+
+        if(count($reservationNodes) > 0){
+            $reservationNode = $reservationNodes[0];
+            $reservationNode->registerXPathNamespace("A", $this->namespace);
+            $reservationData = (new VehRes($reservationNode))->toArray();
+
+            if(!$reservationData['reserveCode'])
+                abort(new NoReserveCodeException($this->context));
+            if(!$reservationData['reservationStatus'])
+                abort(new NoReservationStatusException($this->context));
+
+            return $reservationData;
+        }
+
+        return [];
+    }
+
+    public function getFilledInputXML() : string {
+        $data = array_merge($this->attributes, $this->getAgencyIdentificationData());
+
+        $phone = new PhoneNumber($data['phone']);
+        if($phone->isValid()){
+            $libPhone = $phone->toLibPhoneObject();
+            $data['phone'] = (string) $libPhone->getNationalNumber();
+            $data['phone_country_code'] = (string) $libPhone->getCountryCode();
+        }
+        else {
+            $data['phone_country_code'] = "57";
+        }
+
+        return view('localiza.inputs.vehres', $data)->render();
     }
 }

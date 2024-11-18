@@ -45,5 +45,17 @@ class LocalizaAPI{
         }
     }
 
+    /**
+     * return agency identification data like id and token
+     *
+     * @return array
+     */
+    public function getAgencyIdentificationData() : array {
+        return [
+            'requestor_id'  => $this->requestorID,
+            'token'         => $this->token,
+        ];
+    }
+
 
 }

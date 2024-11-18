@@ -52,7 +52,16 @@ class ReservationFactory extends Factory
             'status'                =>  ($this->faker->randomElement(ReservationStatus::class))->value,
             'monthly_mileage'       =>  ($this->faker->randomElement(MonthlyMileage::class))->value,
             'total_insurance'       =>  $this->faker->boolean(),
-            'created_at'            =>  $this->faker->dateTime()->format('Y-m-d H:i:s')
+            'created_at'            =>  $this->faker->dateTime()->format('Y-m-d H:i:s'),
         ];
+    }
+
+    public function withReservationRequirements(){
+        return $this->state(fn(array $attributes) =>
+            [
+                'rate_qualifier'        =>  $this->faker->randomNumber(6),
+                'reference_token'        =>  $this->faker->sha256(),
+            ]
+        );
     }
 }

@@ -65,6 +65,34 @@ class Reservation extends Model
     }
 
     /**
+     * get pickup date time
+     *
+     * @return string
+     */
+    public function getPickupDateTime(): string {
+        $pickupDate = $this->pickup_date;
+        $pickupHour = $this->pickup_hour;
+        $pickupDate->hour = $pickupHour->hour;
+        $pickupDate->minute = $pickupHour->minute;
+
+        return $pickupDate->format('Y-m-d\TH:i:s');
+    }
+
+    /**
+     * get return date time
+     *
+     * @return string
+     */
+    public function getReturnDateTime(): string {
+        $returnDate = $this->return_date;
+        $returnHour = $this->return_hour;
+        $returnDate->hour = $returnHour->hour;
+        $returnDate->minute = $returnHour->minute;
+
+        return $returnDate->format('Y-m-d\TH:i:s');
+    }
+
+    /**
      * The model's default values for attributes.
      *
      * @var array

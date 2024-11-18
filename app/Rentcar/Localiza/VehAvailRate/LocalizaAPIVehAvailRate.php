@@ -3,16 +3,20 @@
 namespace App\Rentcar\Localiza\VehAvailRate;
 
 use App\Jobs\LogVehAvailableRatesQueryJob;
-use App\Rentcar\Localiza\Exceptions\NoPriceFoundException;
+use App\Rentcar\Localiza\Contracts\LocalizaAPIRequest;
+use App\Rentcar\Localiza\Exceptions\VehAvailRate\NoPriceFoundException;
 use App\Rentcar\Localiza\Exceptions\TimeoutException;
 use App\Rentcar\Localiza\VehAvailRate\VehAvail;
 use App\Rentcar\Localiza\LocalizaAPI;
 use App\Rentcar\Localiza\ProcessWarning;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use App\Traits\MultipleAttributeSetter;
 use SimpleXMLElement;
 
-class LocalizaAPIVehAvailRate extends LocalizaAPI {
+class LocalizaAPIVehAvailRate extends LocalizaAPI implements LocalizaAPIRequest {
+
+    use MultipleAttributeSetter;
 
     private $pickupLocation;
     private $returnLocation;
@@ -20,19 +24,18 @@ class LocalizaAPIVehAvailRate extends LocalizaAPI {
     private $returnDateTime;
     private $currencyExchange;
     private $exchangeCOP;
+
     private $soapAction = '"http://www.opentravel.org/OTA/2003/05:OTA_VehAvailRateRQ"';
     private $context;
 
 
-    public function __construct($pickupLocation, $returnLocation, $pickupDateTime, $returnDateTime, $currencyExchange = false)
+    public function __construct(array $attributes)
     {
         parent::__construct();
 
-        $this->pickupLocation = $pickupLocation;
-        $this->returnLocation = $returnLocation;
-        $this->pickupDateTime = $pickupDateTime;
-        $this->returnDateTime = $returnDateTime;
-        $this->currencyExchange = $currencyExchange;
+        $this->setAttributes($attributes);
+
+        $this->currencyExchange = false;
         $this->exchangeCOP = Cache::get('cop-exchange',4100);
         $this->context = [
             'pickupLocation'    =>  $this->pickupLocation,
@@ -42,7 +45,7 @@ class LocalizaAPIVehAvailRate extends LocalizaAPI {
         ];
     }
 
-    public function getData(){
+    public function getData() : array {
         try {
             $filledVehicleAvailableRateXML = $this->getFilledInputXML();
             $response = $this->callAPI($this->soapAction, $filledVehicleAvailableRateXML);
@@ -101,47 +104,9 @@ class LocalizaAPIVehAvailRate extends LocalizaAPI {
         return [];
     }
 
+    public function getFilledInputXML(): string {
+        $data = array_merge($this->attributes, $this->getAgencyIdentificationData());
 
-
-    private function getFilledInputXML() {
-        return <<<XML
-        <s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
-            <s:Body
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-                <OTA_VehAvailRate
-                    xmlns="http://tempuri.org/">
-                    <OTA_VehAvailRateRQ PrimaryLangID="esp"
-                        RetransmissionIndicator="false" TransactionStatusCode="Start" Version="0"
-                        TimeStamp="0001-01-01T00:00:00" EchoToken="{$this->token}"
-                        MaxPerVendorInd="false">
-                        <POS>
-                            <Source ISOCountry="CO">
-                                <RequestorID
-                                    ID="{$this->requestorID}" Type="5" xmlns="http://www.opentravel.org/OTA/2003/05" />
-                            </Source>
-                        </POS>
-                        <VehAvailRQCore>
-                            <VehRentalCore PickUpDateTime="{$this->pickupDateTime}"
-                                ReturnDateTime="{$this->returnDateTime}"
-                                xmlns="http://www.opentravel.org/OTA/2003/05">
-                                <PickUpLocation
-                                    LocationCode="{$this->pickupLocation}" CodeContext="internal code" />
-                                <ReturnLocation
-                                    LocationCode="{$this->returnLocation}" CodeContext="internal code" />
-                            </VehRentalCore>
-                            <Customer
-                                xmlns="http://www.opentravel.org/OTA/2003/05">
-                                <Primary>
-                                    <CitizenCountryName
-                                        Code="CO" />
-                                </Primary>
-                            </Customer>
-                        </VehAvailRQCore>
-                    </OTA_VehAvailRateRQ>
-                </OTA_VehAvailRate>
-            </s:Body>
-        </s:Envelope>
-        XML;
+        return view('localiza.inputs.vehavailrate', $data)->render();
     }
 }

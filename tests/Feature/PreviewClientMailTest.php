@@ -47,11 +47,19 @@ class PreviewClientMailTest extends TestCase
 
         $pickup_branch = Branch::factory()->create([
             'name' => 'Cali Aeropuerto',
+            'pickup_address' => 'Carrera 1a # 1-1',
+            'return_address' => 'Carrera 1a # 1-2',
+            'pickup_map' => 'https://maps.app.goo.gl/pick1',
+            'return_map' => 'https://maps.app.goo.gl/return1',
             'city_id'   => $city->id
         ]);
 
         $return_branch = Branch::factory()->create([
-            'name' => 'Cali Aeropuerto',
+            'name' => 'Medellín Aeropuerto',
+            'pickup_address' => 'Carrera 2a # 2-1',
+            'return_address' => 'Carrera 2a # 2-2',
+            'pickup_map' => 'https://maps.app.goo.gl/pick2',
+            'return_map' => 'https://maps.app.goo.gl/return2',
             'city_id'   => $city->id
         ]);
 
@@ -104,12 +112,14 @@ class PreviewClientMailTest extends TestCase
                 ->where('category_name', 'Gama C')
                 ->where('category_category', 'Sedán automático')
                 ->where('category_description', '3 puertas')
-                ->where('category_image', 'http://localhost:8000/storage/carcategories/car.png')
-                ->where('pickup_branch', 'Cali Aeropuerto')
+                ->where('category_image', 'http://localhost/storage/carcategories/car.png')
+                ->where('pickup_branch_name', 'Cali Aeropuerto')
+                ->where('pickup_branch_address', 'Carrera 1a # 1-1')
                 ->where('pickup_city', 'Cali')
                 ->where('pickup_date', $pickup_date_output)
                 ->where('pickup_hour', '09:00 am')
-                ->where('return_branch', 'Cali Aeropuerto')
+                ->where('return_branch_name', 'Medellín Aeropuerto')
+                ->where('return_branch_address', 'Carrera 2a # 2-2')
                 ->where('return_city', 'Cali')
                 ->where('return_date', $return_date_output)
                 ->where('return_hour', '09:00 am')
@@ -445,4 +455,48 @@ class PreviewClientMailTest extends TestCase
             )
         );
     }
+
+    #[Group("preview_client_mail")]
+    #[Test]
+    public function when_return_address_is_null_then_return_the_pickup_address(): void
+    {
+        $category = Category::factory()->hasModels(2)->create([
+            'name'  => 'Gama C',
+            'category'  => 'Sedán automático',
+            'description'  => '3 puertas',
+        ]);
+
+        $pickup_branch = Branch::factory()->create([
+            'pickup_address' => 'Carrera 1a # 1-1',
+            'return_address' => 'Carrera 1a # 1-2',
+        ]);
+
+        $return_branch = Branch::factory()->create([
+            'pickup_address' => 'Carrera 2a # 2-1',
+            'return_address' => null,
+        ]);
+
+        $reservation = Reservation::factory()->create([
+            'category'  => $category->id,
+            'pickup_location'   =>  $pickup_branch->id,
+            'return_location'   =>  $return_branch->id,
+        ]);
+
+        $response = $this
+        ->actingAs($this->user)
+        ->get(route('reservations.emailPreview', [
+            'reservation' => $reservation
+        ]))
+        ->assertInertia(fn(Assert $page) => $page
+            ->component('Reservations/EmailPreview')
+            ->has('reservation', fn(Assert $page) => $page
+                ->where('pickup_branch_address', 'Carrera 1a # 1-1')
+                ->where('return_branch_address', 'Carrera 2a # 2-1')
+                ->etc()
+            )
+        );
+
+
+    }
+
 }

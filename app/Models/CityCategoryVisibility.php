@@ -10,6 +10,12 @@ class CityCategoryVisibility extends Model
     use HasFactory;
 
     public $timestamps = false;
+    protected $fillable = [
+        'city_id',
+        'category_id',
+        'visible'
+    ];
+    protected $with = ['category'];
 
     /**
      * get city for this city category visibility
@@ -26,6 +32,6 @@ class CityCategoryVisibility extends Model
      * @return \Illuminate\Database\Eloquent\Relations\belongsTo
      */
     public function category(){
-        return $this->belongsTo(Car::class);
+        return $this->belongsTo(Category::class);
     }
 }

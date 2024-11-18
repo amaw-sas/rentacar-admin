@@ -2,23 +2,21 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Requests\StoreReservationAPIRequest;
-use App\Mail\AlquicarrosReservationRequest;
-use App\Mail\AlquilameReservationRequest;
-use App\Mail\AlquilatucarroReservationRequest;
-use App\Models\Reservation;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+use UnexpectedValueException;
+use Exception;
+
+use App\Models\Reservation;
+use App\Enums\ReservationAPIStatus;
+use App\Enums\ReservationStatus;
+use App\Http\Requests\StoreReservationAPIRequest;
+use App\Jobs\SendClientReservationNotificationJob;
+use App\Jobs\SendLocalizaReservationRequestJob;
+use App\Rentcar\Localiza\VehRes\LocalizaAPIVehRes;
 
 class ReservationAPIController extends Controller
 {
-
-    public $franchisesEmails = [
-        'alquilatucarro' => AlquilatucarroReservationRequest::class,
-        'alquilame' => AlquilameReservationRequest::class,
-        'alquicarros' => AlquicarrosReservationRequest::class,
-    ];
 
     /**
      * Store a newly created resource in storage.
@@ -28,45 +26,89 @@ class ReservationAPIController extends Controller
      */
     public function __invoke(StoreReservationAPIRequest $request)
     {
-        $reservationData = $request->safe()->all();
+        $reservationSavingData = $request->safe()->except(['rate_qualifier','reference_token']);
+        $reservationLocalizaApiData = $request->safe()->only([
+            'fullname','email','phone','reference_token','rate_qualifier'
+        ]);
 
-        try {
-            $reservation = Reservation::create($reservationData);
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            abort(500, __('localiza.error_saving_reservation'));
-            \Sentry\captureException($th);
-        }
+        $reservation = new Reservation();
+        $reservation->fill($reservationSavingData);
 
-        if($reservation){
-            $franchise = $reservation->franchiseObject->name;
+        if($reservation->selected_days < 30){
 
-            if(!is_null($franchise)){
-                try {
-                    // send to localiza a notification
-                    $franchiseEmail = $this->franchisesEmails[$franchise];
+            $payload = array_merge($reservationLocalizaApiData, [
+                'pickup_datetime' => $reservation->getPickupDateTime(),
+                'return_datetime' => $reservation->getReturnDateTime(),
+                'category'      => $request->original_category,
+                'pickup_location'      => $request->original_pickup_location,
+                'return_location'      => $request->original_return_location,
+            ]);
 
-                    Mail::mailer($franchise)
-                    ->send(new $franchiseEmail($reservation));
-                } catch (\Throwable $th) {
-                    Log::error($th->getMessage());
-                    abort(500, __('localiza.error_sending_reservation_request_to_localiza'));
-                    \Sentry\captureException($th);
+            $localizaApi = new LocalizaAPIVehRes(
+               $payload
+            );
+
+            $reservationResult = $localizaApi->getData();
+
+            try {
+                $reservationStatus = ReservationAPIStatus::tryFrom($reservationResult['reservationStatus']);
+
+                if(
+                    $reservationStatus === ReservationAPIStatus::Confirmed ||
+                    $reservationStatus === ReservationAPIStatus::Pending
+                ){
+                    if($reservationStatus === ReservationAPIStatus::Confirmed){
+                        $reservation->status = ReservationStatus::Reservado->value;
+                        $reservationResult['reservationStatus'] = "Confirmado";
+                    }
+                    else if($reservationStatus === ReservationAPIStatus::Pending){
+                        $reservation->status = ReservationStatus::Pendiente->value;
+                        $reservationResult['reservationStatus'] = "Pendiente";
+                    }
+
+                    $reservation->reserve_code = $reservationResult['reserveCode'];
+
+                    if($reservation->save()){
+                        dispatch(new SendClientReservationNotificationJob($reservation));
+                        if($reservationStatus === ReservationAPIStatus::Pending){
+                            // dispatch(new SendLocalizaReservationRequestJob($reservation)); // aditional notification to localiza to hurry them up
+                            // TODO pending to send a notification
+                        }
+                    }
+
                 }
+
+                return $reservationResult;
+
+            } catch (UnexpectedValueException $exception) {
+                Log::error($exception->getMessage());
+                abort(500, __('localiza.no_reservation_status'));
+                \Sentry\captureException($exception);
+            } catch (Exception $exception) {
+                Log::error($exception);
+                abort(500, __('localiza.error_saving_reservation'));
+                \Sentry\captureException($exception);
             }
 
-            // try {
-            //     // send to client a notification
-            //     Mail::to($reservation->email)
-            //     ->queue(new ReservationClientNotification($reservation));
-            // } catch (\Throwable $th) {
-            //     //TODO send error notification to sentry
-            // }
-
-            return response('ok',201);
         }
-        else
-            abort(500, __('localiza.error_saving_reservation'));
+        else if($reservation->selected_days == 30) { // a monthly reservation
+            try {
+                $reservation->status = ReservationStatus::Mensualidad->value;
+                if($reservation->save()){
+                    dispatch(new SendLocalizaReservationRequestJob($reservation));
+                    return [
+                        'reservationStatus' => ReservationStatus::Pendiente->value,
+                        'reserveCode'       => ReservationStatus::Pendiente->value,
+                    ];
+                }
+            } catch (Exception $exception) {
+                Log::error($exception->getMessage());
+                abort(500, __('localiza.error_saving_reservation'));
+                \Sentry\captureException($exception);
+            }
+        }
+
+
     }
 
 }

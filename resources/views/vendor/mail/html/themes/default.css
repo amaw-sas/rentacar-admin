@@ -11,7 +11,7 @@ body *:not(html):not(style):not(br):not(tr):not(code) {
 body {
     -webkit-text-size-adjust: none;
     background-color: #ffffff;
-    color: #718096;
+    color: black;
     height: 100%;
     line-height: 1.4;
     margin: 0;
@@ -60,7 +60,7 @@ h3 {
 }
 
 p {
-    font-size: 16px;
+    /* font-size: 16px; */
     line-height: 1.5em;
     margin-top: 0;
     text-align: left;
@@ -287,4 +287,32 @@ img {
 
 .break-all {
     word-break: break-all;
+}
+
+/* customize amaw */
+.section {
+    background-color: #f9f9f9; /* Fondo blanco grisáceo */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.section.centered p,
+.section.centered h1,
+.section.centered img
+{
+    text-align: center;
+}
+
+.aproved {
+    background-color: #8ae981; /* Fondo blanco grisáceo */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.aproved h1 {
+    text-align: center;
 }
