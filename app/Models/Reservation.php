@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 
 use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
@@ -12,6 +13,9 @@ use Laravel\Scout\Searchable;
 use App\Traits\ReservationFormatTrait;
 use App\Traits\ReservationEmailPreviewTrait;
 
+use App\Observers\ReservationObserver;
+
+#[ObservedBy([ReservationObserver::class])]
 class Reservation extends Model
 {
     use HasFactory, Searchable, ReservationFormatTrait, ReservationEmailPreviewTrait;
