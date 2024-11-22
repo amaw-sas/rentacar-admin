@@ -88,14 +88,10 @@ class CheckPendingReservationStatus extends Command
                 if(in_array($reservationStatus, $this->positiveReservationApiStatuses)){
                     $reservation->status = ReservationStatus::Reservado->value;
                     $reservation->save();
-
-                    dispatch(new SendClientReservationNotificationJob($reservation));
                 }
                 else if(in_array($reservationStatus, $this->negativeReservationApiStatuses)){
                     $reservation->status = ReservationStatus::SinDisponibilidad->value;
                     $reservation->save();
-
-                    dispatch(new SendClientReservationNotificationJob($reservation));
                 }
                 else if(in_array($reservationStatus, $this->undeterminateReservationApiStatuses)){
                     $reservation->status = ReservationStatus::Indeterminado->value;
