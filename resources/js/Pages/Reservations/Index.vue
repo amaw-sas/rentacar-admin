@@ -42,6 +42,16 @@
           <div class="mb-2"></div>
           <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
             <DataTable :headers="paginator.data.headers" :items="paginator.data.items">
+                <template #header-created_at="header">
+                    <RentacarSortableCol database_col="created_at" >
+                        CREADO
+                    </RentacarSortableCol>
+                </template>
+                <template #header-pickup_date="header">
+                    <RentacarSortableCol database_col="pickup_date" >
+                        DÍA RECOGIDA
+                    </RentacarSortableCol>
+                </template>
               <template #expand="item">
                 <Expand :item="item" />
               </template>
@@ -103,13 +113,14 @@ import RentacarFilterDateTimeRange from "@/Rentacar/Components/Filters/FilterDat
 import RentacarFilterEnumerable from "@/Rentacar/Components/Filters/FilterEnumerable.vue";
 import RentacarFilterToolbar from "@/Rentacar/Components/FilterToolbar.vue";
 import RentacarList from "@/Rentacar/Components/List.vue";
+import RentacarSortableCol from "@/Rentacar/Components/SortableCol.vue";
 import RentacarSimplePaginator from "@/Rentacar/Components/SimplePaginator.vue";
 
 import { filterData } from "@/Rentacar/Functions/table.js";
 
 import DataTable from "@/Rentacar/Components/DataTable.vue";
 
-import { computed } from "vue";
+import { computed, provide } from "vue";
 import { usePage } from "@inertiajs/vue3";
 
 const props = defineProps({
@@ -129,4 +140,12 @@ const franchisesOptions = computed(() =>
     text: franchise.name,
   }))
 );
+
+provide('indexRoute', route('reservations.index'));
+provide('orderByCol', usePage().props.paginator.meta.orderByCol);
+provide('orderOrientation', usePage().props.paginator.meta.orderOrientation);
+provide('filterStartDate', usePage().props.paginator.meta.filterStartDate);
+provide('filterEndDate', usePage().props.paginator.meta.filterEndDate);
+provide('filterCols', usePage().props.paginator.meta.filterCols);
+provide('query', usePage().props.paginator.meta.query);
 </script>
