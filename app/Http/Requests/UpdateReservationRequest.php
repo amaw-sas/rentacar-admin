@@ -41,6 +41,7 @@ class UpdateReservationRequest extends StoreReservationRequest
             'status' => ['required', 'string'],
             'monthly_mileage' => ['nullable', 'string'],
             'total_insurance' => ['nullable', 'boolean'],
+            'note' => ['nullable', 'string'],
             'total_price_to_pay'   =>  ['required','numeric'],
         ];
     }

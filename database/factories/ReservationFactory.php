@@ -52,6 +52,7 @@ class ReservationFactory extends Factory
             'status'                =>  ($this->faker->randomElement(ReservationStatus::class))->value,
             'monthly_mileage'       =>  ($this->faker->randomElement(MonthlyMileage::class))->value,
             'total_insurance'       =>  $this->faker->boolean(),
+            'note'                  =>  $this->faker->paragraph(1),
             'created_at'            =>  $this->faker->dateTime()->format('Y-m-d H:i:s'),
         ];
     }

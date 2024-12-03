@@ -1041,6 +1041,84 @@ class ReservationTest extends TestCase
     }
 
     #[Group("reservation")]
+    #[Group("note")]
+    #[Test]
+    public function create_a_reservation_with_note(){
+        $note = "testing a note here";
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['note'] = $note;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($note, $reservation->note);
+    }
+
+    #[Group("reservation")]
+    #[Group("note")]
+    #[Test]
+    public function create_a_reservation_with_empty_note(){
+        $reservationData = Reservation::factory()->make()->toArray();
+        $reservationData['note'] = null;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->postJson(route('reservations.store'), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals(null, $reservation->note);
+    }
+
+    #[Group("reservation")]
+    #[Group("note")]
+    #[Test]
+    public function update_a_reservation_with_note(){
+        $note = "testing a note here";
+        $reservation = Reservation::factory()->create();
+        $reservationData = $reservation->toArray();
+        $reservationData['note'] = $note;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->putJson(route('reservations.update',[
+                'reservation' => $reservation->id
+            ]), $reservationData)
+            ->assertStatus(302);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($note, $reservation->note);
+    }
+
+    #[Group("reservation")]
+    #[Group("note")]
+    #[Test]
+    public function update_a_reservation_with_empty_note(){
+        $note = null;
+        $reservation = Reservation::factory()->create();
+        $reservationData = $reservation->toArray();
+        $reservationData['note'] = $note;
+
+        $response = $this
+            ->actingAs($this->user)
+            ->putJson(route('reservations.update',[
+                'reservation' => $reservation->id
+            ]), $reservationData);
+
+        $reservation = Reservation::first();
+        $this->assertNotNull($reservation);
+        $this->assertEquals($reservationData['fullname'], $reservation->fullname);
+        $this->assertEquals($note, $reservation->note);
+    }
+
+    #[Group("reservation")]
     #[Group("pickup_date_time")]
     #[Test]
     public function get_reservation_pickup_date_time(){

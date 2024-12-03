@@ -45,6 +45,7 @@ class ReservationCreateResource extends JsonResource
             'reserve_code'  =>  $this->reserve_code,
             'monthly_mileage'  =>  $this->monthly_mileage,
             'total_insurance'  => (bool)  $this->total_insurance ?? false,
+            'note'  => $this->note,
             'status'  =>  $this->status,
             'franchise'  =>  $this->franchise,
         ];

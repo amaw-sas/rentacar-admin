@@ -50,6 +50,7 @@ class StoreReservationRequest extends FormRequest
             'status' => ['required', 'string'],
             'monthly_mileage' => ['nullable', 'string'],
             'total_insurance' => ['nullable', 'boolean'],
+            'note' => ['nullable', 'string'],
             'total_price_to_pay'   =>  ['required','numeric'],
         ];
     }
@@ -91,6 +92,7 @@ class StoreReservationRequest extends FormRequest
             'status' => 'Estado',
             'monthly_mileage' => 'Kilometraje',
             'total_insurance' => 'Seguro total',
+            'note' => 'Nota',
         ];
     }
 }

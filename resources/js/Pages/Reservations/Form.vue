@@ -212,6 +212,13 @@
           </div>
         </div>
       </FormField>
+      <FormField>
+        <TextareaInputFormField
+            field="note"
+            name="Nota"
+            :form="form"
+        ></TextareaInputFormField>
+      </FormField>
     </template>
 
     <template #actions>
@@ -245,6 +252,7 @@ import { computed } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import { formSubmit } from "@/Rentacar/Functions/form";
 import FormField from "@/Rentacar/Components/FormFields/FormField.vue";
+import TextareaInputFormField from "@/Rentacar/Components/FormFields/TextareaInputFormField.vue";
 
 defineProps({
   form: Object,

@@ -55,6 +55,9 @@
               <template #expand="item">
                 <Expand :item="item" />
               </template>
+              <template #item-created_at="{ created_at }">
+                <span class="short-text" :title="created_at" v-text="created_at"></span>
+              </template>
               <template #item-fullname="{ fullname }">
                 <span class="short-text" :title="fullname" v-text="fullname"></span>
               </template>
