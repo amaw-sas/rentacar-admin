@@ -27,7 +27,10 @@ class ReservationObserver
     public function updated(Reservation $reservation): void
     {
         if($reservation->wasChanged('status')){
-            if(in_array($reservation->status, $this->triggerClientNotificationStatuses))
+            if(
+                in_array($reservation->status, $this->triggerClientNotificationStatuses)
+                && $reservation->reserve_code
+            )
                 dispatch(new SendClientReservationNotificationJob($reservation));
         }
     }
