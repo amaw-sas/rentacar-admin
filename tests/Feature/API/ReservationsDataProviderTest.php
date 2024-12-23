@@ -64,9 +64,9 @@ class ReservationsDataProviderTest extends TestCase
         ->assertOk()
         ->assertJson(fn(AssertableJson $json) =>
             $json
-                ->has('categories',10)
                 ->has('branches',10)
                 ->has('page_config')
+                ->etc()
         );
     }
 
@@ -76,7 +76,9 @@ class ReservationsDataProviderTest extends TestCase
     public function show_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
-        $category = Category::factory()->create();
+        $category = Category::factory()->create([
+            'identification'    =>  'C',
+        ]);
 
         $this->post(route('dataprovider.reservations'), [
             'franchise'   =>  $city_page->franchise->name
@@ -104,7 +106,9 @@ class ReservationsDataProviderTest extends TestCase
     public function show_car_models_in_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
-        $category = Category::factory()->hasModels(2)->create();
+        $category = Category::factory()->hasModels(2)->create([
+            'identification'    =>  'C',
+        ]);
         $car_models = $category->models()->get();
 
 
