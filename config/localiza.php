@@ -11,7 +11,7 @@ return [
     'basicCoveragePriceLowGamma' => env('LOCALIZA_BASIC_COVERAGE_PRICE_LOW_GAMMA',29000),
     'basicCoveragePriceHighGamma' => env('LOCALIZA_BASIC_COVERAGE_PRICE_HIGH_GAMMA',49000),
     'totalCoveragePriceLowGamma' => env('LOCALIZA_TOTAL_COVERAGE_PRICE_LOW_GAMMA',61085),
-    'totalCoveragePriceHighGamma' => env('LOCALIZA_TOTAL_COVERAGE_PRICE_HIGH_GAMMA',81086),
+    'totalCoveragePriceHighGamma' => env('LOCALIZA_TOTAL_COVERAGE_PRICE_HIGH_GAMMA',91016),
     'ivaPercentage'             => env('LOCALIZA_IVA_PERCENTAGE',19),
     'taxFeePercentage'             => env('LOCALIZA_TAX_FEE_PERCENTAGE',10),
 ];
