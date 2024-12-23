@@ -18,7 +18,7 @@ class ReservationsDataProviderController extends Controller
 
             return Cache::rememberForever("reservations_data_provider_{$franchise->name}", fn() =>
                 new ReservationsDataProviderCollection(
-                    Category::select()->selectRaw('? as franchise_id', [$franchise->id])->orderBy('order','asc')->get()->all(),
+                    Category::allowed()->select()->selectRaw('? as franchise_id', [$franchise->id])->orderBy('order','asc')->get()->all(),
                     $franchise
                 )
             );
