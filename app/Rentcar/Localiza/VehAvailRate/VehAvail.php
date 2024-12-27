@@ -281,95 +281,6 @@ class VehAvail implements Arrayable {
         return $result;
     }
 
-    private function getTotalAmountPlusTotalCoverage(): array {
-        [
-            'totalAmount'   =>  $totalAmount
-        ] = $this->getTotalCharge();
-
-        [
-            'returnFeeAmount'   =>  $returnFeeAmount
-        ] = $this->getReturnFee();
-
-        $result = [
-            'totalAmountPlusTotalCoverage' => 0
-        ];
-
-        if($totalAmount){
-            $totalCoveragePrice = $this->getTotalCoveragePrice();
-            $result['totalAmountPlusTotalCoverage'] = (int) $totalAmount + $returnFeeAmount + $totalCoveragePrice;
-        }
-
-        return $result;
-    }
-
-    private function getTaxFeeWithTotalCoverage(): array {
-        [
-            'taxFeePercentage' => $taxFeePercentage
-        ] = $this->getTaxFee();
-
-        [
-            'totalAmountPlusTotalCoverage'   =>  $totalAmountPlusTotalCoverage
-        ] = $this->getTotalAmountPlusTotalCoverage();
-
-        $result = [
-            'taxFeeWithTotalCoverage' => 0
-        ];
-
-        if($taxFeePercentage && $totalAmountPlusTotalCoverage){
-            $result['taxFeeWithTotalCoverage'] = (int) round(($totalAmountPlusTotalCoverage * $taxFeePercentage) / 100);
-        }
-
-        return $result;
-    }
-
-    private function getIvaFeeWithTotalCoverage(): array {
-        [
-            'totalAmountPlusTotalCoverage' => $totalAmountPlusTotalCoverage
-        ] = $this->getTotalAmountPlusTotalCoverage();
-
-        [
-            'taxFeeWithTotalCoverage' => $taxFeeWithTotalCoverage
-        ] = $this->getTaxFeeWithTotalCoverage();
-
-        $result = [
-            'ivaFeeWithTotalCoverage'   =>  0
-        ];
-
-        $ivaPercentage = config('localiza.ivaPercentage');
-
-        if($taxFeeWithTotalCoverage && $totalAmountPlusTotalCoverage){
-            $sum = $totalAmountPlusTotalCoverage + $taxFeeWithTotalCoverage;
-            $result['ivaFeeWithTotalCoverage'] = (int) round(($sum * $ivaPercentage) / 100);
-        }
-
-        return $result;
-    }
-
-    private function getTotalPriceWithTotalCoverage(): array {
-        [
-            'totalAmountPlusTotalCoverage'  => $totalAmountPlusTotalCoverage
-        ] = $this->getTotalAmountPlusTotalCoverage();
-
-        [
-            'taxFeeWithTotalCoverage'  => $taxFeeWithTotalCoverage
-        ] = $this->getTaxFeeWithTotalCoverage();
-
-        [
-            'ivaFeeWithTotalCoverage'  => $ivaFeeWithTotalCoverage
-        ] = $this->getIvaFeeWithTotalCoverage();
-
-        $result = [
-            'totalPriceWithTotalCoverage' => 0
-        ];
-
-        if($totalAmountPlusTotalCoverage && $taxFeeWithTotalCoverage && $ivaFeeWithTotalCoverage)
-            $result['totalPriceWithTotalCoverage'] = (int) $totalAmountPlusTotalCoverage + $taxFeeWithTotalCoverage + $ivaFeeWithTotalCoverage;
-        else
-            abort(new NoDataFoundException);
-
-        return $result;
-    }
-
     private function getTotalCoverageUnitCharge(): array {
         [
             'coverageUnitCharge' => $coverageUnitCharge,
@@ -388,24 +299,6 @@ class VehAvail implements Arrayable {
 
         return $result;
     }
-
-    private function getTotalCoveragePrice(): int {
-
-        [
-            'totalCoverageUnitCharge' => $totalCoverageUnitCharge,
-        ] = $this->getTotalCoverageUnitCharge();
-
-        [
-            'coverageQuantity' => $coverageQuantity,
-        ] = $this->getCoverage();
-
-
-        if($totalCoverageUnitCharge && $coverageQuantity)
-            return (int) $totalCoverageUnitCharge * $coverageQuantity;
-        else abort(new NoDataFoundException);
-
-    }
-
 
 
     /**
@@ -433,11 +326,6 @@ class VehAvail implements Arrayable {
             $this->getExtraHours(),
             $this->getRateQualifier(),
             $this->getReferenceToken(),
-            $this->getTotalCoverageUnitCharge(),
-            $this->getTotalAmountPlusTotalCoverage(),
-            $this->getTaxFeeWithTotalCoverage(),
-            $this->getIvaFeeWithTotalCoverage(),
-            $this->getTotalPriceWithTotalCoverage(),
         );
     }
 }
