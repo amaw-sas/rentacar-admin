@@ -15,6 +15,7 @@ Route::controller(DummyVehicleAvailableRateController::class)->group(function(){
     Route::post('/disponibilidad/horasextra','horas_extra')->name('dummy.horas_extra');
     Route::post('/disponibilidad/tasaretorno','tasa_retorno')->name('dummy.tasa_retorno');
     Route::post('/disponibilidad/timeout','timeout')->name('dummy.timeout');
+    Route::post('/disponibilidad/emptyarray','empty_array')->name('dummy.empty_array');
 });
 
 Route::controller(DummyVehicleReserveController::class)->group(function(){

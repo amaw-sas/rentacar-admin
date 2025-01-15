@@ -155,5 +155,9 @@ class DummyVehicleAvailableRateController extends Controller
         return $localiza->getData();
     }
 
+    public function empty_array(){
+        return [];
+    }
+
 
 }
