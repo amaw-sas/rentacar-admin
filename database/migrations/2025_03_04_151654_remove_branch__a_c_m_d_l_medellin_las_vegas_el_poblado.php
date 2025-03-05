@@ -17,7 +17,7 @@ return new class extends Migration
         $medellinLasVegasPobladoBranch = Branch::where('code','ACMDL')->first();
 
         if($medellinLasVegasPobladoBranch){
-            // remove if existing
+            // remove if existing such branch
             $medellinLasVegasPobladoBranch->delete();
         }
     }
@@ -31,7 +31,7 @@ return new class extends Migration
         $medellinLasVegasPobladoBranch = Branch::where('code','ACMDL')->first();
 
         if(is_null($medellinLasVegasPobladoBranch)){
-            // create if not existing
+            // create if not existing such branch
             Branch::create([
                 'code' => 'ACMDL',
                 'name' => 'Medellin Las Vegas El Poblado',
