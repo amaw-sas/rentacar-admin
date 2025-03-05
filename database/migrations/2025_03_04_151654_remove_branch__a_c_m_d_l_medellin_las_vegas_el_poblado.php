@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // get branch
         $medellinLasVegasPobladoBranch = Branch::where('code','ACMDL')->first();
 
         if($medellinLasVegasPobladoBranch){
+            // remove if existing
             $medellinLasVegasPobladoBranch->delete();
         }
     }
@@ -25,10 +27,11 @@ return new class extends Migration
      */
     public function down(): void
     {
+        // get branch
         $medellinLasVegasPobladoBranch = Branch::where('code','ACMDL')->first();
 
         if(is_null($medellinLasVegasPobladoBranch)){
-
+            // create if not existing
             Branch::create([
                 'code' => 'ACMDL',
                 'name' => 'Medellin Las Vegas El Poblado',
