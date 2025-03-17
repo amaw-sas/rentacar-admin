@@ -93,9 +93,9 @@ return new class extends Migration
             $category = Category::where('identification',$category_identification)->first();
             if($category){
                 DB::table('category_month_prices')->where('category_id', $category->id)->update([
-                    '1k_kms' => $tarifa['2k_kms'],
+                    '1k_kms' => $tarifa['1k_kms'] ?? 0,
                     '2k_kms' => $tarifa['2k_kms'],
-                    '3k_kms' => $tarifa['3k_kms'],
+                    '3k_kms' => $tarifa['3k_kms'] ?? 0,
                 ]);
             }
         }
