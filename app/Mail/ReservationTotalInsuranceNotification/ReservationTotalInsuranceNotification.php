@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail\ReservationPendingNotification;
+namespace App\Mail\ReservationTotalInsuranceNotification;
 
 use App\Models\Reservation;
 use Illuminate\Bus\Queueable;
@@ -10,12 +10,12 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class ReservationPendingNotification extends Mailable implements ShouldQueue
+class ReservationTotalInsuranceNotification extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
     public $reservation;
-    public $markdown = 'mail.pending_notification.pending-notification';
+    public $markdown = 'mail.total_insurance_notification.total-insurance-notification';
 
     /**
      * Create a new message instance.
@@ -35,7 +35,7 @@ class ReservationPendingNotification extends Mailable implements ShouldQueue
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Notificación de reserva en espera',
+            subject: 'Notificación de reserva con seguro total',
         );
     }
 
@@ -48,7 +48,6 @@ class ReservationPendingNotification extends Mailable implements ShouldQueue
             markdown: $this->markdown,
             with: [
                 'reserve_code'  => $this->reservation->reserve_code,
-                'total_insurance' => $this->reservation->total_insurance,
             ]
         );
     }

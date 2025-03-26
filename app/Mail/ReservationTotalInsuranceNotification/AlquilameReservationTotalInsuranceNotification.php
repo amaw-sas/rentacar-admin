@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail\ReservationPendingNotification;
+namespace App\Mail\ReservationTotalInsuranceNotification;
 
 use App\Models\Reservation;
 use Illuminate\Mail\Mailables\Content;
 
-class AlquilameReservationPendingNotification extends ReservationPendingNotification
+class AlquilameReservationTotalInsuranceNotification extends ReservationTotalInsuranceNotification
 {
-    public $markdown = 'mail.pending_notification.alquilame';
+    public $markdown = 'mail.total_insurance_notification.alquilame';
 
     /**
      * Create a new message instance.

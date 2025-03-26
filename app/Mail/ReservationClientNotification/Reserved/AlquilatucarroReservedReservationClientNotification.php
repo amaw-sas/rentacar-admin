@@ -7,30 +7,8 @@ use App\Models\Reservation;
 
 class AlquilatucarroReservedReservationClientNotification extends ReservedReservationClientNotification {
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
-    public function __construct(Reservation $reservation)
-    {
-        parent::__construct($reservation);
-        $email = config('mail.mailers.alquilatucarro.username');
-        $this->from($email, "Alquilatucarro");
+    public $markdown = "mail.reservation_client_notification.reserved.alquilatucarro";
+    public $emailFromConfig = "mail.mailers.alquilatucarro.username";
+    public $emailFromName = "Alquilatucarro";
 
-    }
-
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
-    {
-        $reservationResource = (new ReservationEmailPreviewResource($this->reservation))->toArray(request());
-
-        $reservation = array_merge($reservationResource, ['reserva' => $this->reservation]);
-
-        return $this->markdown('mail.reservation_client_notification.reserved.alquilatucarro', $reservation);
-    }
 }

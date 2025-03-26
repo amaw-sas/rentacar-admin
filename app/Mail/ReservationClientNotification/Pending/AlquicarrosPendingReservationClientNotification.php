@@ -7,6 +7,10 @@ use App\Http\Resources\ReservationEmailPreviewResource;
 
 class AlquicarrosPendingReservationClientNotification extends PendingReservationClientNotification {
 
+    public $markdown = "mail.reservation_client_notification.pending.alquicarros";
+    public $emailFromConfig = "mail.mailers.alquicarros.username";
+    public $emailFromName = "Alquicarros";
+
     /**
      * Create a new message instance.
      *

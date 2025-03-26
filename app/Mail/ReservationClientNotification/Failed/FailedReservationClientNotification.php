@@ -14,6 +14,9 @@ class FailedReservationClientNotification extends Mailable implements ShouldQueu
     use Queueable, SerializesModels;
 
     public $reservation;
+    public $markdown = 'mail.reservation_client_notification.failed.failed';
+    public $emailFromConfig = "";
+    public $emailFromName = "Rentacar";
 
     /**
      * Create a new message instance.
@@ -23,9 +26,11 @@ class FailedReservationClientNotification extends Mailable implements ShouldQueu
     public function __construct(Reservation $reservation)
     {
         $this->reservation = $reservation;
+        $email = config($this->emailFromConfig);
 
         $this->to($this->reservation->email);
         $this->subject("Reserva Sin Disponibilidad");
+        $this->from($email, $this->emailFromName);
     }
 
     /**
@@ -38,6 +43,6 @@ class FailedReservationClientNotification extends Mailable implements ShouldQueu
         $reservationResource = (new ReservationEmailPreviewResource($this->reservation))->toArray(request());
         $reservation = array_merge($reservationResource, ['reserva' => $this->reservation]);
 
-        return $this->markdown('mail.reservation_client_notification.failed.failed', $reservation);
+        return $this->markdown($this->markdown, $reservation);
     }
 }
