@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Localiza;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,6 +12,7 @@ use Tests\TestCase;
 use App\Mail\ReservationPendingNotification\AlquilatucarroReservationPendingNotification;
 use App\Mail\ReservationPendingNotification\AlquilameReservationPendingNotification;
 use App\Mail\ReservationPendingNotification\AlquicarrosReservationPendingNotification;
+use App\Mail\ReservationPendingNotification\ReservationPendingNotification;
 
 use App\Enums\ReservationStatus;
 use App\Models\Reservation;
@@ -51,6 +52,76 @@ class PendingReservationNotificationMailTest extends TestCase
         $mail = new AlquicarrosReservationPendingNotification($reservation);
         $mail->assertSeeInHtml($reservation->reserve_code);
         $mail->assertSeeInText($reservation->reserve_code);
+    }
+
+    #[Group("pending_reservation_notification")]
+    #[Test]
+    public function mention_when_a_pending_reservation_has_total_insurance(): void {
+        $reservation = Reservation::factory()->create([
+            'total_insurance' => true
+        ]);
+
+        $total_insurance_message = "El cliente requiere seguro total";
+
+        $mail = new ReservationPendingNotification($reservation);
+        $mail->assertSeeInHtml($total_insurance_message);
+        $mail->assertSeeInText($total_insurance_message);
+    }
+
+    #[Group("pending_reservation_notification")]
+    #[Test]
+    public function dont_mention_when_a_pending_reservation_has_no_total_insurance(): void {
+        $reservation = Reservation::factory()->create([
+            'total_insurance' => false
+        ]);
+
+        $total_insurance_message = "El cliente requiere seguro total";
+
+        $mail = new ReservationPendingNotification($reservation);
+        $mail->assertDontSeeInHTML($total_insurance_message);
+        $mail->assertDontSeeInText($total_insurance_message);
+    }
+
+    #[Group("pending_reservation_notification")]
+    #[Test]
+    public function mention_when_a_pending_reservation_has_total_insurance_by_alquilatucarro(): void {
+        $reservation = Reservation::factory()->create([
+            'total_insurance' => true
+        ]);
+
+        $total_insurance_message = "El cliente requiere seguro total";
+
+        $mail = new AlquilatucarroReservationPendingNotification($reservation);
+        $mail->assertSeeInHtml($total_insurance_message);
+        $mail->assertSeeInText($total_insurance_message);
+    }
+
+    #[Group("pending_reservation_notification")]
+    #[Test]
+    public function mention_when_a_pending_reservation_has_total_insurance_by_alquilame(): void {
+        $reservation = Reservation::factory()->create([
+            'total_insurance' => true
+        ]);
+
+        $total_insurance_message = "El cliente requiere seguro total";
+
+        $mail = new AlquilameReservationPendingNotification($reservation);
+        $mail->assertSeeInHtml($total_insurance_message);
+        $mail->assertSeeInText($total_insurance_message);
+    }
+
+    #[Group("pending_reservation_notification")]
+    #[Test]
+    public function mention_when_a_pending_reservation_has_total_insurance_by_alquicarros(): void {
+        $reservation = Reservation::factory()->create([
+            'total_insurance' => true
+        ]);
+
+        $total_insurance_message = "El cliente requiere seguro total";
+
+        $mail = new AlquicarrosReservationPendingNotification($reservation);
+        $mail->assertSeeInHtml($total_insurance_message);
+        $mail->assertSeeInText($total_insurance_message);
     }
 
     #[Group("client_reservation_notification")]

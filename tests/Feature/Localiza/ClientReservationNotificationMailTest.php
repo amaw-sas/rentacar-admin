@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Localiza;
 
 use App\Enums\MonthlyMileage;
 use App\Enums\ReservationStatus;
