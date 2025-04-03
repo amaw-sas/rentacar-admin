@@ -1,4 +1,4 @@
-@extends("mail.pending_notification.pending-notification")
+@extends("mail.total_insurance_notification.total-insurance-notification")
 
 @section('franchise')
 
