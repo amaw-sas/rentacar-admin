@@ -46,7 +46,7 @@ Contacto: **{{ $reserva->phone }}** \
 
 **DATOS FINANCIEROS**
 
-Tarifa con Dto ({{ $discount_percentage }}): {{ $daily_base_fee }}  \
+Tarifa Día: {{ $daily_base_fee }}  \
 Tarifa por ({{ $selected_days }}) días: {{ $base_fee }}  \
 @if ($extra_hours)
 \+ Horas extra ({{ $extra_hours }}): {{ $extra_hours_price }}  \
