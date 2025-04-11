@@ -1916,6 +1916,8 @@ class ReservationAPITest extends TestCase
 
         $reservationData = Reservation::factory()->make([
             'selected_days' => 30,
+            'rate_qualifier' => null,
+            'reference_token' => null,
         ]);
         $reservationData['franchise'] = $franchise->name;
         $reservationData['pickup_location'] = $pickupLocation->code;
