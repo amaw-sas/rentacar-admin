@@ -281,26 +281,6 @@ class VehAvail implements Arrayable {
         return $result;
     }
 
-    private function getTotalCoverageUnitCharge(): array {
-        [
-            'coverageUnitCharge' => $coverageUnitCharge,
-            'coverageQuantity' => $coverageQuantity,
-        ] = $this->getCoverage();
-
-        $result = [
-            'totalCoverageUnitCharge' => 0
-        ];
-
-        $totalCoveragePriceLowGamma = (int) config('localiza.totalCoveragePriceLowGamma');
-        $totalCoveragePriceHighGamma = (int) config('localiza.totalCoveragePriceHighGamma');
-
-        if($coverageQuantity && $coverageUnitCharge)
-            $result['totalCoverageUnitCharge'] = (int) ($coverageUnitCharge <= 35000) ? $totalCoveragePriceLowGamma : $totalCoveragePriceHighGamma;
-
-        return $result;
-    }
-
-
     /**
      * get round price
      *

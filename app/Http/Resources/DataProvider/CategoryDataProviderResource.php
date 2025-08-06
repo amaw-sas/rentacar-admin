@@ -13,9 +13,24 @@ class CategoryDataProviderResource extends JsonResource
     use HTMLCodeTrait;
 
     protected $category;
+    protected $totalCoverageSet;
 
     public function __construct($category) {
         $this->category = $category;
+        $this->totalCoverageSet = [
+            'C' => (int) config('localiza.totalCoverageCategoryC'),
+            'F' => (int) config('localiza.totalCoverageCategoryF'),
+            'FX' => (int) config('localiza.totalCoverageCategoryFX'),
+            'FL' => (int) config('localiza.totalCoverageCategoryFL'),
+            'FU' => (int) config('localiza.totalCoverageCategoryFU'),
+            'GC' => (int) config('localiza.totalCoverageCategoryGC'),
+            'GL' => (int) config('localiza.totalCoverageCategoryGL'),
+            'G4' => (int) config('localiza.totalCoverageCategoryG4'),
+            'GR' => (int) config('localiza.totalCoverageCategoryGR'),
+            'GY' => (int) config('localiza.totalCoverageCategoryGY'),
+            'LE' => (int) config('localiza.totalCoverageCategoryLE'),
+            'VP' => (int) config('localiza.totalCoverageCategoryVP'),
+        ];
     }
 
     /**
@@ -46,16 +61,8 @@ class CategoryDataProviderResource extends JsonResource
     }
 
     public function getTotalCoverageUnitCharge(string $category): int {
-        $totalCoveragePriceLowGamma = (int) config('localiza.totalCoveragePriceLowGamma');
-        $totalCoveragePriceHighGamma = (int) config('localiza.totalCoveragePriceHighGamma');
-
-        $totalCoverageLowGammaCategories = ['C', 'F', 'FX', 'FU', 'FL'];
-        $totalCoverageHighGammaCategories = ['GC', 'G4', 'LE', 'GL', 'GR', 'VP'];
-
-        if(in_array($category, $totalCoverageHighGammaCategories))
-            return $totalCoveragePriceHighGamma;
-        else if(in_array($category, $totalCoverageLowGammaCategories))
-            return $totalCoveragePriceLowGamma;
+        if(array_key_exists($category, $this->totalCoverageSet))
+            return $this->totalCoverageSet[$category];
 
         return 100;
     }

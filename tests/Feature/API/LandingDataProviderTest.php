@@ -246,7 +246,9 @@ class LandingDataProviderTest extends TestCase
     public function show_car_month_prices_in_category_data() {
         $city_page = CityPage::factory()->create();
         $branch = Branch::factory()->create();
-        $category = Category::factory()->hasMonthPrices(2)->create();
+        $category = Category::factory()->hasMonthPrices(2)->create([
+            'identification' => 'C'
+        ]);
         $car_month_prices = $category->monthPrices()->get();
 
         $this->post(route('dataprovider.landing'), [
@@ -264,7 +266,7 @@ class LandingDataProviderTest extends TestCase
                     ->where('3k_kms', $car_month_prices[0]->{'3k_kms'})
                     ->where('init_date', $car_month_prices[0]->init_date->format('d-m-Y'))
                     ->where('end_date', $car_month_prices[0]->end_date->format('d-m-Y'))
-                    ->where('total_insurance_price', $car_month_prices[0]->total_insurance_price)
+                    ->where('total_insurance_price', (int) config('localiza.totalCoverageMonthCategoryC'))
                     ->where('one_day_price', $car_month_prices[0]->one_day_price)
                 )
                 ->has('categories.0.month_prices.1',fn($json) =>
@@ -274,7 +276,7 @@ class LandingDataProviderTest extends TestCase
                     ->where('3k_kms', $car_month_prices[1]->{'3k_kms'})
                     ->where('init_date', $car_month_prices[1]->init_date->format('d-m-Y'))
                     ->where('end_date', $car_month_prices[1]->end_date->format('d-m-Y'))
-                    ->where('total_insurance_price', $car_month_prices[1]->total_insurance_price)
+                    ->where('total_insurance_price', (int) config('localiza.totalCoverageMonthCategoryC'))
                     ->where('one_day_price', $car_month_prices[1]->one_day_price)
                 )
                 ->etc()
