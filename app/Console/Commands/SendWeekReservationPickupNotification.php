@@ -78,7 +78,7 @@ class SendWeekReservationPickupNotification extends Command
                     $response = $watiApi->addContact($whatsappNumber, $userName);
                     $result = $response['result'] ?? false;
 
-                    if ($response['result']) {
+                    if ($result) {
                         $this->info($addContactSuccessLogInfo);
                         Log::info($addContactSuccessLogInfo);
                     } else {
@@ -88,12 +88,13 @@ class SendWeekReservationPickupNotification extends Command
                 catch (Exception $e) {
                     Log::error($addContactErrorLogInfo . " - " . $e->getMessage());
                     $this->error($addContactErrorLogInfo);
-                    $this->fail();
+                    return;
                 }
 
                 // send the notification
                 try {
                     $response = $watiApi->sendTemplateMessage($whatsappNumber, $templateName, $broadcastName, $parameters);
+                    $result = $response['result'] ?? false;
 
                     if ($response['result']) {
                         $this->info($sendMessageTemplateSuccessLogInfo);
@@ -104,7 +105,7 @@ class SendWeekReservationPickupNotification extends Command
                 } catch (Exception $e) {
                     Log::error($sendMessageTemplateErrorLogInfo . " - " . $e->getMessage());
                     $this->error($sendMessageTemplateErrorLogInfo);
-                    $this->fail();
+                    return;
                 }
             });
 

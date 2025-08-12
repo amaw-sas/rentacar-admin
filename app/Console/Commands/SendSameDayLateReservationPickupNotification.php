@@ -84,9 +84,8 @@ class SendSameDayLateReservationPickupNotification extends Command
                 try {
                     $response = $watiApi->addContact($whatsappNumber, $userName);
                     $result = $response['result'] ?? false;
-                    $validContact = ($response['contact']['contactStatus'] ?? false) === "VALID" ? true : false;
 
-                    if ($result && $validContact) {
+                    if ($result) {
                         $this->info($addContactSuccessLogInfo);
                         Log::info($addContactSuccessLogInfo);
                     } else {
@@ -96,7 +95,7 @@ class SendSameDayLateReservationPickupNotification extends Command
                 catch (Exception $e) {
                     Log::error($addContactErrorLogInfo . " - " . $e->getMessage() . " - " . $e->getTraceAsString());
                     $this->error($addContactErrorLogInfo);
-                    $this->fail();
+                    return;
                 }
 
                 // send the notification
@@ -104,7 +103,7 @@ class SendSameDayLateReservationPickupNotification extends Command
                     $response = $watiApi->sendTemplateMessage($whatsappNumber, $templateName, $broadcastName, $parameters);
                     $result = $response['result'] ?? false;
 
-                    if ($response['result']) {
+                    if ($result) {
                         $this->info($sendMessageTemplateSuccessLogInfo);
                         Log::info($sendMessageTemplateSuccessLogInfo);
                     } else {
@@ -113,7 +112,7 @@ class SendSameDayLateReservationPickupNotification extends Command
                 } catch (Exception $e) {
                     Log::error($sendMessageTemplateErrorLogInfo . " - " . $e->getMessage());
                     $this->error($sendMessageTemplateErrorLogInfo);
-                    $this->fail();
+                    return;
                 }
             });
 
