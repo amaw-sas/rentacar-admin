@@ -35,6 +35,7 @@ class SendWeekReservationPickupNotification extends Command
         // Send notifications for reservations with pickup date a week later
         Reservation::where('pickup_date', $weeklater)
             ->where('status', ReservationStatus::Reservado)
+            ->orWhere('status', ReservationStatus::Mensualidad)
             ->get()
             ->each(function ($reservation) use ($watiApi) {
                 $franchiseName = $reservation->franchiseObject->name;

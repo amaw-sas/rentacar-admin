@@ -43,6 +43,7 @@ class SendSameDayMorningReservationPickupNotification extends Command
             [$initDatetime, $endDatetime]
         )
         ->where('status', ReservationStatus::Reservado)
+        ->orWhere('status', ReservationStatus::Mensualidad)
         ->get()
         ->each(function ($reservation) use ($watiApi) {
                 $franchiseName = $reservation->franchiseObject->name;

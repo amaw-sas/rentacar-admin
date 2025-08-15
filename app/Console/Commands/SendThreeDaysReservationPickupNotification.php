@@ -35,6 +35,7 @@ class SendThreeDaysReservationPickupNotification extends Command
         // Send notifications for reservations with pickup date three days later
         Reservation::where('pickup_date', $threedayslater)
             ->where('status', ReservationStatus::Reservado)
+            ->orWhere('status', ReservationStatus::Mensualidad)
             ->get()
             ->each(function ($reservation) use ($watiApi) {
                 $franchiseName = $reservation->franchiseObject->name;

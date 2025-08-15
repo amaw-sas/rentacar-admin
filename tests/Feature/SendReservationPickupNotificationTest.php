@@ -46,7 +46,6 @@ class SendReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn([
                     'result' => true,
-                    'contact' => ['contactStatus' => 'VALID']
                 ])
                 ->once();
 
@@ -81,7 +80,6 @@ class SendReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn([
                     'result' => true,
-                    'contact' => ['contactStatus' => 'VALID']
                 ])
                 ->once();
 
@@ -116,7 +114,6 @@ class SendReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn([
                     'result' => true,
-                    'contact' => ['contactStatus' => 'VALID']
                 ])
                 ->once();
 
@@ -151,7 +148,142 @@ class SendReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn([
                     'result' => true,
-                    'contact' => ['contactStatus' => 'VALID']
+                ])
+                ->once();
+
+            $mock->shouldReceive('sendTemplateMessage')
+                ->andReturn(['result' => true])
+                ->once();
+
+            return $mock;
+        });
+
+        $this->app->instance('wati', $watiMock);
+
+        // Act: Call the command to send the notification
+        $this->artisan('send-week-reservation-pickup-notification')
+            ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->assertSuccessful();
+
+    }
+
+    #[Group("send-reservation-pickup-notification")]
+    #[Test]
+    public function send_reservation_pickup_notification_same_day_morning_of_pickup_when_reservation_status_is_mensualidad(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'pickup_date' => now()->format('Y-m-d'),
+            'pickup_hour' => '16:00',
+            'status' => ReservationStatus::Mensualidad,
+        ]);
+
+        $watiMock = $this->mock(WatiServiceProvider::class, function(MockInterface $mock) {
+            $mock->shouldReceive('addContact')
+                ->andReturn([
+                    'result' => true,
+                ])
+                ->once();
+
+            $mock->shouldReceive('sendTemplateMessage')
+                ->andReturn(['result' => true])
+                ->once();
+
+            return $mock;
+        });
+
+        $this->app->instance('wati', $watiMock);
+
+        // Act: Call the command to send the notification
+        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+            ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->assertSuccessful();
+
+    }
+
+    #[Group("send-reservation-pickup-notification")]
+    #[Test]
+    public function send_reservation_pickup_notification_same_day_late_of_pickup_when_reservation_status_is_mensualidad(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'pickup_date' => now()->addDay()->format('Y-m-d'),
+            'pickup_hour' => '08:00',
+            'status' => ReservationStatus::Mensualidad,
+        ]);
+
+        $watiMock = $this->mock(WatiServiceProvider::class, function(MockInterface $mock) {
+            $mock->shouldReceive('addContact')
+                ->andReturn([
+                    'result' => true,
+                ])
+                ->once();
+
+            $mock->shouldReceive('sendTemplateMessage')
+                ->andReturn(['result' => true])
+                ->once();
+
+            return $mock;
+        });
+
+        $this->app->instance('wati', $watiMock);
+
+        // Act: Call the command to send the notification
+        $this->artisan('send-same-day-late-reservation-pickup-notification')
+            ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->assertSuccessful();
+
+    }
+
+    #[Group("send-reservation-pickup-notification")]
+    #[Test]
+    public function send_reservation_pickup_notification_three_days_before_pickup_when_reservation_status_is_mensualidad(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'pickup_date' => now()->addDays(3)->format('Y-m-d'),
+            'pickup_hour' => '10:00',
+            'status' => ReservationStatus::Mensualidad,
+        ]);
+
+        $watiMock = $this->mock(WatiServiceProvider::class, function(MockInterface $mock) {
+            $mock->shouldReceive('addContact')
+                ->andReturn([
+                    'result' => true,
+                ])
+                ->once();
+
+            $mock->shouldReceive('sendTemplateMessage')
+                ->andReturn(['result' => true])
+                ->once();
+
+            return $mock;
+        });
+
+        $this->app->instance('wati', $watiMock);
+
+        // Act: Call the command to send the notification
+        $this->artisan('send-three-days-reservation-pickup-notification')
+            ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->assertSuccessful();
+
+    }
+
+    #[Group("send-reservation-pickup-notification")]
+    #[Test]
+    public function send_reservation_pickup_notification_a_week_before_pickup_when_reservation_status_is_mensualidad(): void
+    {
+        $reservation = Reservation::factory()->create([
+            'pickup_date' => now()->addWeek()->format('Y-m-d'),
+            'pickup_hour' => '10:00',
+            'status' => ReservationStatus::Mensualidad,
+        ]);
+
+        $watiMock = $this->mock(WatiServiceProvider::class, function(MockInterface $mock) {
+            $mock->shouldReceive('addContact')
+                ->andReturn([
+                    'result' => true,
                 ])
                 ->once();
 
