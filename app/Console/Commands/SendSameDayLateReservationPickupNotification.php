@@ -15,7 +15,7 @@ class SendSameDayLateReservationPickupNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'send-same-day-late-reservation-pickup-notification';
+    protected $signature = 'wati:send-same-day-late-reservation-pickup-notification';
 
     /**
      * The console command description.

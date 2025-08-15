@@ -15,7 +15,7 @@ class SendWeekReservationPickupNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'send-week-reservation-pickup-notification';
+    protected $signature = 'wati:send-week-reservation-pickup-notification';
 
     /**
      * The console command description.

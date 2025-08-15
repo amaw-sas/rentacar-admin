@@ -15,7 +15,7 @@ class SendThreeDaysReservationPickupNotification extends Command
      *
      * @var string
      */
-    protected $signature = 'send-three-days-reservation-pickup-notification';
+    protected $signature = 'wati:send-three-days-reservation-pickup-notification';
 
     /**
      * The console command description.

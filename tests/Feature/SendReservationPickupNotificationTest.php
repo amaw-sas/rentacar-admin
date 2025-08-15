@@ -59,7 +59,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -93,7 +93,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -127,7 +127,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -161,7 +161,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -195,7 +195,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -229,7 +229,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -263,7 +263,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -297,7 +297,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -328,7 +328,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Error registering contact: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -360,7 +360,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Error registering contact: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -392,7 +392,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Error registering contact: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -424,7 +424,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Error registering contact: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -460,7 +460,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Error sending notification: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -496,7 +496,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Error sending notification: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -532,7 +532,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Three Days Pickup Notification: Error sending notification: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -568,7 +568,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Week Pickup Notification: Error sending notification: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
@@ -604,14 +604,14 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -645,14 +645,14 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->doesntExpectOutput("Same Day Late Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Same Day Late Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -686,14 +686,14 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->doesntExpectOutput("Three Days Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Three Days Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -727,14 +727,14 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->expectsOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->doesntExpectOutput("Week Pickup Notification: Contact registered: {$reservation->fullname} ({$reservation->phone})")
             ->doesntExpectOutput("Week Pickup Notification: Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
@@ -774,7 +774,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -817,7 +817,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -860,7 +860,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Three Days Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -903,7 +903,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Week Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -938,7 +938,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->doesntExpectOutput()
             ->assertSuccessful();
     }
@@ -969,7 +969,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->doesntExpectOutput()
             ->assertSuccessful();
     }
@@ -1000,7 +1000,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->doesntExpectOutput()
             ->assertSuccessful();
     }
@@ -1031,7 +1031,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->doesntExpectOutput()
             ->assertSuccessful();
     }
@@ -1072,7 +1072,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-morning-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-morning-reservation-pickup-notification')
             ->expectsOutput("Same Day Morning Pickup Notification: Error registering contact: {$reservation1->fullname} ({$reservation1->phone})")
             ->doesntExpectOutput("Same Day Morning Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Morning Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -1117,7 +1117,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-same-day-late-reservation-pickup-notification')
+        $this->artisan('wati:send-same-day-late-reservation-pickup-notification')
             ->expectsOutput("Same Day Late Pickup Notification: Error registering contact: {$reservation1->fullname} ({$reservation1->phone})")
             ->doesntExpectOutput("Same Day Late Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Same Day Late Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -1164,7 +1164,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-three-days-reservation-pickup-notification')
+        $this->artisan('wati:send-three-days-reservation-pickup-notification')
             ->expectsOutput("Three Days Pickup Notification: Error registering contact: {$reservation1->fullname} ({$reservation1->phone})")
             ->doesntExpectOutput("Three Days Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Three Days Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
@@ -1211,7 +1211,7 @@ class SendReservationPickupNotificationTest extends TestCase
         $this->app->instance('wati', $watiMock);
 
         // Act: Call the command to send the notification
-        $this->artisan('send-week-reservation-pickup-notification')
+        $this->artisan('wati:send-week-reservation-pickup-notification')
             ->expectsOutput("Week Pickup Notification: Error registering contact: {$reservation1->fullname} ({$reservation1->phone})")
             ->doesntExpectOutput("Week Pickup Notification: Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
             ->expectsOutput("Week Pickup Notification: Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
