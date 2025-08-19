@@ -44,7 +44,7 @@ class SendWeekReservationPickupNotification extends Command
                 $reservationCode = $reservation->reserve_code;
                 $whatsappNumber = $reservation->phone;
                 $userName = $reservation->fullname;
-                $templateName = 'recordatorio_alquiler_carro';
+                $templateName = 'recordatorio_siete_dias_alquiler_carro';
                 $broadcastName = 'Recordatorio de Recogida de Vehículo';
                 $parameters = [
                     [
