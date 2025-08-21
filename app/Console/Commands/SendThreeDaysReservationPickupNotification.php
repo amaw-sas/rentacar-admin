@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use App\Models\Reservation;
 use App\Enums\ReservationStatus;
@@ -33,9 +34,13 @@ class SendThreeDaysReservationPickupNotification extends Command
         $threedayslater = now()->addDays(3)->format('Y-m-d');
 
         // Send notifications for reservations with pickup date three days later
-        Reservation::where('pickup_date', $threedayslater)
-            ->where('status', ReservationStatus::Reservado)
-            ->orWhere('status', ReservationStatus::Mensualidad)
+        Reservation::whereDate('pickup_date', $threedayslater)
+            ->whereNotNull('reserve_code')
+            ->where(function (Builder $query) {
+                $query
+                ->where('status', ReservationStatus::Reservado)
+                ->orWhere('status', ReservationStatus::Mensualidad);
+            })
             ->get()
             ->each(function ($reservation) use ($watiApi) {
                 $franchiseName = $reservation->franchiseObject->name;
@@ -73,7 +78,7 @@ class SendThreeDaysReservationPickupNotification extends Command
                     ],
 
                 ];
-                $threeDaysBaseLog="Three Days Pickup Notification:";
+                $threeDaysBaseLog="Three Days Pickup Notification: Reserve Code: {$reservationCode}";
 
                 $addContactSuccessLogInfo="{$threeDaysBaseLog} Contact registered: {$userName} ({$whatsappNumber})";
                 $sendMessageTemplateSuccessLogInfo="{$threeDaysBaseLog} Notification sent: {$userName} ({$whatsappNumber})";

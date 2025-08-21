@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use App\Models\Reservation;
 use App\Enums\ReservationStatus;
@@ -42,8 +43,12 @@ class SendSameDayMorningReservationPickupNotification extends Command
             "STR_TO_DATE(CONCAT(pickup_date, ' ', pickup_hour), '%Y-%m-%d %H:%i') BETWEEN ? AND ?",
             [$initDatetime, $endDatetime]
         )
-        ->where('status', ReservationStatus::Reservado)
-        ->orWhere('status', ReservationStatus::Mensualidad)
+        ->whereNotNull('reserve_code')
+        ->where(function (Builder $query) {
+            $query
+            ->where('status', ReservationStatus::Reservado)
+            ->orWhere('status', ReservationStatus::Mensualidad);
+        })
         ->get()
         ->each(function ($reservation) use ($watiApi) {
                 $franchiseName = $reservation->franchiseObject->name;
@@ -81,7 +86,7 @@ class SendSameDayMorningReservationPickupNotification extends Command
                     ],
 
                 ];
-                $sameDayMorningBaseLog = "Same Day Morning Pickup Notification:";
+                $sameDayMorningBaseLog = "Same Day Morning Pickup Notification: Reserve Code: {$reservationCode}";
 
                 $addContactSuccessLogInfo="{$sameDayMorningBaseLog} Contact registered: {$userName} ({$whatsappNumber})";
                 $sendMessageTemplateSuccessLogInfo="{$sameDayMorningBaseLog} Notification sent: {$userName} ({$whatsappNumber})";
