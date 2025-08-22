@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\SendSameDayLateReservation;
 
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Reservation;
