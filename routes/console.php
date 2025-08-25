@@ -1,10 +1,6 @@
 <?php
 
 use App\Console\Commands\CheckPendingReservationStatus;
-use App\Console\Commands\SendSameDayMorningReservationPickupNotification;
-use App\Console\Commands\SendSameDayLateReservationPickupNotification;
-use App\Console\Commands\SendThreeDaysReservationPickupNotification;
-use App\Console\Commands\SendWeekReservationPickupNotification;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
@@ -18,8 +14,7 @@ Schedule::command('model:prune')->daily();
 Schedule::command(CheckPendingReservationStatus::class)->everyThirtyMinutes();
 
 // wati commands
-$wati_endpoint = config('wati.endpoint');
-Schedule::command(SendSameDayMorningReservationPickupNotification::class)->dailyAt('08:00')->pingBefore($wati_endpoint);
-Schedule::command(SendSameDayLateReservationPickupNotification::class)->dailyAt('20:00')->pingBefore($wati_endpoint);
-Schedule::command(SendThreeDaysReservationPickupNotification::class)->dailyAt('09:00')->pingBefore($wati_endpoint);
-Schedule::command(SendWeekReservationPickupNotification::class)->dailyAt('10:00')->pingBefore($wati_endpoint);
+Schedule::command('wati:send-same-day-late-reservation-pickup-notification')->dailyAt('08:00');
+Schedule::command('wati:send-same-day-morning-reservation-pickup-notification')->dailyAt('20:00');
+Schedule::command('wati:send-three-days-reservation-pickup-notification')->dailyAt('09:00');
+Schedule::command('wati:send-week-reservation-pickup-notification')->dailyAt('10:00');
