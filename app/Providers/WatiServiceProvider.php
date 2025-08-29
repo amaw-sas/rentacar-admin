@@ -38,6 +38,19 @@ class WatiServiceProvider extends ServiceProvider
                     return $response;
                 }
 
+                public function sendTemplateMessages(string $templateName, string $broadcastName, array $receivers)
+                {
+                    $response = Http::withToken($this->token)
+                    ->post($this->endpoint . '/api/v1/sendTemplateMessages',
+                    [
+                        'template_name' => $templateName,
+                        'broadcast_name' => $broadcastName,
+                        'receivers' => $receivers,
+                    ]);
+
+                    return $response;
+                }
+
                 public function addContact(string $whatsappNumber, string $name, array $customParams = [])
                 {
                     $response = Http::withToken($this->token)
