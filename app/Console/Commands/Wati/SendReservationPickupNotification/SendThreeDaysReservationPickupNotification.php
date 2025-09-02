@@ -40,7 +40,7 @@ class SendThreeDaysReservationPickupNotification extends SendReservationPickupNo
 
     protected function getBaseBroadcastName(): string
     {
-        return 'Notificación de Recogida de Vehículo Mismo Día Tarde';
+        return 'R Tres';
     }
 
 }

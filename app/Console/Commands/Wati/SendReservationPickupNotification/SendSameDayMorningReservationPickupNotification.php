@@ -50,7 +50,7 @@ class SendSameDayMorningReservationPickupNotification extends SendReservationPic
 
     protected function getBaseBroadcastName(): string
     {
-        return 'Notificación de Recogida de Vehículo Mismo Día Mañana';
+        return 'R Mañana';
     }
 
 }

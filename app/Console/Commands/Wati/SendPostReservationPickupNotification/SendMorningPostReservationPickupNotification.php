@@ -49,7 +49,7 @@ class SendMorningPostReservationPickupNotification extends SendPostReservationPi
 
     protected function getBaseBroadcastName(): string
     {
-        return 'Notificación Post Recogida Mañana';
+        return 'PR Mañana';
     }
 
 }

@@ -39,7 +39,7 @@ class SendWeekReservationPickupNotification extends SendReservationPickupNotific
 
     protected function getBaseBroadcastName(): string
     {
-        return 'Notificación de Recogida de Vehículo Semana';
+        return 'R Semana';
     }
 
 }

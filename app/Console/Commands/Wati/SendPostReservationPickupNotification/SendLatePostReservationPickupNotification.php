@@ -48,7 +48,7 @@ class SendLatePostReservationPickupNotification extends SendPostReservationPicku
 
     protected function getBaseBroadcastName(): string
     {
-        return 'Notificación Post Recogida Tarde';
+        return 'PR Tarde';
     }
 
 }
