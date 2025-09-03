@@ -15,8 +15,8 @@ Schedule::command(CheckPendingReservationStatus::class)->everyThirtyMinutes();
 
 // wati commands
 // reservation pickup notifications
-Schedule::command('wati:send-same-day-late-reservation-pickup-notification')->dailyAt('08:00');
-Schedule::command('wati:send-same-day-morning-reservation-pickup-notification')->dailyAt('20:00');
+Schedule::command('wati:send-same-day-late-reservation-pickup-notification')->dailyAt('20:00');
+Schedule::command('wati:send-same-day-morning-reservation-pickup-notification')->dailyAt('08:00');
 Schedule::command('wati:send-three-days-reservation-pickup-notification')->dailyAt('09:00');
 Schedule::command('wati:send-week-reservation-pickup-notification')->dailyAt('10:00');
 // post reservation pickup notifications
