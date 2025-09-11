@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Log;
 use App\Models\Reservation;
 use App\Enums\ReservationStatus;
+use App\Rentcar\Wati;
 use Exception;
 
 abstract class SendPostReservationPickupNotification extends Command
@@ -46,6 +47,11 @@ abstract class SendPostReservationPickupNotification extends Command
     {
         $watiApi = app('wati');
 
+        $today = now()->format('Y-m-d');
+        $templateName = $this->getTemplateName();
+        $broadcastName = $this->getBaseBroadcastName() . ' ' . $today;
+        $baseLog = $this->getLogPrefix() . " Post Pickup Notification";
+
         $reservations = $this->getBaseQuery()
             ->whereNotNull('reserve_code')
             ->where(function (Builder $query) {
@@ -65,8 +71,8 @@ abstract class SendPostReservationPickupNotification extends Command
         $receivers = $reservations->map(function ($reservation) {
             $franchiseName = $reservation->franchiseObject->name;
             $reservationCode = $reservation->reserve_code;
-            $whatsappNumber = $reservation->phone;
-            $userName = $reservation->fullname;
+            $whatsappNumber = Wati::cleanupPhone($reservation->phone);
+            $userName = Wati::cleanupName($reservation->fullname);
 
             return [
                 'whatsappNumber' => $whatsappNumber,
@@ -76,87 +82,61 @@ abstract class SendPostReservationPickupNotification extends Command
                     'value' => $userName,
                 ],
                 [
-                    'name' => 'reservation_code',
-                    'value' => $reservationCode,
-                ],
-                [
-                    'name' => 'pickup_date',
-                    'value' => $reservation->pickup_date->locale('es')->isoFormat('LL'),
-                ],
-                [
-                    'name' => 'pickup_hour',
-                    'value' => $reservation->pickup_hour->format('H:i a'),
-                ],
-                [
-                    'name' => 'pickup_location',
-                    'value' => $reservation->pickupLocation->name,
-                ],
-                [
                     'name' => 'franchise_name',
                     'value' => $franchiseName,
                 ],
             ]];
 
-        })->toArray();
+        });
 
-        $reservations->each(function ($reservation) use ($watiApi) {
-            $franchiseName = $reservation->franchiseObject->name;
-            $reservationCode = $reservation->reserve_code;
-            $whatsappNumber = $reservation->phone;
-            $userName = $reservation->fullname;
-            $templateName = $this->getTemplateName();
-            $broadcastName = "{$this->getBaseBroadcastName()} - Código: {$reservationCode}";
-            $parameters = [
-                [
-                    'name' => 'fullname',
-                    'value' => $userName,
-                ],
-                [
-                    'name' => 'franchise_name',
-                    'value' => $franchiseName,
-                ],
-            ];
+        if(count($reservations) > 0){
+            // Create contacts in wati
+            $contacts->each(function ($user) use ($watiApi, $baseLog) {
+                $whatsappNumber = $user['whatsappNumber'];
+                $userName = $user['name'];
+                $addContactSuccessLogInfo = "{$baseLog} Contact registered: {$userName} ({$whatsappNumber})";
+                $addContactErrorLogInfo = "{$baseLog} Error registering contact: {$userName} ({$whatsappNumber})";
 
-            $baseLog = $this->getLogPrefix() . " Post Pickup Notification: Reserve Code: {$reservationCode}";
-
-            $addContactSuccessLogInfo = "{$baseLog} Contact registered: {$userName} ({$whatsappNumber})";
-            $sendMessageTemplateSuccessLogInfo = "{$baseLog} Notification sent: {$userName} ({$whatsappNumber})";
-            $addContactErrorLogInfo = "{$baseLog} Error registering contact: {$userName} ({$whatsappNumber})";
-            $sendMessageTemplateErrorLogInfo = "{$baseLog} Error sending notification: {$userName} ({$whatsappNumber})";
-
-            // register the contact in wati
-            try {
-                $response = $watiApi->addContact($whatsappNumber, $userName);
-                $result = $response['result'] ?? false;
-
-                if ($result) {
-                    $this->info($addContactSuccessLogInfo);
-                    Log::info($addContactSuccessLogInfo);
-                } else {
-                    throw new \Exception("Failed to register contact: " . json_encode($response));
+                try {
+                    $response = $watiApi->addContact($whatsappNumber, $userName);
+                    $result = $response['result'] ?? false;
+                    if ($result) {
+                        $this->info($addContactSuccessLogInfo);
+                        Log::info($addContactSuccessLogInfo);
+                    } else {
+                        throw new \Exception("Failed to register contact: " . json_encode($response));
+                    }
+                } catch (Exception $e) {
+                    Log::error($addContactErrorLogInfo . " - " . $e->getMessage());
+                    $this->error($addContactErrorLogInfo);
                 }
-            } catch (Exception $e) {
-                Log::error($addContactErrorLogInfo . " - " . $e->getMessage());
-                $this->error($addContactErrorLogInfo);
-                return;
-            }
+            });
 
-            // send the notification
+            // Send notifications via wati
+            $sendMessageTemplateSuccessLogInfo = "{$baseLog} sent {$today}";
+            $sendMessageTemplateErrorLogInfo = "{$baseLog} Error sending notification {$today}";
+
             try {
-                $response = $watiApi->sendTemplateMessage($whatsappNumber, $templateName, $broadcastName, $parameters);
+                if($receivers->count() === 0){
+                    throw new Exception("Failed to send notification in {$today}, no receivers provided. ");
+                }
+
+                $response = $watiApi->sendTemplateMessages($templateName, $broadcastName, $receivers->toArray());
                 $result = $response['result'] ?? false;
 
                 if ($response['result']) {
                     $this->info($sendMessageTemplateSuccessLogInfo);
                     Log::info($sendMessageTemplateSuccessLogInfo);
                 } else {
-                    throw new Exception("Failed to send notification to {$userName} ({$whatsappNumber}): " . json_encode($response));
+                    throw new Exception("Failed to send notification in {$today} " . json_encode($response));
                 }
             } catch (Exception $e) {
                 Log::error($sendMessageTemplateErrorLogInfo . " - " . $e->getMessage());
                 $this->error($sendMessageTemplateErrorLogInfo);
-                return;
+                return false;
             }
-        });
+        }
+
+
     }
 }

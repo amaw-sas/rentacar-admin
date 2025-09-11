@@ -22,9 +22,15 @@ class SendPostReservationPickupNotificationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $today;
+    protected $tomorrow;
+
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->today = now()->format('Y-m-d');
+        $this->tomorrow = now()->addDay()->format('Y-m-d');
 
         // Fake HTTP responses to prevent real API calls
         Http::fake([
@@ -49,7 +55,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -60,8 +66,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -83,7 +89,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -94,8 +100,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -115,7 +121,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -126,8 +132,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -149,7 +155,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -160,8 +166,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -181,7 +187,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => false])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -191,9 +197,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Error registering contact: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Error registering contact: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -213,7 +219,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => false])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -223,9 +229,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Error registering contact: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Error registering contact: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Late Post Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -245,7 +251,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => false]);
 
             return $mock;
@@ -255,9 +261,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Error sending notification: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Error sending notification {$this->today}")
+            ->doesntExpectOutput("Morning Post Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -277,7 +283,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => false]);
 
             return $mock;
@@ -287,9 +293,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Error sending notification: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Error sending notification {$this->today}")
+            ->doesntExpectOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -309,7 +315,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -320,15 +326,15 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -348,7 +354,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -359,15 +365,15 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
         $this->travel(1)->days();
 
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Late Post Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -393,9 +399,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->twice();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
-                ->twice();
+                ->once();
 
             return $mock;
         });
@@ -404,10 +410,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -433,9 +438,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->twice();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
-                ->twice();
+                ->once();
 
             return $mock;
         });
@@ -444,10 +449,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -466,7 +470,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -476,8 +480,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Post Morning Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Post Morning Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Morning Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Morning Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -496,7 +500,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -506,8 +510,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Post Late Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Post Late Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Late Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Late Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -538,7 +542,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ])
                 ->twice();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -549,10 +553,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -583,7 +586,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ])
                 ->twice();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -594,10 +597,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->doesntExpectOutput("Late Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -623,7 +625,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -634,10 +636,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Morning Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->doesntExpectOutput("Morning Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Morning Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->doesntExpectOutput("Morning Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Morning Post Pickup Notification sent {$this->today}")
             ->assertSuccessful();
 
     }
@@ -663,7 +664,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
                 ->andReturn(['result' => true])
                 ->once();
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true])
                 ->once();
 
@@ -674,10 +675,9 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
-            ->expectsOutput("Late Post Pickup Notification: Reserve Code: {$reservation1->reserve_code} Notification sent: {$reservation1->fullname} ({$reservation1->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
-            ->doesntExpectOutput("Late Post Pickup Notification: Reserve Code: {$reservation2->reserve_code} Notification sent: {$reservation2->fullname} ({$reservation2->phone})")
+            ->expectsOutput("Late Post Pickup Notification Contact registered: {$reservation1->fullname} ({$reservation1->phone})")
+            ->expectsOutput("Late Post Pickup Notification sent {$this->today}")
+            ->doesntExpectOutput("Late Post Pickup Notification Contact registered: {$reservation2->fullname} ({$reservation2->phone})")
             ->assertSuccessful();
 
     }
@@ -697,7 +697,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -707,8 +707,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-morning-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Post Morning Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Post Morning Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Morning Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Morning Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
@@ -728,7 +728,7 @@ class SendPostReservationPickupNotificationTest extends TestCase
             $mock->shouldReceive('addContact')
                 ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessage')
+            $mock->shouldReceive('sendTemplateMessages')
                 ->andReturn(['result' => true]);
 
             return $mock;
@@ -738,8 +738,8 @@ class SendPostReservationPickupNotificationTest extends TestCase
 
         // Act: Call the command to send the notification
         $this->artisan('wati:send-late-post-reservation-pickup-notification')
-            ->doesntExpectOutput("Post Late Pickup Notification: Reserve Code: {$reservation->reserve_code} Contact registered: {$reservation->fullname} ({$reservation->phone})")
-            ->doesntExpectOutput("Post Late Pickup Notification: Reserve Code: {$reservation->reserve_code} Notification sent: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Late Pickup Notification Contact registered: {$reservation->fullname} ({$reservation->phone})")
+            ->doesntExpectOutput("Post Late Pickup Notification sent: {$reservation->fullname} ({$reservation->phone})")
             ->assertSuccessful();
 
     }
