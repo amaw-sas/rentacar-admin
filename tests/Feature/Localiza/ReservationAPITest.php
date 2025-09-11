@@ -3,11 +3,13 @@
 namespace Tests\Feature\Localiza;
 
 use App\Enums\MonthlyMileage;
-// use App\Jobs\SendPendingReservationNotificationJob;
-// use App\Jobs\SendLocalizaReservationRequestJob;
 use App\Events\NewReservationEvent;
-use App\Listeners\SendClientReservationNotification\SendClientReservationNotificationListener;
+use App\Events\NewMonthlyReservationEvent;
+use App\Listeners\SendClientReservationNotification\SendClientReservationMailNotificationListener;
+use App\Listeners\SendClientReservationNotification\SendClientReservationWhatsappNotificationListener;
 use App\Listeners\SendPendingReservationNotification\SendPendingReservationMailNotificationListener;
+use App\Listeners\SendLocalizaTotalInsuranceReservationNotification\SendLocalizaTotalInsuranceReservationMailNotificationListener;
+use App\Listeners\SendLocalizaReservationRequest\SendLocalizaReservationMailRequestListener;
 use App\Mail\ReservationClientNotification\Reserved\ReservedReservationClientNotification;
 use App\Mail\ReservationClientNotification\Reserved\AlquilatucarroReservedReservationClientNotification;
 use App\Mail\ReservationClientNotification\Reserved\AlquilameReservedReservationClientNotification;
@@ -85,6 +87,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -119,6 +123,9 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->return_location, $returnLocation->id);
         $this->assertEquals($reservation->franchise, $franchise->id);
 
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
     }
 
     #[Group("reservation_api")]
@@ -126,6 +133,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_referer()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -162,6 +171,10 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->franchise, $franchise->id);
         $this->assertEquals($reservation->user, 'referer');
 
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
+
     }
 
     #[Group("reservation_api")]
@@ -170,6 +183,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_monthly_mileage()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -206,6 +221,10 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->franchise, $franchise->id);
         $this->assertEquals($reservation->monthly_mileage, MonthlyMileage::twoKKms->value);
 
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
+
     }
 
     #[Group("reservation_api")]
@@ -214,6 +233,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_empty_string_monthly_mileage()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -250,6 +271,10 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->franchise, $franchise->id);
         $this->assertEquals($reservation->monthly_mileage, null);
 
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
+
     }
 
     #[Group("reservation_api")]
@@ -258,6 +283,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_null_monthly_mileage()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -294,6 +321,9 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->franchise, $franchise->id);
         $this->assertEquals($reservation->monthly_mileage, null);
 
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
     }
 
     #[Group("reservation_api")]
@@ -302,6 +332,8 @@ class ReservationAPITest extends TestCase
     #[Test]
     public function store_a_default_reservation_with_total_insurance()
     {
+        Event::fake();
+
         Http::preventStrayRequests();
         $xml = view('localiza.tests.responses.vehres.vehres-confirmed-xml')->render();
         Http::fake([
@@ -337,6 +369,11 @@ class ReservationAPITest extends TestCase
         $this->assertEquals($reservation->return_location, $returnLocation->id);
         $this->assertEquals($reservation->franchise, $franchise->id);
         $this->assertTrue((boolean) $reservation->total_insurance);
+
+
+        Event::assertDispatched(
+            NewReservationEvent::class,
+        );
 
     }
 
@@ -856,7 +893,7 @@ class ReservationAPITest extends TestCase
         Http::fake([
             '*' =>  Http::response($xml, 200)
         ]);
-        Queue::fake();
+        Event::fake();
 
         $pickupLocation = Branch::factory()->create([
             'code'  =>  'AABOT'
@@ -888,7 +925,11 @@ class ReservationAPITest extends TestCase
         $reservation = Reservation::first();
         $this->assertNotNull($reservation);
 
-        Queue::assertPushed(SendLocalizaReservationRequestJob::class);
+        Event::assertListening(
+            NewMonthlyReservationEvent::class,
+            SendLocalizaReservationMailRequestListener::class
+        );
+
     }
 
 
