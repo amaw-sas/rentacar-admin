@@ -74,8 +74,6 @@ class SendClientReservationNotificationJob implements ShouldQueue
                 // send to client a notification
                 $franchiseEmail = $this->franchisesEmails[$franchise][$reservationStatus->value];
 
-                // dd($franchiseEmail);
-
                 Mail::mailer($franchise)
                 ->to($this->reservation->email)
                 ->send(new $franchiseEmail($this->reservation));
