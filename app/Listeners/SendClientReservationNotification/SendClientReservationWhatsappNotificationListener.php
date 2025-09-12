@@ -63,6 +63,18 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 'value' => $reservation->pickupLocation->name,
             ],
             [
+                'name' => 'return_date',
+                'value' => $reservation->return_date->locale('es')->isoFormat('LL'),
+            ],
+            [
+                'name' => 'return_hour',
+                'value' => $reservation->return_hour->format('H:i a'),
+            ],
+            [
+                'name' => 'return_location',
+                'value' => $reservation->returnLocation->name,
+            ],
+            [
                 'name' => 'franchise_name',
                 'value' => $franchiseName,
             ],
