@@ -32,7 +32,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
 
         $templateName = $this->getTemplateName();
         $broadcastName = $this->getBaseBroadcastName() . ' ' . now()->format('Y-m-d');
-        $baseLog = $this->getLogPrefix() . " Pickup Notification";
+        $baseLog = $this->getLogPrefix() . " Notification";
         $reservation = $event->reservation;
         $today = now()->format('Y-m-d');
 
@@ -63,6 +63,18 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 'value' => $reservation->pickupLocation->name,
             ],
             [
+                'name' => 'return_date',
+                'value' => $reservation->return_date->locale('es')->isoFormat('LL'),
+            ],
+            [
+                'name' => 'return_hour',
+                'value' => $reservation->return_hour->format('H:i a'),
+            ],
+            [
+                'name' => 'return_location',
+                'value' => $reservation->returnLocation->name,
+            ],
+            [
                 'name' => 'franchise_name',
                 'value' => $franchiseName,
             ],
@@ -83,8 +95,8 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
             Log::error($addContactErrorLogInfo . " - " . $e->getMessage());
         }
 
-        // Send notifications via wati
-        $sendMessageTemplateSuccessLogInfo = "{$baseLog} sent {$today}";
+        // Send first part new reservations notifications via wati
+        $sendMessageTemplateSuccessLogInfo = "{$baseLog} Code: {$reservationCode} sent {$today}";
         $sendMessageTemplateErrorLogInfo = "{$baseLog} Error sending notification {$today}";
 
         try {
@@ -96,6 +108,27 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 Log::info($sendMessageTemplateSuccessLogInfo);
             } else {
                 throw new Exception("Failed to send notification in {$today} " . json_encode($response));
+            }
+        } catch (Exception $e) {
+            Log::error($sendMessageTemplateErrorLogInfo . " - " . $e->getMessage());
+        }
+
+        // Send second part new reservations notifications (instructions) via wati
+        try {
+            $sendMessageTemplateSuccessLogInfo = "{$baseLog} Instructions Code: {$reservationCode} sent {$today}";
+            $sendMessageTemplateErrorLogInfo = "{$baseLog} Error sending new reservation instructions notification {$today}";
+
+            $templateName = 'nueva_reserva_instrucciones';
+            $broadcastName = "NRI {$reservationCode} {$today}";
+            $params = [];
+
+            $response = $watiApi->sendTemplateMessage($whatsappNumber, $templateName, $broadcastName, $params);
+            $result = $response['result'] ?? false;
+
+            if ($response['result']) {
+                Log::info($sendMessageTemplateSuccessLogInfo);
+            } else {
+                throw new Exception("Failed to send new reservation notification {$reservationCode} in {$today} " . json_encode($response));
             }
         } catch (Exception $e) {
             Log::error($sendMessageTemplateErrorLogInfo . " - " . $e->getMessage());
