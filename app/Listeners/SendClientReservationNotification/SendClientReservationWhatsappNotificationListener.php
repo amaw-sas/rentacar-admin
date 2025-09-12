@@ -32,7 +32,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
 
         $templateName = $this->getTemplateName();
         $broadcastName = $this->getBaseBroadcastName() . ' ' . now()->format('Y-m-d');
-        $baseLog = $this->getLogPrefix() . " Pickup Notification";
+        $baseLog = $this->getLogPrefix() . " Notification";
         $reservation = $event->reservation;
         $today = now()->format('Y-m-d');
 
@@ -95,8 +95,8 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
             Log::error($addContactErrorLogInfo . " - " . $e->getMessage());
         }
 
-        // Send notifications via wati
-        $sendMessageTemplateSuccessLogInfo = "{$baseLog} sent {$today}";
+        // Send first part new reservations notifications via wati
+        $sendMessageTemplateSuccessLogInfo = "{$baseLog} Code: {$reservationCode} sent {$today}";
         $sendMessageTemplateErrorLogInfo = "{$baseLog} Error sending notification {$today}";
 
         try {
