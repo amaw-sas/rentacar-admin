@@ -4,6 +4,7 @@ namespace App\Listeners\SendClientReservationNotification;
 
 use Illuminate\Support\Facades\Log;
 use App\Events\NewReservationEvent;
+use \Exception;
 
 class SendClientReservationWhatsappNotificationListener extends SendClientReservationNotificationListener
 {
