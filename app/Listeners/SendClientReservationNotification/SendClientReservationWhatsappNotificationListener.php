@@ -161,6 +161,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
     protected function sendFailedReservationNotification(Reservation $reservation): void
     {
         $franchiseReservationWebsite = $reservation->franchiseObject->reserva_button;
+        $reservationCode = $reservation->reserve_code;
         $whatsappNumber = $reservation->phone;
         $userName = $reservation->fullname;
         $params = [
