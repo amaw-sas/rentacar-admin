@@ -2,14 +2,14 @@
 
 namespace App\Listeners\SendPendingReservationNotification;
 
-use App\Events\NewReservationEvent;
+use App\Events\SendClientReservationNotificationEvent;
 
 class SendPendingReservationWhatsappNotificationListener  extends SendPendingReservationNotificationListener
 {
     /**
      * Handle the event.
      */
-    public function handle(NewReservationEvent $event): void
+    public function handle(SendClientReservationNotificationEvent $event): void
     {
         //
     }
