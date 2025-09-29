@@ -132,6 +132,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         );
 
         $this->sendReservedReservationNotificationInstructions($reservation);
+        $this->sendReservedReservationNotificationInstructionsAdditional($reservation);
     }
 
     protected function sendReservedReservationNotificationInstructions(Reservation $reservation): void
@@ -145,6 +146,30 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         $broadcastName = "NRI {$reservationCode}";
 
         $baseLog = "Reservation Instructions Notification";
+        $successLog = "{$baseLog} Code: {$reservationCode} sent {$this->today}";
+        $errorLog = "{$baseLog} Error sending notification {$this->today}";
+
+        $this->sendReservationNotification(
+            $whatsappNumber,
+            $templateName,
+            $broadcastName,
+            $params,
+            $successLog,
+            $errorLog,
+        );
+    }
+
+    protected function sendReservedReservationNotificationInstructionsAdditional(Reservation $reservation): void
+    {
+        $reservationCode = $reservation->reserve_code;
+        $whatsappNumber = $reservation->phone;
+        $userName = $reservation->fullname;
+        $params = [];
+
+        $templateName = 'nueva_reserva_instrucciones_adicionales';
+        $broadcastName = "NRIA {$reservationCode}";
+
+        $baseLog = "Reservation More Instructions Notification";
         $successLog = "{$baseLog} Code: {$reservationCode} sent {$this->today}";
         $errorLog = "{$baseLog} Error sending notification {$this->today}";
 
