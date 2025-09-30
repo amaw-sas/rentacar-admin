@@ -105,6 +105,10 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 'value' => $reservation->pickupLocation->name,
             ],
             [
+                'name' => 'pickup_location_address',
+                'value' => $reservation->pickupLocation->pickup_address,
+            ],
+            [
                 'name' => 'return_date',
                 'value' => $reservation->return_date->locale('es')->isoFormat('LL'),
             ],
@@ -115,6 +119,10 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
             [
                 'name' => 'return_location',
                 'value' => $reservation->returnLocation->name,
+            ],
+            [
+                'name' => 'return_location_addres',
+                'value' => $reservation->returnLocation->return_address,
             ],
             [
                 'name' => 'franchise_name',
