@@ -121,7 +121,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 'value' => $reservation->returnLocation->name,
             ],
             [
-                'name' => 'return_location_addres',
+                'name' => 'return_location_address',
                 'value' => $reservation->returnLocation->return_address ?? $reservation->returnLocation->pickup_address,
             ],
             [
