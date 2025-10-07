@@ -49,14 +49,11 @@ use App\Models\Franchise;
 use App\Models\Reservation;
 use App\Models\Category;
 
-use Mockery;
-use App\Providers\WatiServiceProvider;
-use Mockery\MockInterface;
+use App\Facades\Wati;
 
 class ReservationAPITest extends TestCase
 {
     use RefreshDatabase;
-
 
     public function setUp(): void
     {
@@ -64,21 +61,14 @@ class ReservationAPITest extends TestCase
 
         Mail::fake();
 
-        $watiMock = $this->mock(WatiServiceProvider::class, function(MockInterface $mock) {
-            $mock->shouldReceive('addContact')
+        Wati::shouldReceive('addContact')
             ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessages')
+        Wati::shouldReceive('sendTemplateMessage')
             ->andReturn(['result' => true]);
 
-            $mock->shouldReceive('sendTemplateMessage')
+        Wati::shouldReceive('sendTemplateMessages')
             ->andReturn(['result' => true]);
-
-            return $mock;
-        });
-
-        $this->app->instance('wati', $watiMock);
-
 
     }
 
