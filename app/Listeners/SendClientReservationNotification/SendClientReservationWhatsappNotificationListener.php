@@ -69,7 +69,42 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         );
     }
 
-    protected function sendReservedReservationNotification(Reservation $reservation): void
+    public function sendMonthReservationNotification(Reservation $reservation): void
+    {
+        $franchiseName = $reservation->franchiseObject->name;
+        $reservationCode = $reservation->reserve_code;
+        $whatsappNumber = $reservation->phone;
+        $userName = $reservation->fullname;
+
+        $params = [
+            [
+                'name' => 'fullname',
+                'value' => $userName,
+            ],
+            [
+                'name' => 'franchise_name',
+                'value' => $franchiseName,
+            ],
+        ];
+
+        $baseLog = "Month Reservation Notification";
+        $successLog = "{$baseLog} Code: {$reservationCode} sent {$this->today}";
+        $errorLog = "{$baseLog} Error sending notification {$this->today}";
+
+        $templateName = $this->templateMessages[ReservationStatus::Mensualidad->value];
+        $broadcastName =  "RM {$reservationCode}";
+
+        $this->sendReservationNotification(
+            $whatsappNumber,
+            $templateName,
+            $broadcastName,
+            $params,
+            $successLog,
+            $errorLog
+        );
+    }
+
+    public function sendReservedReservationNotification(Reservation $reservation): void
     {
         $franchiseName = $reservation->franchiseObject->name;
         $reservationCode = $reservation->reserve_code;
@@ -143,7 +178,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         $this->sendReservedReservationNotificationInstructionsAdditional($reservation);
     }
 
-    protected function sendReservedReservationNotificationInstructions(Reservation $reservation): void
+    public function sendReservedReservationNotificationInstructions(Reservation $reservation): void
     {
         $reservationCode = $reservation->reserve_code;
         $whatsappNumber = $reservation->phone;
@@ -167,7 +202,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         );
     }
 
-    protected function sendReservedReservationNotificationInstructionsAdditional(Reservation $reservation): void
+    public function sendReservedReservationNotificationInstructionsAdditional(Reservation $reservation): void
     {
         $reservationCode = $reservation->reserve_code;
         $whatsappNumber = $reservation->phone;
@@ -191,7 +226,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         );
     }
 
-    protected function sendFailedReservationNotification(Reservation $reservation): void
+    public function sendFailedReservationNotification(Reservation $reservation): void
     {
         $franchiseReservationWebsite = $reservation->franchiseObject->reserva_button;
         $reservationCode = $reservation->reserve_code;
@@ -226,7 +261,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
     }
 
 
-    protected function sendReservationNotification(
+    public function sendReservationNotification(
         string $whatsappNumber,
         string $templateName,
         string $broadcastName,
@@ -254,7 +289,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
     /**
      * Handle the event.
      */
-    public function handle(SendReservationNotificationEvent $event): void
+    public function handle(SendReservationNotificationEvent|NewMonthlyReservationEvent $event): void
     {
         $reservation = $event->reservation;
         $status = $reservation->status;
