@@ -126,6 +126,10 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
                 'value' => $reservation->pickupLocation->pickup_address,
             ],
             [
+                'name' => 'pickup_location_map',
+                'value' => $reservation->pickupLocation->pickup_map,
+            ],
+            [
                 'name' => 'return_date',
                 'value' => $reservation->return_date->locale('es')->isoFormat('LL'),
             ],
@@ -140,6 +144,10 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
             [
                 'name' => 'return_location_address',
                 'value' => $reservation->returnLocation->return_address ?? $reservation->returnLocation->pickup_address,
+            ],
+            [
+                'name' => 'return_location_map',
+                'value' => $reservation->returnLocation->return_map ?? $reservation->returnLocation->pickup_map,
             ],
             [
                 'name' => 'franchise_name',
@@ -288,7 +296,7 @@ class SendClientReservationWhatsappNotificationListener extends SendClientReserv
         $this->today = now()->format('Y-m-d');
 
         $this->templateMessages = [
-            ReservationStatus::Reservado->value => 'nueva_reserva_4',
+            ReservationStatus::Reservado->value => 'nueva_reserva_5',
             ReservationStatus::Pendiente->value => 'reserva_pendiente',
             ReservationStatus::SinDisponibilidad->value => 'reserva_sin_disponibilidad',
             ReservationStatus::Mensualidad->value => 'reserva_mensual',
