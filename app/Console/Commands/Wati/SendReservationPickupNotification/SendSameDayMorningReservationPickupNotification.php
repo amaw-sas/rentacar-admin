@@ -5,7 +5,7 @@ namespace App\Console\Commands\Wati\SendReservationPickupNotification;
 use Illuminate\Database\Eloquent\Builder;
 use App\Models\Reservation;
 
-class SendSameDayMorningReservationPickupNotification extends SendReservationPickupNotification
+class SendSameDayMorningReservationPickupNotification extends SendSameDayReservationPickupNotification
 {
     /**
      * The name and signature of the console command.
@@ -45,7 +45,7 @@ class SendSameDayMorningReservationPickupNotification extends SendReservationPic
 
     protected function getTemplateName(): string
     {
-        return 'recordatorio_recogida_mismo_dia';
+        return 'recordatorio_recogida_mismo_dia_1';
     }
 
     protected function getBaseBroadcastName(): string
