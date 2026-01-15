@@ -41,11 +41,11 @@ class ReservationCollection extends RentacarResourceCollection
                     "value"     =>  "email",
                 ],
                 [
-                    "text"      =>  "DIA RECOGIDA",
+                    "text"      =>  "RECOGIDA",
                     "value"     =>  "pickup_date",
                 ],
                 [
-                    "text"      =>  "CÓDIGO RESERVA",
+                    "text"      =>  "CODIGO",
                     "value"     =>  "reserve_code",
                 ],
                 [
@@ -55,6 +55,10 @@ class ReservationCollection extends RentacarResourceCollection
                 [
                     "text"      =>  "FRANQUICIA",
                     "value"     =>  "franchise",
+                ],
+                [
+                    "text"      =>  "REFERIDO",
+                    "value"     =>  "user",
                 ],
                 [
                     "text"      =>  "ESTADO",

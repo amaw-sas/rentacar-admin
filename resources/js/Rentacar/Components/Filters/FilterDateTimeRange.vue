@@ -7,7 +7,7 @@
             :modelType="format"
             locale="es"
             autoApply
-            class="block mt-1 w-[450px]"
+            class="block w-[160px] h-[42px]"
             autofocus
             :range="true"
             :placeholder="placeholder"

@@ -6,7 +6,7 @@
         @submit.prevent="filterData"
     >
         <div
-            class="flex flex-1 flex-col justify-end space-y-2 md:flex-row md:space-x-2 md:space-y-0"
+            class="flex flex-1 flex-col justify-end space-y-2 md:flex-row md:gap-1 md:space-y-0"
         >
             <slot name="custom-filters"></slot>
             <!-- free search -->
@@ -15,7 +15,7 @@
                 id="free_search_input"
                 type="text"
                 :placeholder="searchPlaceholder"
-                class="p-2"
+                class="px-2 py-1 w-[160px]"
             ></JetInput>
 
             <input v-if="s" type="hidden" name="query" :value="s" />

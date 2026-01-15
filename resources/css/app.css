@@ -6,6 +6,59 @@
     display: none;
 }
 
+/* Estilos uniformes para filtros */
+.dp__input_wrap {
+    width: 160px !important;
+}
+
+.dp__main {
+    --dp-text-color: rgb(107 114 128) !important;
+}
+
+.dp__input {
+    height: 42px !important;
+    min-height: 42px !important;
+    border-color: rgb(209 213 219) !important;
+    border-radius: 0.375rem !important;
+    font-size: 0.85rem !important;
+    padding: 0 35px 0 8px !important;
+    color: rgb(107 114 128) !important;
+}
+
+.dp__input::placeholder {
+    color: rgb(107 114 128) !important;
+    opacity: 1 !important;
+}
+
+/* Ocultar icono del calendario para mantener ancho consistente */
+.dp__input_icon {
+    display: none !important;
+}
+
+.dp__input {
+    padding: 0 8px !important;
+}
+
+.dp__input:focus {
+    border-color: rgb(99 102 241) !important;
+}
+
+/* Uniformar altura y ancho de selects de filtros */
+#filter_form select {
+    width: 160px;
+    height: 42px;
+    font-size: 0.85rem;
+}
+
+#filter_form .dp__main {
+    width: 160px;
+}
+
+/* Espaciado consistente entre elementos de filtros */
+#filter_form > div {
+    gap: 0.25rem;
+}
+
 .short-text {
     white-space: nowrap; /* Evita el salto de línea */
     overflow: hidden;   /* Oculta el contenido que no cabe */

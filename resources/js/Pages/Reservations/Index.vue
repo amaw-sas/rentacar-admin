@@ -54,7 +54,7 @@
                 </template>
                 <template #header-pickup_date="header">
                     <RentacarSortableCol database_col="pickup_date" >
-                        DÍA RECOGIDA
+                        RECOGIDA
                     </RentacarSortableCol>
                 </template>
               <template #expand="item">

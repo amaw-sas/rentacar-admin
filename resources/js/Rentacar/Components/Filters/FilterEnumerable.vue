@@ -3,7 +3,7 @@
         <select
             :id="componentId"
             v-model="selected"
-            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-500"
+            class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-gray-500 w-[160px] h-[42px]"
         >
             <option
                 class="text-gray-500"
