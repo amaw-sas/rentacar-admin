@@ -122,7 +122,13 @@ trait ReservationFormatTrait {
 
     public function shortFormattedPickupDate(): Attribute {
         return Attribute::make(
-            get: fn () => $this->dateFormat($this->pickup_date, output_format:"D MMM YY") . '<br>' . $this->hourFormat($this->pickup_hour)
+            get: fn () => $this->dateFormat($this->pickup_date, output_format:"ll") . '<br>' . $this->hourFormat($this->pickup_hour)
+        );
+    }
+
+    public function mediumFormattedPickupDate(): Attribute {
+        return Attribute::make(
+            get: fn () => $this->dateFormat($this->pickup_date, output_format:"ll")
         );
     }
 

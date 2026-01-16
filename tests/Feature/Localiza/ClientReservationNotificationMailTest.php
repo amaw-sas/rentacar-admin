@@ -59,7 +59,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->formatted_category);
         $mail->assertSeeInHtml($reservation->pickupLocation->name);
         $mail->assertSeeInHtml($reservation->returnLocation->name);
-        $mail->assertSeeInHtml($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInHtml($reservation->short_formatted_return_date);
         $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
         $mail->assertSeeInHtml($reservation->formatted_return_hour);
@@ -71,7 +71,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInText($reservation->formatted_category);
         $mail->assertSeeInText($reservation->pickupLocation->name);
         $mail->assertSeeInText($reservation->returnLocation->name);
-        $mail->assertSeeInText($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInText($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInText($reservation->short_formatted_return_date);
         $mail->assertSeeInText($reservation->formatted_pickup_hour);
         $mail->assertSeeInText($reservation->formatted_return_hour);
@@ -93,7 +93,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->formatted_category);
         $mail->assertSeeInHtml($reservation->pickupLocation->name);
         $mail->assertSeeInHtml($reservation->returnLocation->name);
-        $mail->assertSeeInHtml($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInHtml($reservation->short_formatted_return_date);
         $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
         $mail->assertSeeInHtml($reservation->formatted_return_hour);
@@ -105,7 +105,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInText($reservation->formatted_category);
         $mail->assertSeeInText($reservation->pickupLocation->name);
         $mail->assertSeeInText($reservation->returnLocation->name);
-        $mail->assertSeeInText($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInText($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInText($reservation->short_formatted_return_date);
         $mail->assertSeeInText($reservation->formatted_pickup_hour);
         $mail->assertSeeInText($reservation->formatted_return_hour);
@@ -129,7 +129,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->formatted_category);
         $mail->assertSeeInHtml($reservation->pickupLocation->name);
         $mail->assertSeeInHtml($reservation->returnLocation->name);
-        $mail->assertSeeInHtml($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInHtml($reservation->short_formatted_return_date);
         $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
         $mail->assertSeeInHtml($reservation->formatted_return_hour);
@@ -141,7 +141,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInText($reservation->formatted_category);
         $mail->assertSeeInText($reservation->pickupLocation->name);
         $mail->assertSeeInText($reservation->returnLocation->name);
-        $mail->assertSeeInText($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInText($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInText($reservation->short_formatted_return_date);
         $mail->assertSeeInText($reservation->formatted_pickup_hour);
         $mail->assertSeeInText($reservation->formatted_return_hour);
@@ -165,7 +165,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInHtml($reservation->formatted_category);
         $mail->assertSeeInHtml($reservation->pickupLocation->name);
         $mail->assertSeeInHtml($reservation->returnLocation->name);
-        $mail->assertSeeInHtml($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInHtml($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInHtml($reservation->short_formatted_return_date);
         $mail->assertSeeInHtml($reservation->formatted_pickup_hour);
         $mail->assertSeeInHtml($reservation->formatted_return_hour);
@@ -177,7 +177,7 @@ class ClientReservationNotificationMailTest extends TestCase
         $mail->assertSeeInText($reservation->formatted_category);
         $mail->assertSeeInText($reservation->pickupLocation->name);
         $mail->assertSeeInText($reservation->returnLocation->name);
-        $mail->assertSeeInText($reservation->short_formatted_pickup_date);
+        $mail->assertSeeInText($reservation->medium_formatted_pickup_date);
         $mail->assertSeeInText($reservation->short_formatted_return_date);
         $mail->assertSeeInText($reservation->formatted_pickup_hour);
         $mail->assertSeeInText($reservation->formatted_return_hour);
