@@ -18,3 +18,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# AI Framework runtime files (auto-added)
+/.claude/
+/.specify/
+/CLAUDE.md
+/.playwright-mcp/
+/hooks/*.db
+/hooks/__pycache__/
