@@ -19,10 +19,10 @@ yarn-error.log
 /.idea
 /.vscode
 
-# AI Framework (Claude Code)
+# AI Framework runtime files (auto-added)
 /.claude/
 /.specify/
 /CLAUDE.md
-
-# MCP server data
 /.playwright-mcp/
+/hooks/*.db
+/hooks/__pycache__/

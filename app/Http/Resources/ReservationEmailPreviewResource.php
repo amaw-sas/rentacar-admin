@@ -43,7 +43,7 @@ class ReservationEmailPreviewResource extends JsonResource
             'pickup_branch_address'  =>  $pickupLocationBranchAddress,
             'pickup_branch_map'  =>  $this->pickupLocation->pickup_map,
             'pickup_city'  =>  $this->formatted_pickup_city,
-            'pickup_date'  =>  $this->short_formatted_pickup_date,
+            'pickup_date'  =>  $this->medium_formatted_pickup_date,
             'pickup_hour'  =>  $this->formatted_pickup_hour,
             'return_branch_name'  =>  $this->returnLocation->name,
             'return_branch_address'  =>  $returnLocationBranchAddress,

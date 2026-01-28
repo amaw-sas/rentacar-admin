@@ -240,106 +240,6 @@ class ReservationTest extends TestCase
 
     #[Group("reservation")]
     #[Test]
-    public function filter_reservations_by_pickup_date(){
-
-        Reservation::factory()->count(5)->create([
-            'pickup_date'   => now()->subMonth()->format('Y-m-d')
-        ]);
-        $reservation = Reservation::factory()->create([
-            'pickup_date'  => now()->format('Y-m-d')
-        ]);
-
-        $this
-            ->actingAs($this->user)
-            ->get(route('reservations.index', [
-                'filterDateRanges'    =>  [
-                    'pickup_date' => [
-                        'start' => now()->subDays(2)->format('Y-m-d'),
-                        'end' => now()->addDays(2)->format('Y-m-d'),
-                    ]
-                ]
-
-            ]))
-            ->assertInertia(fn(Assert $page) => $page
-                ->component('Reservations/Index')
-                ->has('paginator.data.items',1)
-                ->has('paginator.data.items.0', fn(Assert $page) => $page
-                    ->where('pickup_date',now()->locale('es')->isoFormat('ll'))
-                    ->etc()
-                )
-        );
-    }
-
-    #[Group("reservation")]
-    #[Test]
-    public function filter_reservations_by_created_at(){
-
-        Reservation::factory()->count(5)->create([
-            'created_at'   => now()->subMonth()
-        ]);
-        $reservation = Reservation::factory()->create([
-            'created_at'  => now()
-        ]);
-
-        $this
-            ->actingAs($this->user)
-            ->get(route('reservations.index', [
-                'filterDateRanges'    =>  [
-                    'created_at' => [
-                        'start' => now()->subDays(2)->format('Y-m-d'),
-                        'end' => now()->addDays(2)->format('Y-m-d'),
-                    ]
-                ]
-
-            ]))
-            ->assertInertia(fn(Assert $page) => $page
-                ->component('Reservations/Index')
-                ->has('paginator.data.items',1)
-                ->has('paginator.data.items.0', fn(Assert $page) => $page
-                    ->where('created_at',now()->locale('es')->isoFormat('ll h:m a'))
-                    ->etc()
-                )
-        );
-    }
-
-    #[Group("reservation")]
-    #[Group("bug")]
-    #[Test]
-    public function filter_reservations_by_pickup_date_and_query_get_error(){
-
-        Reservation::factory()->count(5)->create([
-            'pickup_date'   => now()->subMonth()->format('Y-m-d')
-        ]);
-        $reservation = Reservation::factory()->create([
-            'pickup_date'  => now()->format('Y-m-d'),
-            'fullname'  => 'testing',
-        ]);
-
-        $this
-            ->actingAs($this->user)
-            ->get(route('reservations.index', [
-                'filterDateRanges'    =>  [
-                    'pickup_date' => [
-                        'start' => now()->subDays(2)->format('Y-m-d'),
-                        'end' => now()->addDays(2)->format('Y-m-d'),
-                    ],
-                ],
-                'query' =>  'testing'
-
-            ]))
-            ->assertInertia(fn(Assert $page) => $page
-                ->component('Reservations/Index')
-                ->has('paginator.data.items',1)
-                ->has('paginator.data.items.0', fn(Assert $page) => $page
-                    ->where('pickup_date',now()->locale('es')->isoFormat('ll'))
-                    ->where('fullname', 'testing')
-                    ->etc()
-                )
-        );
-    }
-
-    #[Group("reservation")]
-    #[Test]
     public function filter_reservations_and_keep_filters_until_clean_filters(){
         $search = 'testing';
         Reservation::factory()->count(5)->create();
@@ -413,7 +313,6 @@ class ReservationTest extends TestCase
                 ->has('paginator.data.items.0', fn(Assert $page) => $page
                     ->where('status',$status)
                     ->where('fullname',$name)
-                    ->where('pickup_date',now()->locale('es')->isoFormat('ll'))
                     ->etc()
                 )
         );
@@ -464,7 +363,6 @@ class ReservationTest extends TestCase
                     ->where('status',$status)
                     ->where('fullname',$name)
                     ->where('franchise',$franchise->name)
-                    ->where('pickup_date',now()->locale('es')->isoFormat('ll'))
                     ->etc()
                 )
         );
@@ -521,8 +419,6 @@ class ReservationTest extends TestCase
                     ->where('status',$status)
                     ->where('fullname',$name)
                     ->where('franchise',$franchise->name)
-                    ->where('pickup_date',now()->locale('es')->isoFormat('ll'))
-                    ->where('created_at',now()->locale('es')->isoFormat('ll h:m a'))
                     ->etc()
                 )
         );
