@@ -18,3 +18,11 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# AI Framework (Claude Code)
+/.claude/
+/.specify/
+/CLAUDE.md
+
+# MCP server data
+/.playwright-mcp/
