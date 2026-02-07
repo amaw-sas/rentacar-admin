@@ -10,6 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Queue;
 use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
@@ -18,9 +19,13 @@ class SendGhlWhatsAppNotificationJobTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
+
+        // Fake the queue to prevent ReservationObserver from dispatching SyncReservationToGhlJob
+        // which would interfere with our HTTP fakes and Log mocks
+        Queue::fake();
 
         // Configure GHL for test franchise
         Config::set('ghl.franchises.testfranchise', [
@@ -121,7 +126,7 @@ class SendGhlWhatsAppNotificationJobTest extends TestCase
         $reservation = Reservation::factory()->create([
             'status' => ReservationStatus::Reservado->value,
             'franchise' => $franchise->id,
-            'phone' => null,
+            'phone' => '',
         ]);
 
         $job = new SendGhlWhatsAppNotificationJob($reservation);
@@ -144,7 +149,7 @@ class SendGhlWhatsAppNotificationJobTest extends TestCase
 
         $franchise = Franchise::factory()->create(['name' => 'Test Franchise']);
         $reservation = Reservation::factory()->create([
-            'status' => ReservationStatus::Finalizado->value,
+            'status' => ReservationStatus::Utilizado->value,
             'franchise' => $franchise->id,
             'phone' => '+573001234567',
         ]);

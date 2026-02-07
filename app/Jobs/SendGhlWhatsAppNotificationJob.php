@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Enums\ReservationStatus;
 use App\Models\Reservation;
 use App\Services\Ghl\GhlClient;
 use App\Services\Ghl\GhlMessageMapper;
@@ -79,7 +80,7 @@ class SendGhlWhatsAppNotificationJob implements ShouldQueue
             if (!$message) {
                 Log::info('SendGhlWhatsAppNotificationJob: No message for status', [
                     'reservation_id' => $this->reservation->id,
-                    'status' => $this->reservation->status->value,
+                    'status' => $this->getStatusValue(),
                 ]);
                 return;
             }
@@ -98,7 +99,7 @@ class SendGhlWhatsAppNotificationJob implements ShouldQueue
 
             Log::info('SendGhlWhatsAppNotificationJob: Main message sent', [
                 'reservation_id' => $this->reservation->id,
-                'status' => $this->reservation->status->value,
+                'status' => $this->getStatusValue(),
                 'franchise' => $franchiseKey,
             ]);
 
@@ -139,5 +140,17 @@ class SendGhlWhatsAppNotificationJob implements ShouldQueue
 
             throw $e;
         }
+    }
+
+    /**
+     * Get the status value safely (handles both string and enum).
+     */
+    private function getStatusValue(): string
+    {
+        $status = $this->reservation->status;
+
+        return $status instanceof ReservationStatus
+            ? $status->value
+            : (string) $status;
     }
 }

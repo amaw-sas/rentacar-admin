@@ -20,7 +20,12 @@ class GhlMessageMapper
      */
     public static function getMessage(Reservation $reservation): ?string
     {
-        return match ($reservation->status) {
+        // Handle both string and enum status values
+        $status = $reservation->status instanceof ReservationStatus
+            ? $reservation->status
+            : ReservationStatus::tryFrom($reservation->status);
+
+        return match ($status) {
             ReservationStatus::Reservado => self::getReservadoMessage($reservation),
             ReservationStatus::Pendiente => self::getPendienteMessage($reservation),
             ReservationStatus::SinDisponibilidad => self::getSinDisponibilidadMessage($reservation),
@@ -36,7 +41,12 @@ class GhlMessageMapper
      */
     public static function getAdditionalMessages(Reservation $reservation): array
     {
-        if ($reservation->status !== ReservationStatus::Reservado) {
+        // Handle both string and enum status values
+        $status = $reservation->status instanceof ReservationStatus
+            ? $reservation->status
+            : ReservationStatus::tryFrom($reservation->status);
+
+        if ($status !== ReservationStatus::Reservado) {
             return [];
         }
 

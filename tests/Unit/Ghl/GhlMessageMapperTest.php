@@ -86,7 +86,7 @@ class GhlMessageMapperTest extends TestCase
     public function it_returns_null_for_unknown_status(): void
     {
         $reservation = Reservation::factory()->create([
-            'status' => ReservationStatus::Finalizado->value,
+            'status' => ReservationStatus::Utilizado->value,
         ]);
 
         $message = GhlMessageMapper::getMessage($reservation);
