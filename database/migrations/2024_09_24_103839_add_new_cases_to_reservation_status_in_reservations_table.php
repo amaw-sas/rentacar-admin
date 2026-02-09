@@ -13,6 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Skip ENUM modification on SQLite (used for testing)
+        if (DB::connection()->getDriverName() === 'sqlite') {
+            return;
+        }
+
         $existingEnumValues = [
             'Confirmado',
             'Sin confirmar',
