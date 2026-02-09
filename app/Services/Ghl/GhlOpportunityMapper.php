@@ -126,43 +126,63 @@ class GhlOpportunityMapper
     protected static function buildCustomFields(Reservation $reservation): array
     {
         return [
+            // New custom fields matching GHL configuration
             [
-                'key' => 'fecha_recogida',
-                'field_value' => $reservation->pickup_date?->format('Y-m-d') ?? '',
+                'key' => 'ciudad_de_recogida',
+                'field_value' => $reservation->pickupLocation->city->name ?? '',
             ],
             [
-                'key' => 'fecha_devolucion',
-                'field_value' => $reservation->return_date?->format('Y-m-d') ?? '',
+                'key' => 'ciudad_de_entrega',
+                'field_value' => $reservation->returnLocation->city->name ?? '',
             ],
             [
-                'key' => 'hora_recogida',
-                'field_value' => $reservation->pickup_hour?->format('H:i') ?? '',
+                'key' => 'fecha_hora_recogida',
+                'field_value' => self::formatPickupDateTime($reservation),
             ],
             [
-                'key' => 'hora_devolucion',
-                'field_value' => $reservation->return_hour?->format('H:i') ?? '',
+                'key' => 'fecha_hora_entrega',
+                'field_value' => self::formatReturnDateTime($reservation),
             ],
             [
-                'key' => 'categoria',
-                'field_value' => $reservation->categoryObject->name ?? '',
-            ],
-            [
-                'key' => 'lugar_recogida',
-                'field_value' => $reservation->pickupLocation->name ?? '',
-            ],
-            [
-                'key' => 'lugar_devolucion',
-                'field_value' => $reservation->returnLocation->name ?? '',
-            ],
-            [
-                'key' => 'codigo_reserva',
+                'key' => 'codigo_de_reserva',
                 'field_value' => $reservation->reserve_code ?? '',
             ],
+            // Legacy fields (keeping for backwards compatibility if they exist in GHL)
             [
-                'key' => 'estado_reserva',
-                'field_value' => $reservation->status ?? '',
+                'key' => 'gama',
+                'field_value' => $reservation->categoryObject->name ?? '',
             ],
         ];
+    }
+
+    /**
+     * Format pickup date and time for GHL.
+     */
+    protected static function formatPickupDateTime(Reservation $reservation): string
+    {
+        if (!$reservation->pickup_date) {
+            return '';
+        }
+
+        $date = $reservation->pickup_date->format('d/m/Y');
+        $time = $reservation->pickup_hour?->format('H:i') ?? '';
+
+        return $time ? "{$date} {$time}" : $date;
+    }
+
+    /**
+     * Format return date and time for GHL.
+     */
+    protected static function formatReturnDateTime(Reservation $reservation): string
+    {
+        if (!$reservation->return_date) {
+            return '';
+        }
+
+        $date = $reservation->return_date->format('d/m/Y');
+        $time = $reservation->return_hour?->format('H:i') ?? '';
+
+        return $time ? "{$date} {$time}" : $date;
     }
 
     /**

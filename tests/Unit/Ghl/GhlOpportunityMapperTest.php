@@ -57,15 +57,25 @@ class GhlOpportunityMapperTest extends TestCase
             ->andReturn($category);
         $reservation->categoryObject = $category;
 
+        // Mock pickup location with city
+        $pickupCity = new \stdClass();
+        $pickupCity->name = $attributes['pickup_city_name'] ?? 'Bogotá';
+
         $pickupLocation = new \stdClass();
         $pickupLocation->name = $attributes['pickup_location_name'] ?? 'Aeropuerto';
+        $pickupLocation->city = $pickupCity;
         $reservation->shouldReceive('getAttribute')
             ->with('pickupLocation')
             ->andReturn($pickupLocation);
         $reservation->pickupLocation = $pickupLocation;
 
+        // Mock return location with city
+        $returnCity = new \stdClass();
+        $returnCity->name = $attributes['return_city_name'] ?? 'Medellín';
+
         $returnLocation = new \stdClass();
         $returnLocation->name = $attributes['return_location_name'] ?? 'Centro';
+        $returnLocation->city = $returnCity;
         $reservation->shouldReceive('getAttribute')
             ->with('returnLocation')
             ->andReturn($returnLocation);
@@ -92,11 +102,11 @@ class GhlOpportunityMapperTest extends TestCase
         $data = GhlOpportunityMapper::toGhlOpportunity($reservation, $client);
 
         $this->assertArrayHasKey('name', $data);
-        $this->assertArrayHasKey('stageId', $data);
+        $this->assertArrayHasKey('pipelineStageId', $data);
         $this->assertArrayHasKey('status', $data);
         $this->assertArrayHasKey('monetaryValue', $data);
         $this->assertArrayHasKey('customFields', $data);
-        $this->assertEquals('stage-123', $data['stageId']);
+        $this->assertEquals('stage-123', $data['pipelineStageId']);
         $this->assertEquals('open', $data['status']);
         $this->assertEquals(500000.0, $data['monetaryValue']);
         $this->assertStringContainsString('TEST123', $data['name']);
@@ -254,7 +264,7 @@ class GhlOpportunityMapperTest extends TestCase
             'id' => 'opp-123',
             'customFields' => [
                 [
-                    'key' => 'codigo_reserva',
+                    'key' => 'codigo_de_reserva',
                     'value' => 'OLD-CODE',
                 ],
                 [
@@ -266,9 +276,9 @@ class GhlOpportunityMapperTest extends TestCase
 
         $data = GhlOpportunityMapper::toGhlOpportunityUpdate($reservation, $client, $existingOpportunity);
 
-        // codigo_reserva should be updated (not preserved)
+        // codigo_de_reserva should be updated (not preserved)
         $codigoField = collect($data['customFields'])
-            ->firstWhere('key', 'codigo_reserva');
+            ->firstWhere('key', 'codigo_de_reserva');
 
         $this->assertNotNull($codigoField);
         $this->assertEquals('NEW-CODE', $codigoField['field_value']);
@@ -318,14 +328,12 @@ class GhlOpportunityMapperTest extends TestCase
 
         $fieldKeys = collect($data['customFields'])->pluck('key')->toArray();
 
-        $this->assertContains('fecha_recogida', $fieldKeys);
-        $this->assertContains('fecha_devolucion', $fieldKeys);
-        $this->assertContains('hora_recogida', $fieldKeys);
-        $this->assertContains('hora_devolucion', $fieldKeys);
-        $this->assertContains('categoria', $fieldKeys);
-        $this->assertContains('lugar_recogida', $fieldKeys);
-        $this->assertContains('lugar_devolucion', $fieldKeys);
-        $this->assertContains('codigo_reserva', $fieldKeys);
-        $this->assertContains('estado_reserva', $fieldKeys);
+        // New field structure matching GHL configuration
+        $this->assertContains('ciudad_de_recogida', $fieldKeys);
+        $this->assertContains('ciudad_de_entrega', $fieldKeys);
+        $this->assertContains('fecha_hora_recogida', $fieldKeys);
+        $this->assertContains('fecha_hora_entrega', $fieldKeys);
+        $this->assertContains('codigo_de_reserva', $fieldKeys);
+        $this->assertContains('gama', $fieldKeys);
     }
 }
