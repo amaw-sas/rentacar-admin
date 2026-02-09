@@ -114,11 +114,10 @@ class GhlOpportunityMapper
      */
     protected static function buildOpportunityName(Reservation $reservation): string
     {
-        $code = $reservation->reserve_code ?? 'SIN-CODIGO';
         $fullname = $reservation->fullname ?? '';
         $category = $reservation->categoryObject->name ?? '';
 
-        return "{$code} - {$fullname} - {$category}";
+        return "{$fullname} - {$category}";
     }
 
     /**
