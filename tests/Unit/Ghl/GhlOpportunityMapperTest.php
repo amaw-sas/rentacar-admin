@@ -295,16 +295,75 @@ class GhlOpportunityMapperTest extends TestCase
     #[Test]
     public function it_maps_status_to_correct_stage_key(): void
     {
+        // Statuses with pipeline stages
         $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Nueva'));
         $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Pendiente'));
         $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Reservado'));
+        $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Pendiente Modificar'));
+        $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Utilizado'));
         $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Sin disponibilidad'));
         $this->assertTrue(GhlOpportunityMapper::hasGhlStage('Mensualidad'));
 
-        // These don't have mapped stages
-        $this->assertFalse(GhlOpportunityMapper::hasGhlStage('Utilizado'));
+        // Statuses that go directly to 'lost' (no pipeline stage)
+        $this->assertFalse(GhlOpportunityMapper::hasGhlStage('No Contactado'));
+        $this->assertFalse(GhlOpportunityMapper::hasGhlStage('No recogido'));
+        $this->assertFalse(GhlOpportunityMapper::hasGhlStage('Baneado'));
         $this->assertFalse(GhlOpportunityMapper::hasGhlStage('Cancelado'));
         $this->assertFalse(GhlOpportunityMapper::hasGhlStage(null));
+    }
+
+    #[Group("ghl")]
+    #[Test]
+    public function it_identifies_lost_statuses(): void
+    {
+        // Statuses that should mark opportunity as 'lost'
+        $this->assertTrue(GhlOpportunityMapper::isLostStatus('No Contactado'));
+        $this->assertTrue(GhlOpportunityMapper::isLostStatus('No recogido'));
+        $this->assertTrue(GhlOpportunityMapper::isLostStatus('Baneado'));
+        $this->assertTrue(GhlOpportunityMapper::isLostStatus('Cancelado'));
+
+        // Statuses that stay 'open' (even Sin disponibilidad - GHL automation handles 48h delay)
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Nueva'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Pendiente'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Reservado'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Utilizado'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Sin disponibilidad'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus('Mensualidad'));
+        $this->assertFalse(GhlOpportunityMapper::isLostStatus(null));
+    }
+
+    #[Group("ghl")]
+    #[Test]
+    public function it_sets_lost_status_for_cancelled_reservation(): void
+    {
+        $reservation = $this->createMockReservation([
+            'status' => ReservationStatus::Cancelado->value,
+        ]);
+
+        $client = Mockery::mock(GhlClient::class);
+        $client->shouldReceive('getStageId')
+            ->andReturn(null); // Cancelled has no stage
+
+        $data = GhlOpportunityMapper::toGhlOpportunity($reservation, $client);
+
+        $this->assertEquals('lost', $data['status']);
+    }
+
+    #[Group("ghl")]
+    #[Test]
+    public function it_sets_open_status_for_active_reservation(): void
+    {
+        $reservation = $this->createMockReservation([
+            'status' => ReservationStatus::Reservado->value,
+        ]);
+
+        $client = Mockery::mock(GhlClient::class);
+        $client->shouldReceive('getStageId')
+            ->andReturn('stage-123');
+
+        $data = GhlOpportunityMapper::toGhlOpportunity($reservation, $client);
+
+        $this->assertEquals('open', $data['status']);
     }
 
     #[Group("ghl")]

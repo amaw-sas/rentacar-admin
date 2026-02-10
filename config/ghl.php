@@ -20,6 +20,8 @@ return [
             'stages' => [
                 'pendiente' => env('ALQUILATUCARRO_GHL_STAGE_PENDIENTE'),
                 'reservado' => env('ALQUILATUCARRO_GHL_STAGE_RESERVADO'),
+                'pendiente_modificar' => env('ALQUILATUCARRO_GHL_STAGE_PENDIENTE_MODIFICAR'),
+                'utilizado' => env('ALQUILATUCARRO_GHL_STAGE_UTILIZADO'),
                 'sin_disponibilidad' => env('ALQUILATUCARRO_GHL_STAGE_SIN_DISPONIBILIDAD'),
                 'mensualidad' => env('ALQUILATUCARRO_GHL_STAGE_MENSUALIDAD'),
             ],
@@ -34,6 +36,8 @@ return [
                 'cotizado' => env('ALQUILAME_GHL_STAGE_COTIZADO'),
                 'pendiente' => env('ALQUILAME_GHL_STAGE_PENDIENTE'),
                 'reservado' => env('ALQUILAME_GHL_STAGE_RESERVADO'),
+                'pendiente_modificar' => env('ALQUILAME_GHL_STAGE_PENDIENTE_MODIFICAR'),
+                'utilizado' => env('ALQUILAME_GHL_STAGE_UTILIZADO'),
                 'sin_disponibilidad' => env('ALQUILAME_GHL_STAGE_SIN_DISPONIBILIDAD'),
                 'mensualidad' => env('ALQUILAME_GHL_STAGE_MENSUALIDAD'),
             ],
@@ -47,6 +51,8 @@ return [
             'stages' => [
                 'pendiente' => env('ALQUICARROS_GHL_STAGE_PENDIENTE'),
                 'reservado' => env('ALQUICARROS_GHL_STAGE_RESERVADO'),
+                'pendiente_modificar' => env('ALQUICARROS_GHL_STAGE_PENDIENTE_MODIFICAR'),
+                'utilizado' => env('ALQUICARROS_GHL_STAGE_UTILIZADO'),
                 'sin_disponibilidad' => env('ALQUICARROS_GHL_STAGE_SIN_DISPONIBILIDAD'),
                 'mensualidad' => env('ALQUICARROS_GHL_STAGE_MENSUALIDAD'),
             ],

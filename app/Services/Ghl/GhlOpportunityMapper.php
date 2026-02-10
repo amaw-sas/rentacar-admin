@@ -21,9 +21,24 @@ class GhlOpportunityMapper
         'Nueva' => 'pendiente',
         'Pendiente' => 'pendiente',
         'Reservado' => 'reservado',
+        'Pendiente Modificar' => 'pendiente_modificar',
+        'Utilizado' => 'utilizado',
         'Sin disponibilidad' => 'sin_disponibilidad',
         'Mensualidad' => 'mensualidad',
-        // Other statuses fall back to current stage or pendiente
+        // Statuses that go to 'lost' don't need a stage (handled by $statusToGhlStatus)
+    ];
+
+    /**
+     * Map ReservationStatus to GHL native status (open/won/lost/abandoned).
+     * Statuses not listed here default to 'open'.
+     */
+    protected static array $statusToGhlStatus = [
+        'No Contactado' => 'lost',
+        'No recogido' => 'lost',
+        'Baneado' => 'lost',
+        'Cancelado' => 'lost',
+        // Note: 'Sin disponibilidad' stays 'open' initially, GHL automation handles 48h delay to 'lost'
+        // Note: 'Utilizado' stays 'open', GHL automation handles transition to 'won' after workflow completes
     ];
 
     /**
@@ -32,11 +47,12 @@ class GhlOpportunityMapper
     public static function toGhlOpportunity(Reservation $reservation, GhlClient $client): array
     {
         $stageId = $client->getStageId(self::getStageKey($reservation->status));
+        $ghlStatus = self::getGhlStatus($reservation->status);
 
         $data = [
             'name' => self::buildOpportunityName($reservation),
             'pipelineStageId' => $stageId,
-            'status' => 'open',
+            'status' => $ghlStatus,
             'monetaryValue' => (float) $reservation->total_price,
             'customFields' => self::buildCustomFields($reservation),
         ];
@@ -54,6 +70,7 @@ class GhlOpportunityMapper
     public static function toGhlOpportunityUpdate(Reservation $reservation, GhlClient $client, ?array $existingOpportunity = null): array
     {
         $stageId = $client->getStageId(self::getStageKey($reservation->status));
+        $ghlStatus = self::getGhlStatus($reservation->status);
 
         $newCustomFields = self::buildCustomFields($reservation);
 
@@ -64,11 +81,12 @@ class GhlOpportunityMapper
 
         $data = [
             'name' => self::buildOpportunityName($reservation),
+            'status' => $ghlStatus,
             'monetaryValue' => (float) $reservation->total_price,
             'customFields' => $newCustomFields,
         ];
 
-        // Only include stageId if it's a valid stage
+        // Only include stageId if it's a valid stage (statuses going to 'lost' may not have a stage)
         if ($stageId) {
             $data['pipelineStageId'] = $stageId;
         }
@@ -120,7 +138,7 @@ class GhlOpportunityMapper
         // Remove "Gama " prefix (e.g., "Gama C" -> "C", "Gama G4" -> "G4")
         $category = preg_replace('/^Gama\s+/i', '', $categoryName);
 
-        return "{$fullname} - {$category}";
+        return "{$category} - {$fullname}";
     }
 
     /**
@@ -197,10 +215,28 @@ class GhlOpportunityMapper
     }
 
     /**
+     * Get GHL native status from reservation status.
+     *
+     * @return string 'open', 'won', 'lost', or 'abandoned'
+     */
+    protected static function getGhlStatus(?string $status): string
+    {
+        return self::$statusToGhlStatus[$status] ?? 'open';
+    }
+
+    /**
      * Check if reservation status has a mapped GHL stage.
      */
     public static function hasGhlStage(?string $status): bool
     {
         return isset(self::$statusToStageKey[$status]);
+    }
+
+    /**
+     * Check if reservation status should mark opportunity as lost.
+     */
+    public static function isLostStatus(?string $status): bool
+    {
+        return (self::$statusToGhlStatus[$status] ?? 'open') === 'lost';
     }
 }
