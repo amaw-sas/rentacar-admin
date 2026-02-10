@@ -117,8 +117,8 @@ class GhlOpportunityMapper
         $fullname = $reservation->fullname ?? '';
         $categoryName = $reservation->categoryObject->name ?? '';
 
-        // Extract just the category letter (e.g., "Gama C" -> "C")
-        $category = preg_match('/([A-Z])$/', $categoryName, $matches) ? $matches[1] : $categoryName;
+        // Extract category code (e.g., "Gama C" -> "C", "Gama FX" -> "FX")
+        $category = preg_match('/([A-Z]+)$/', $categoryName, $matches) ? $matches[1] : $categoryName;
 
         return "{$fullname} - {$category}";
     }
