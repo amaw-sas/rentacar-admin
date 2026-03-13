@@ -44,7 +44,7 @@ class Category extends Model
      */
     public function scopeAllowed(Builder $query): void {
         $query->whereIn('identification', [
-            'C', 'CX', 'F', 'FX', 'GC', 'G4', 'LE', 'GR', 'GY', 'FU', 'FL', 'GL'
+            'C', 'CX', 'F', 'FX', 'GC', 'G4', 'LE', 'GY', 'FU', 'FL', 'GL'
         ]);
     }
 }
